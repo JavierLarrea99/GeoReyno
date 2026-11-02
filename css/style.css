@@ -715,3 +715,19 @@ img, svg, canvas, video { max-width: 100%; }
 .vs-value { font-variant-numeric: tabular-nums; font-size: 0.95rem; min-height: 1.4em; }
 .explain .source { display: block; margin-top: 6px; font-size: 0.8rem; color: var(--muted); }
 .progress { gap: 4px; }
+
+/* ===== Navarra Street ===== */
+.street-view {
+  position: relative;
+  height: 360px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--bg);
+}
+@media (min-width: 900px) { .street-view { height: 470px; } }
+.photo-card .hint { margin-bottom: 0; }
+.prose-card ol { padding-left: 1.3em; }
+.prose-card li { margin: 6px 0; }
+.prose-card a { color: var(--red); }
+.prose-card code { background: var(--bg); padding: 1px 5px; border-radius: 5px; font-size: 0.9em; overflow-wrap: anywhere; }
+.prose-card .guess-form { margin-top: 8px; }

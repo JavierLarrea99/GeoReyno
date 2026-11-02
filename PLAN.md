@@ -26,6 +26,7 @@ Documento de trabajo para retomar el proyecto en cualquier sesión. Las decision
 - **Desde el aire**: los 5 puntos del día se eligen con la semilla: un municipio al azar y un punto a menos de 900 m de su centroide, comprobando que cae dentro del municipio. Así casi siempre se ve el pueblo o sus alrededores (un punto totalmente al azar suele caer en un campo o un bosque imposible de reconocer). WMS 1.1.1 con EPSG:4326 (orden lon,lat), que es lo que más servidores admiten. Las fuentes están en `data/ortofotos.json` para poder cambiarlas sin tocar código; si una falla se prueba la siguiente.
 - **Escudos**: las imágenes se enlazan desde Commons (no se copian al repositorio). Sin URL guardada se usa `Special:FilePath`, que redirige al archivo. Antes de empezar se comprueba que cada imagen carga; si alguna falla se coge la siguiente.
 - **¿Cuál tiene más?**: no se inventan cifras. Sin población ni altitud oficiales, se usan la superficie y la latitud calculadas de la geometría del IGN («¿cuál está más al norte?» se añadió para que haya variedad). Se descartan parejas casi empatadas (diferencia menor del 15 % en superficie/población, 40 m en altitud o 0,06° de latitud). Población y altitud salen más a menudo cuando existen.
+- **Navarra Street**: el token se lee de `config.js` (import dinámico) y, si no existe, del `localStorage` del navegador. Sin `config.js` el navegador muestra un 404 en la consola: es esperado y no afecta. La respuesta correcta es la posición de la primera foto de la ronda, aunque el jugador se mueva. Se desactivan la atribución interna del visor y la brújula (revelaban el enlace a la foto y la orientación) y se muestra una atribución propia con el autor de la foto que se está viendo.
 - **Rama**: se trabaja en `claude/keen-turing-puhwzl` y se sube también a `main`, como se pidió.
 
 ## Estado
@@ -53,7 +54,13 @@ Documento de trabajo para retomar el proyecto en cualquier sesión. Las decision
   1. Población: en <https://www.ine.es> → «Cifras oficiales de población de los municipios españoles: Revisión del Padrón Municipal» → Navarra → «Población por municipios y sexo». Marca solo «Total», el último año, y descarga en **CSV separado por «;»**.
   2. Altitud: en <https://centrodedescargas.cnig.es> → «Nomenclátor Geográfico de Municipios y Entidades de Población» → descarga el CSV de municipios (columnas `COD_INE` y `ALTITUD`).
   3. Ejecuta `python3 tools/datos_municipios.py --poblacion RUTA_INE.csv --anio 2025 --altitud RUTA_MUNICIPIOS.csv`. Rellena `data/municipios_datos.json` y el juego empieza a usar esas categorías solo (con su fuente).
-- [ ] Navarra Street: medir antes la cobertura de Mapillary; visor MapillaryJS.
+- [x] Fase 7 · Navarra Street: visor MapillaryJS 4.1.2 (con movimiento por la secuencia), mapa MapLibre para responder, 5 rondas con la puntuación de «Desde el aire», autor de cada foto siempre visible (el enlace a la foto en Mapillary solo aparece tras responder, para no destripar el sitio). Sin token, la página explica cómo configurarlo y permite pegarlo (se guarda solo en ese navegador).
+- [ ] **Generar `data/street.json` con tu token.** Ahora tiene 5 plazas de ejemplo (marcadas con `"ejemplo": true`) sin id de foto: el juego busca en vivo la foto más cercana. Para la lista real:
+  1. Copia `config.example.js` como `config.js` y pon tu Client Token (o usa la variable `MAPILLARY_TOKEN`).
+  2. `python3 tools/cobertura_mapillary.py` (opciones: `--por-municipio 2`, `--desde 2015`, `--solo-pano`).
+  3. Revisa `tools/cobertura_mapillary.txt`: dice cuántos municipios tienen fotos. Si la cobertura es baja, mejor `--por-municipio 3` en los que sí tienen.
+- [ ] **Token en GitHub Pages**: como `config.js` no se sube, en la web publicada el modo pedirá el token. Para que funcione para todos sin subirlo, usa la plantilla `tools/pages-con-token.yml` (crea `config.js` desde un secreto del repositorio al publicar; instrucciones dentro). Recuerda que un token de cliente siempre es visible en el navegador: usa uno solo de lectura.
+- [ ] Probar el visor real de Mapillary: en este entorno no había acceso a Mapillary, así que la partida se probó con la API y el visor simulados.
 - [ ] Salas con amigos (PeerJS).
 - [ ] Páginas legales: privacidad, cookies, aviso legal, créditos de datos.
 - [ ] Dominio propio (cuando haya juego que enseñar).

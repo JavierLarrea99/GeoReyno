@@ -1,0 +1,11 @@
+{
+  "ejemplo": true,
+  "nota": "DATOS DE EJEMPLO: 5 plazas conocidas, sin id de foto. Con token, el juego busca la foto de Mapillary más cercana a cada punto. Genera la lista real con tools/cobertura_mapillary.py (ver PLAN.md).",
+  "ubicaciones": [
+    { "lon": -1.6422, "lat": 42.8173, "ine": "31201", "municipio": "Pamplona / Iruña", "lugar": "Plaza del Castillo" },
+    { "lon": -1.6056, "lat": 42.0617, "ine": "31232", "municipio": "Tudela", "lugar": "Plaza de los Fueros" },
+    { "lon": -1.6497, "lat": 42.4820, "ine": "31191", "municipio": "Olite / Erriberri", "lugar": "Palacio Real" },
+    { "lon": -2.0283, "lat": 42.6712, "ine": "31097", "municipio": "Estella-Lizarra", "lugar": "Plaza de los Fueros" },
+    { "lon": -1.5160, "lat": 43.1440, "ine": "31050", "municipio": "Baztan", "lugar": "Elizondo" }
+  ]
+}

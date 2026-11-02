@@ -1,0 +1,46 @@
+# Plantilla OPCIONAL de GitHub Actions para publicar GeoReyno en GitHub Pages
+# con el token de Mapillary sin subirlo al repositorio.
+#
+# Cómo usarla:
+#   1. En GitHub: Settings → Secrets and variables → Actions → New repository secret
+#      Nombre: MAPILLARY_TOKEN   Valor: tu Client Token (MLY|...)
+#   2. Settings → Pages → Source: «GitHub Actions».
+#   3. Copia este archivo a .github/workflows/pages.yml y súbelo.
+# Cada push a main publicará la web y creará config.js en el servidor a partir del secreto.
+# Ojo: un token de cliente siempre acaba siendo visible en el navegador del jugador;
+# Mapillary los da precisamente para eso (solo lectura). No uses un token con permisos de escritura.
+
+name: Publicar en GitHub Pages
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Crear config.js desde el secreto
+        env:
+          MAPILLARY_TOKEN: ${{ secrets.MAPILLARY_TOKEN }}
+        run: |
+          printf 'export const MAPILLARY_TOKEN = "%s";\n' "$MAPILLARY_TOKEN" > config.js
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+      - id: deployment
+        uses: actions/deploy-pages@v4

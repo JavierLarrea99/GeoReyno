@@ -155,7 +155,7 @@ export const MODES = [
     desc: "¿De qué municipio es este escudo? Cinco escudos, cuatro opciones." },
   { id: "mas", ready: true, name: "¿Cuál tiene más?", short: "¿Cuál tiene más?", href: "mas.html",
     desc: "Dos municipios: elige el que tiene más superficie, altitud o habitantes." },
-  { id: "street", ready: false, name: "Navarra Street", short: "Street", href: "street.html",
+  { id: "street", ready: true, name: "Navarra Street", short: "Street", href: "street.html",
     desc: "Muévete por las calles con fotos de Mapillary y marca dónde estás." },
 ];
 
