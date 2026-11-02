@@ -25,6 +25,7 @@ Documento de trabajo para retomar el proyecto en cualquier sesión. Las decision
 - **Quiz**: las preguntas nuevas usan el tema «Euskera»; la única antigua con tema «Lengua» se deja igual para no tocar lo publicado. Se descartaron preguntas con datos discutidos (etimología de Tudela, altitud exacta de la Mesa de los Tres Reyes, embalse más grande…).
 - **Desde el aire**: los 5 puntos del día se eligen con la semilla: un municipio al azar y un punto a menos de 900 m de su centroide, comprobando que cae dentro del municipio. Así casi siempre se ve el pueblo o sus alrededores (un punto totalmente al azar suele caer en un campo o un bosque imposible de reconocer). WMS 1.1.1 con EPSG:4326 (orden lon,lat), que es lo que más servidores admiten. Las fuentes están en `data/ortofotos.json` para poder cambiarlas sin tocar código; si una falla se prueba la siguiente.
 - **Escudos**: las imágenes se enlazan desde Commons (no se copian al repositorio). Sin URL guardada se usa `Special:FilePath`, que redirige al archivo. Antes de empezar se comprueba que cada imagen carga; si alguna falla se coge la siguiente.
+- **¿Cuál tiene más?**: no se inventan cifras. Sin población ni altitud oficiales, se usan la superficie y la latitud calculadas de la geometría del IGN («¿cuál está más al norte?» se añadió para que haya variedad). Se descartan parejas casi empatadas (diferencia menor del 15 % en superficie/población, 40 m en altitud o 0,06° de latitud). Población y altitud salen más a menudo cuando existen.
 - **Rama**: se trabaja en `claude/keen-turing-puhwzl` y se sube también a `main`, como se pidió.
 
 ## Estado
@@ -47,6 +48,11 @@ Documento de trabajo para retomar el proyecto en cualquier sesión. Las decision
   - Pon esos nombres en `data/ortofotos.json` (campo `capa`). Ahora mismo están `ortofoto_maxima_actualidad` y `ortofoto_1956_1957`, que son una suposición.
   - Si IDENA falla, el juego usa automáticamente el PNOA del IGN (`OI.OrthoimageCoverage`, verificado como capa estándar INSPIRE) y, para la antigua, el vuelo americano del IGN (`AMS_1956-1957` en `https://www.ign.es/wms/pnoa-historico`, también por verificar).
 - [ ] Teselas de OpenStreetMap: la política de uso de tile.openstreetmap.org no permite tráfico alto. Si el juego crece, pasar a un proveedor con plan gratuito (MapTiler, Stadia) o a teselas propias (Protomaps/PMTiles en GitHub Pages).
+- [x] Fase 6 · ¿Cuál tiene más?: 10 parejas al día con silueta de cada municipio; categorías «más superficie» y «más al norte» (calculadas de la geometría del IGN) y, en cuanto haya datos, «más habitantes» y «más altitud». Cada respuesta muestra los dos valores y la fuente.
+- [ ] **Población y altitud para «¿Cuál tiene más?»** (INE, datos.gob.es y Wikidata no eran accesibles desde aquí):
+  1. Población: en <https://www.ine.es> → «Cifras oficiales de población de los municipios españoles: Revisión del Padrón Municipal» → Navarra → «Población por municipios y sexo». Marca solo «Total», el último año, y descarga en **CSV separado por «;»**.
+  2. Altitud: en <https://centrodedescargas.cnig.es> → «Nomenclátor Geográfico de Municipios y Entidades de Población» → descarga el CSV de municipios (columnas `COD_INE` y `ALTITUD`).
+  3. Ejecuta `python3 tools/datos_municipios.py --poblacion RUTA_INE.csv --anio 2025 --altitud RUTA_MUNICIPIOS.csv`. Rellena `data/municipios_datos.json` y el juego empieza a usar esas categorías solo (con su fuente).
 - [ ] Navarra Street: medir antes la cobertura de Mapillary; visor MapillaryJS.
 - [ ] Salas con amigos (PeerJS).
 - [ ] Páginas legales: privacidad, cookies, aviso legal, créditos de datos.

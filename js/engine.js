@@ -153,7 +153,7 @@ export const MODES = [
     desc: "La misma idea con la ortofoto de 1956-1957." },
   { id: "escudos", ready: true, name: "Escudos", short: "Escudos", href: "escudos.html",
     desc: "¿De qué municipio es este escudo? Cinco escudos, cuatro opciones." },
-  { id: "mas", ready: false, name: "¿Cuál tiene más?", short: "¿Cuál tiene más?", href: "mas.html",
+  { id: "mas", ready: true, name: "¿Cuál tiene más?", short: "¿Cuál tiene más?", href: "mas.html",
     desc: "Dos municipios: elige el que tiene más superficie, altitud o habitantes." },
   { id: "street", ready: false, name: "Navarra Street", short: "Street", href: "street.html",
     desc: "Muévete por las calles con fotos de Mapillary y marca dónde estás." },

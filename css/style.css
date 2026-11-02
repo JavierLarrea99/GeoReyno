@@ -684,3 +684,34 @@ img, svg, canvas, video { max-width: 100%; }
 .shield-grid figure { margin: 0; padding: 10px; background: var(--bg); border-radius: 10px; text-align: center; }
 .shield-grid img { height: 110px; width: auto; max-width: 100%; object-fit: contain; background: #fff; border-radius: 8px; padding: 6px; }
 .shield-grid figcaption { font-size: 0.85rem; margin-top: 6px; }
+
+/* ===== ¿Cuál tiene más? ===== */
+.versus { display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px; align-items: stretch; }
+.vs-or { align-self: center; color: var(--muted); font-family: var(--serif); font-style: italic; }
+.vs-card {
+  font: inherit;
+  color: var(--ink);
+  background: var(--bg);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 12px 8px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  transition: border-color 0.1s ease;
+}
+.vs-card:hover:not(:disabled) { border-color: var(--ink); }
+.vs-card:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+.vs-card:disabled { cursor: default; }
+.vs-card.right { border-color: var(--good); background: var(--good-soft); }
+.vs-card.wrong { border-color: var(--bad); background: var(--bad-soft); }
+.mini-shape { width: 72px; height: 72px; }
+.mini-shape path { fill: var(--muted); }
+.vs-card.right .mini-shape path { fill: var(--good); }
+.vs-name { font-weight: 600; text-align: center; overflow-wrap: anywhere; line-height: 1.25; }
+.vs-value { font-variant-numeric: tabular-nums; font-size: 0.95rem; min-height: 1.4em; }
+.explain .source { display: block; margin-top: 6px; font-size: 0.8rem; color: var(--muted); }
+.progress { gap: 4px; }

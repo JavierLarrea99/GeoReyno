@@ -1,0 +1,8 @@
+{
+  "nota": "Población y altitud de cada municipio, por código INE. Vacío hasta ejecutar tools/datos_municipios.py con los archivos oficiales (ver PLAN.md). El juego usa solo los datos que haya aquí.",
+  "fuentes": {
+    "poblacion": null,
+    "altitud": null
+  },
+  "datos": {}
+}
