@@ -61,7 +61,13 @@ const municipios = feature(simple, simple.objects.municipios).features.map((f) =
   };
 }).sort((a, b) => a.nombre.localeCompare(b.nombre, "es"));
 
-const contorno = clean(merge(simple, simple.objects.municipios.geometries));
+// Contorno de Navarra: unión de todos los municipios, sin huecos interiores (Bardenas,
+// Aralar, Urbasa… son terrenos comunales que no pertenecen a ningún municipio).
+const merged = merge(simple, simple.objects.municipios.geometries);
+const contorno = clean({
+  type: "MultiPolygon",
+  coordinates: (merged.type === "Polygon" ? [merged.coordinates] : merged.coordinates).map((poly) => [poly[0]]),
+});
 const bbox = d3.geoBounds({ type: "Feature", geometry: contorno, properties: {} });
 
 const data = {

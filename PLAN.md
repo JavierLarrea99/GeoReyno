@@ -23,6 +23,7 @@ Documento de trabajo para retomar el proyecto en cualquier sesión. Las decision
 - **Pueblo misterioso**: el municipio del día sale de una permutación fija de los 272 (`dailyFromCycle`), así no se repite hasta pasados 272 días. El porcentaje de cercanía es `100 × (1 − d / dmáx)`, con dmáx la mayor distancia entre centroides de Navarra (~190 km). Se aceptan los nombres en castellano y en euskera por separado. Los intentos a medias se guardan para no perderlos al recargar. El mapa final es un SVG propio (sin teselas) para que cargue rápido.
 - **Superficie** de cada municipio: calculada con la geometría del IGN antes de simplificar (aproximada; p. ej. Pamplona da 28,6 km² frente a los ~25 km² oficiales).
 - **Quiz**: las preguntas nuevas usan el tema «Euskera»; la única antigua con tema «Lengua» se deja igual para no tocar lo publicado. Se descartaron preguntas con datos discutidos (etimología de Tudela, altitud exacta de la Mesa de los Tres Reyes, embalse más grande…).
+- **Desde el aire**: los 5 puntos del día se eligen con la semilla: un municipio al azar y un punto a menos de 900 m de su centroide, comprobando que cae dentro del municipio. Así casi siempre se ve el pueblo o sus alrededores (un punto totalmente al azar suele caer en un campo o un bosque imposible de reconocer). WMS 1.1.1 con EPSG:4326 (orden lon,lat), que es lo que más servidores admiten. Las fuentes están en `data/ortofotos.json` para poder cambiarlas sin tocar código; si una falla se prueba la siguiente.
 - **Rama**: se trabaja en `claude/keen-turing-puhwzl` y se sube también a `main`, como se pidió.
 
 ## Estado
@@ -35,7 +36,12 @@ Documento de trabajo para retomar el proyecto en cualquier sesión. Las decision
 - [x] Fase 2 · Pueblo misterioso: `data/municipios.json` (272 municipios, 80 KB) generado con `tools/build_municipios.mjs` desde es-atlas 0.6.0; silueta, autocompletado sin tildes, 6 intentos con km, flecha y %, mapa final y compartir con cuadritos.
 - [ ] Mejorar las siluetas: es-atlas es de baja resolución (algunos municipios tienen 10-15 vértices). Para siluetas más finas, descargar los límites municipales de IDENA (Gobierno de Navarra, CC BY 4.0) o las «Líneas límite municipales» del CNIG, y adaptar `tools/build_municipios.mjs` para leerlos.
 - [ ] Escudos: imágenes con licencia que permita reutilizarlas; anotar la licencia de cada una.
-- [ ] Desde el aire: ortofotos de IDENA por WMS, pedidas desde el navegador.
+- [x] Fase 4 · Desde el aire: 5 rondas con recorte de ortofoto pedido por WMS desde el navegador (1,2 km de lado, se puede alejar a 2,4 y 4,8 km), mapa MapLibre con teselas de OSM y contorno de Navarra, 5000 · e^(−d/30 km) por ronda, partida a medias guardada. Variante con la foto de 1956-1957 (`aire.html?antigua`), que cuenta como modo aparte en estadísticas.
+- [ ] **Verificar las capas WMS** (desde aquí no había acceso a IDENA). Abre en el navegador:
+  - <https://idena.navarra.es/ogc/wms?SERVICE=WMS&REQUEST=GetCapabilities> y busca el `<Name>` de la ortofoto más reciente y de la de 1956-1957 (y, si quieres, la de 1929-1931).
+  - Pon esos nombres en `data/ortofotos.json` (campo `capa`). Ahora mismo están `ortofoto_maxima_actualidad` y `ortofoto_1956_1957`, que son una suposición.
+  - Si IDENA falla, el juego usa automáticamente el PNOA del IGN (`OI.OrthoimageCoverage`, verificado como capa estándar INSPIRE) y, para la antigua, el vuelo americano del IGN (`AMS_1956-1957` en `https://www.ign.es/wms/pnoa-historico`, también por verificar).
+- [ ] Teselas de OpenStreetMap: la política de uso de tile.openstreetmap.org no permite tráfico alto. Si el juego crece, pasar a un proveedor con plan gratuito (MapTiler, Stadia) o a teselas propias (Protomaps/PMTiles en GitHub Pages).
 - [ ] Navarra Street: medir antes la cobertura de Mapillary; visor MapillaryJS.
 - [ ] Salas con amigos (PeerJS).
 - [ ] Páginas legales: privacidad, cookies, aviso legal, créditos de datos.

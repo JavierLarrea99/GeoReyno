@@ -60,6 +60,7 @@
 }
 
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 
 html, body { margin: 0; }
 
@@ -588,3 +589,79 @@ img, svg, canvas, video { max-width: 100%; }
 .guess-num { font-size: 11px; font-weight: 700; fill: var(--ink); }
 .map-credit { font-size: 0.75rem; color: var(--muted); margin: 6px 0 14px; }
 .pueblo.result .guesses { margin-bottom: 8px; }
+
+/* ===== Modos con mapa (Desde el aire, Navarra Street) ===== */
+.wrap.wide.game .game-head, .wrap.wide.game .progress, .wrap.wide.game .variants { max-width: 100%; }
+.wrap.wide.game > #stage > .card.result { max-width: 688px; margin: 0 auto; }
+.progress i.mid { background: var(--gold); }
+.variants { display: flex; gap: 6px; margin: -6px 0 14px; }
+.variants a {
+  font-size: 0.88rem;
+  text-decoration: none;
+  padding: 5px 12px;
+  border-radius: 999px;
+  border: 1.5px solid var(--line);
+  color: var(--muted);
+}
+.variants a.on { border-color: var(--red); color: var(--red); font-weight: 600; background: var(--red-soft); }
+.in-room .variants { display: none; }
+
+.geo-layout { display: grid; gap: 12px; }
+@media (min-width: 900px) {
+  .geo-layout { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; }
+}
+.photo-card, .map-card { padding: 14px; }
+.photo {
+  position: relative;
+  aspect-ratio: 1;
+  background: var(--bg);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.photo.loading::after {
+  content: "Cargando ortofoto…";
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+  font-size: 0.9rem;
+  background: color-mix(in srgb, var(--bg) 70%, transparent);
+}
+.photo-error { display: none; position: absolute; inset: 0; margin: 0; padding: 24px; place-items: center; text-align: center; color: var(--muted); }
+.photo.failed .photo-error { display: grid; }
+.photo.failed img { visibility: hidden; }
+.photo-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 10px; }
+.btn.small { padding: 7px 12px; font-size: 0.88rem; }
+.btn:disabled { opacity: 0.45; cursor: default; filter: none; }
+.photo-scale { margin-left: auto; font-size: 0.82rem; color: var(--muted); }
+.credit { font-size: 0.75rem; color: var(--muted); margin: 8px 0 0; }
+.credit a { color: inherit; }
+.answer-map {
+  height: 340px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--bg);
+  position: relative;
+}
+@media (min-width: 900px) { .answer-map { height: 470px; } }
+.map-loading { display: grid; place-items: center; height: 100%; margin: 0; color: var(--muted); }
+.round-info { margin-top: 10px; font-size: 0.95rem; min-height: 1.5em; }
+.map-card .actions { margin-top: 10px; }
+.map-card .btn { width: 100%; justify-content: center; }
+.pin {
+  width: 22px;
+  height: 30px;
+  background: var(--gold);
+  border: 2px solid #fff;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+}
+.pin-guess { background: #c9971c; }
+.pin-answer { background: #2f7d4a; }
+.maplibregl-ctrl-attrib { font-size: 11px; }
+.round-list { list-style: none; padding: 0; margin: 0 0 6px; display: grid; gap: 4px; text-align: left; }
+.round-list li { display: grid; grid-template-columns: 1fr auto auto; gap: 12px; padding: 7px 12px; background: var(--bg); border-radius: 8px; font-size: 0.92rem; }
+.pin-wrap { width: 22px; height: 34px; display: flex; justify-content: center; }

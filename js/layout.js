@@ -42,7 +42,7 @@ function renderHeader(el) {
       <nav class="site-nav" id="site-nav" aria-label="Juegos y páginas">
         <div class="nav-group">
           <span class="nav-title">Juegos</span>
-          ${MODES.map(link).join("")}
+          ${MODES.filter((m) => !m.sub).map(link).join("")}
         </div>
         <div class="nav-group">
           <span class="nav-title">Más</span>

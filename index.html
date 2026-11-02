@@ -27,7 +27,7 @@
   <script type="module">
     import { MODES, EXTRA_PAGES, getTodayResult, resultLabel, esc } from "./js/engine.js";
     const friends = EXTRA_PAGES.find((p) => p.id === "amigos");
-    const cards = MODES.map((m) => {
+    const cards = MODES.filter((m) => !m.sub).map((m) => {
       if (m.ready === false) {
         return `<div class="mode disabled" aria-disabled="true">
           <span class="tag soon">Próximamente</span>

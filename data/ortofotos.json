@@ -1,0 +1,33 @@
+{
+  "nota": "Fuentes WMS para «Desde el aire». Se prueban en orden: si la primera falla, se usa la siguiente. Comprueba los nombres de capa con GetCapabilities (ver PLAN.md).",
+  "actual": [
+    {
+      "nombre": "IDENA · Ortofoto de máxima actualidad",
+      "url": "https://idena.navarra.es/ogc/wms",
+      "capa": "ortofoto_maxima_actualidad",
+      "atribucion": "Ortofoto: © Gobierno de Navarra · IDENA (CC BY 4.0)"
+    },
+    {
+      "nombre": "IGN · PNOA máxima actualidad",
+      "url": "https://www.ign.es/wms-inspire/pnoa-ma",
+      "capa": "OI.OrthoimageCoverage",
+      "atribucion": "Ortofoto PNOA: © Instituto Geográfico Nacional (CC BY 4.0)"
+    }
+  ],
+  "antigua": [
+    {
+      "nombre": "IDENA · Ortofoto 1956-1957",
+      "url": "https://idena.navarra.es/ogc/wms",
+      "capa": "ortofoto_1956_1957",
+      "anio": "1956-1957",
+      "atribucion": "Ortofoto 1956-1957: © Gobierno de Navarra · IDENA (CC BY 4.0)"
+    },
+    {
+      "nombre": "IGN · Vuelo americano serie B (1956-1957)",
+      "url": "https://www.ign.es/wms/pnoa-historico",
+      "capa": "AMS_1956-1957",
+      "anio": "1956-1957",
+      "atribucion": "Vuelo americano 1956-1957: © Instituto Geográfico Nacional (CC BY 4.0)"
+    }
+  ]
+}
