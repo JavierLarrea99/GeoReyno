@@ -145,7 +145,7 @@ export function timeToNextDay(now = new Date()) {
 export const MODES = [
   { id: "quiz", ready: true, name: "Quiz del día", short: "Quiz", href: "quiz.html",
     desc: "Cinco preguntas sobre historia, geografía y tradiciones de Navarra." },
-  { id: "pueblo", ready: false, name: "Pueblo misterioso", short: "Pueblo", href: "pueblo.html",
+  { id: "pueblo", ready: true, name: "Pueblo misterioso", short: "Pueblo", href: "pueblo.html",
     desc: "Adivina el municipio por su silueta, con pistas de distancia y dirección." },
   { id: "aire", ready: false, name: "Desde el aire", short: "Aire", href: "aire.html",
     desc: "Cinco ortofotos: marca en el mapa dónde se tomaron." },
@@ -315,4 +315,12 @@ export function reportRound(mode, round, points, max, extra = {}) {
 export function reportFinal(mode, result) {
   if (!inRoomFrame()) return;
   window.parent.postMessage({ georeyno: "final", mode, result }, location.origin);
+}
+
+// Elemento del día recorriendo una permutación fija: no se repite hasta agotar la lista.
+// Útil para modos con un único elemento diario (pueblo misterioso).
+export function dailyFromCycle(items, mode, key = todayKey()) {
+  const order = shuffle(items, seededRandom(`${mode}:ciclo`));
+  const n = dayNumber(key) - 1;
+  return order[((n % order.length) + order.length) % order.length];
 }

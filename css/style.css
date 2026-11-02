@@ -512,3 +512,79 @@ img, svg, canvas, video { max-width: 100%; }
 .stat-mode .stats div { text-align: center; }
 .stat-mode h2 a { text-decoration: none; }
 .stat-mode h2 a:hover { color: var(--red); }
+
+/* ===== Pueblo misterioso ===== */
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.sil-wrap {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  background: var(--bg);
+  border-radius: 12px;
+  margin: 4px 0 16px;
+}
+.silhouette { width: min(100%, 300px); height: auto; aspect-ratio: 1; display: block; }
+.silhouette path { fill: var(--ink); }
+.north { position: absolute; top: 8px; right: 12px; font-size: 0.8rem; color: var(--muted); font-weight: 600; }
+.guess-form { display: flex; gap: 8px; }
+.guess-form .btn { flex: none; }
+.ac { position: relative; flex: 1; min-width: 0; }
+.ac input, .field {
+  width: 100%;
+  font: inherit;
+  color: var(--ink);
+  background: var(--bg);
+  border: 1.5px solid var(--line);
+  border-radius: 10px;
+  padding: 11px 14px;
+}
+.ac input:focus, .field:focus { outline: 3px solid var(--gold); outline-offset: 1px; border-color: var(--ink); }
+.ac-list {
+  position: absolute;
+  z-index: 20;
+  left: 0;
+  right: 0;
+  top: calc(100% + 4px);
+  margin: 0;
+  padding: 4px;
+  list-style: none;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.15);
+  max-height: 260px;
+  overflow-y: auto;
+}
+.ac-list:empty { display: none; }
+.ac-list li { padding: 9px 10px; border-radius: 7px; cursor: pointer; }
+.ac-list li.active, .ac-list li:hover { background: var(--gold-soft); }
+.hint { color: var(--muted); font-size: 0.88rem; margin: 8px 0 12px; }
+.guesses { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; }
+.guess {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto 2em 3.2em;
+  gap: 8px;
+  align-items: center;
+  padding: 9px 12px;
+  border-radius: 10px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  font-size: 0.93rem;
+  text-align: left;
+}
+.guess.ok { background: var(--good-soft); border-color: var(--good); font-weight: 600; }
+.g-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.g-km, .g-pct { font-variant-numeric: tabular-nums; white-space: nowrap; text-align: right; }
+.g-pct { font-weight: 600; }
+.g-dir { text-align: center; }
+.arrow { display: inline-block; font-weight: 700; color: var(--red); font-size: 1.15rem; line-height: 1; }
+.reveal-name { font-family: var(--serif); font-size: 1.5rem; margin: 6px 0 2px; }
+.reveal-meta { color: var(--muted); font-size: 0.88rem; margin: 0 0 12px; }
+.navmap { width: 100%; max-width: 380px; height: auto; display: block; margin: 0 auto; }
+.nm-all { fill: var(--bg); stroke: var(--line); stroke-width: 0.6; }
+.nm-border { fill: none; stroke: var(--muted); stroke-width: 1.2; }
+.nm-target { fill: var(--red); stroke: var(--red); stroke-width: 1; }
+.guess-dot { fill: var(--gold); stroke: var(--surface); stroke-width: 1.5; }
+.guess-num { font-size: 11px; font-weight: 700; fill: var(--ink); }
+.map-credit { font-size: 0.75rem; color: var(--muted); margin: 6px 0 14px; }
+.pueblo.result .guesses { margin-bottom: 8px; }
