@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Estadísticas · GeoReyno</title>
+  <meta name="description" content="Tus partidas, rachas e historial en cada juego de GeoReyno.">
+  <link rel="icon" href="img/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/theme.js"></script>
+</head>
+<body>
+  <header class="top" data-layout></header>
+
+  <main class="wrap game">
+    <div class="game-head">
+      <h1>Estadísticas</h1>
+      <span class="meta">Guardadas en este navegador</span>
+    </div>
+    <div class="card stat-mode" id="summary"></div>
+    <div id="list"></div>
+    <div class="actions">
+      <button class="btn ghost" id="clear">Borrar mis estadísticas</button>
+    </div>
+  </main>
+
+  <footer class="foot" data-layout></footer>
+
+  <script type="module" src="js/layout.js"></script>
+  <script type="module">
+    import { getAllStats, resultLabel, resultGrid, esc, clearAllStats, toast } from "./js/engine.js";
+
+    const fmtDate = (key) => {
+      const [y, m, d] = key.split("-").map(Number);
+      return new Date(y, m - 1, d).toLocaleDateString("es-ES", { day: "numeric", month: "short", year: "numeric" });
+    };
+
+    function render() {
+      const all = getAllStats().filter(({ mode }) => mode.ready !== false);
+      const played = all.reduce((n, { stats }) => n + stats.played, 0);
+      const bestStreak = Math.max(0, ...all.map(({ stats }) => stats.best));
+      const activeStreaks = all.filter(({ stats }) => stats.streak > 0).length;
+
+      document.getElementById("summary").innerHTML = `
+        <h2>Resumen</h2>
+        <div class="stats">
+          <div><b>${played}</b><span>Partidas</span></div>
+          <div><b>${activeStreaks}</b><span>Rachas activas</span></div>
+          <div><b>${bestStreak}</b><span>Mejor racha</span></div>
+          <div><b>${all.filter(({ stats }) => stats.played > 0).length}/${all.length}</b><span>Juegos probados</span></div>
+        </div>
+        <p class="empty">Las estadísticas se guardan solo en este dispositivo. Si borras los datos del navegador, se pierden.</p>`;
+
+      document.getElementById("list").innerHTML = all.map(({ mode, stats }) => {
+        const days = Object.keys(stats.history).sort().reverse();
+        const results = days.map((d) => stats.history[d]);
+        const pct = results.length
+          ? Math.round(100 * results.reduce((n, r) => n + (r.total ? r.score / r.total : 0), 0) / results.length)
+          : 0;
+        return `
+          <section class="card stat-mode">
+            <h2><a href="${esc(mode.href)}">${esc(mode.name)}</a></h2>
+            <div class="stats">
+              <div><b>${stats.played}</b><span>Jugados</span></div>
+              <div><b>${stats.streak}</b><span>Racha</span></div>
+              <div><b>${stats.best}</b><span>Mejor racha</span></div>
+              <div><b>${results.length ? pct + "%" : "–"}</b><span>Media</span></div>
+            </div>
+            ${days.length ? `
+              <ul class="history">
+                ${days.slice(0, 30).map((d) => {
+                  const r = stats.history[d];
+                  return `<li><span class="h-date">${esc(fmtDate(d))}</span>
+                    <span class="h-grid">${esc(resultGrid(r))}</span>
+                    <span class="h-score">${esc(resultLabel(r))}</span></li>`;
+                }).join("")}
+              </ul>
+              ${days.length > 30 ? `<p class="empty">Se muestran los 30 últimos días de ${days.length}.</p>` : ""}`
+            : `<p class="empty">Aún no has jugado. <a href="${esc(mode.href)}">Jugar ahora</a>.</p>`}
+          </section>`;
+      }).join("");
+    }
+
+    render();
+    document.getElementById("clear").addEventListener("click", () => {
+      if (!confirm("¿Seguro que quieres borrar todas tus estadísticas y rachas? No se puede deshacer.")) return;
+      clearAllStats();
+      render();
+      toast("Estadísticas borradas");
+    });
+  </script>
+</body>
+</html>

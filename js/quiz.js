@@ -2,36 +2,26 @@
 // Con ?practica en la URL se juega con preguntas al azar y no se guarda el resultado.
 
 import {
-  todayKey, dayNumber, pickDaily, shuffle, seededRandom,
-  getStats, getTodayResult, saveDailyResult, shareText, timeToNextDay,
+  dayNumber, pickDaily, shuffle, seededRandom, esc, toast, gameParams,
+  getTodayResult, saveDailyResult, shareText, timeToNextDay, statsBlock, startCountdown,
+  reportRound, reportFinal,
 } from "./engine.js";
 
 const MODE = "quiz";
 const ROUNDS = 5;
-const practice = new URLSearchParams(location.search).has("practica");
+const params = gameParams();
+// En una sala el reto lo fija la semilla de la sala y no cuenta para la racha.
+const room = Boolean(params.seed);
+const practice = params.practice || room;
 
 const $ = (id) => document.getElementById(id);
 const stage = $("stage");
 const progress = $("progress");
 
-// Escapa texto antes de meterlo en HTML (las preguntas vienen de un JSON, pero mejor prevenir).
-function esc(text) {
-  return String(text).replace(/[&<>"']/g, (c) => ({
-    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
-  })[c]);
-}
-
-function toast(message) {
-  const t = $("toast");
-  t.textContent = message;
-  t.classList.add("show");
-  setTimeout(() => t.classList.remove("show"), 2200);
-}
-
 // Prepara cada pregunta con sus opciones barajadas. En el reto diario el orden es fijo para todos.
 function prepare(questions, key) {
   return questions.map((q) => {
-    const rand = practice ? Math.random : seededRandom(`${MODE}:${key}:${q.id}`);
+    const rand = practice && !room ? Math.random : seededRandom(`${MODE}:${key}:${q.id}`);
     const order = shuffle(q.opciones.map((text, i) => ({ text, right: i === q.correcta })), rand);
     return { ...q, order };
   });
@@ -83,6 +73,7 @@ function playRound(rounds, index, answers, key) {
 
     answers.push(picked.right);
     drawProgress(answers, index + 1);
+    reportRound(MODE, index, picked.right ? 1 : 0, 1);
 
     const last = index === ROUNDS - 1;
     $("after").innerHTML = `
@@ -101,9 +92,11 @@ function playRound(rounds, index, answers, key) {
         score: answers.filter(Boolean).length,
         total: ROUNDS,
         answers,
+        grid: answers.map((ok) => (ok ? "🟩" : "🟥")).join(""),
         ids: rounds.map((r) => r.id),
       };
       if (!practice) saveDailyResult(MODE, result, key);
+      reportFinal(MODE, result);
       showResult(result, rounds, key);
     });
   }));
@@ -111,25 +104,20 @@ function playRound(rounds, index, answers, key) {
 
 function showResult(result, rounds, key) {
   drawProgress(result.answers, -1);
-  const stats = getStats(MODE);
   const grid = result.answers.map((ok) => (ok ? "🟩" : "🟥")).join("");
 
   stage.innerHTML = `
     <div class="card result">
-      <div class="topic">${practice ? "Práctica" : `Reto #${dayNumber(key)}`}</div>
+      <div class="topic">${room ? "Partida en sala" : practice ? "Práctica" : `Reto #${dayNumber(key)}`}</div>
       <div class="score">${result.score}/${result.total}</div>
       <p class="verdict">${verdict(result.score)}</p>
       <div class="grid" aria-label="${result.score} aciertos de ${result.total}">${grid}</div>
       <div class="actions">
         ${practice ? "" : `<button class="btn" id="share">Compartir resultado</button>`}
-        <a class="btn ghost" href="quiz.html?practica">${practice ? "Otra partida" : "Practicar más"}</a>
+        ${room ? "" : `<a class="btn ghost" href="quiz.html?practica">${practice ? "Otra partida" : "Practicar más"}</a>`}
       </div>
       ${practice ? "" : `
-      <div class="stats">
-        <div><b>${stats.played}</b><span>Jugados</span></div>
-        <div><b>${stats.streak}</b><span>Racha</span></div>
-        <div><b>${stats.best}</b><span>Mejor racha</span></div>
-      </div>
+      ${statsBlock(MODE)}
       <p class="next">Próximo reto en <b id="countdown">${timeToNextDay()}</b></p>`}
       <div class="review">
         <h3>Respuestas</h3>
@@ -150,22 +138,13 @@ function showResult(result, rounds, key) {
     });
   }
 
-  const countdown = $("countdown");
-  if (countdown) {
-    const timer = setInterval(() => {
-      countdown.textContent = timeToNextDay();
-      if (todayKey() !== key) {
-        clearInterval(timer);
-        location.reload();
-      }
-    }, 1000);
-  }
+  startCountdown($("countdown"), key);
 }
 
 async function start() {
-  const key = todayKey();
-  $("title").textContent = practice ? "Práctica" : "Quiz del día";
-  $("meta").textContent = practice ? "Preguntas al azar" : `Reto #${dayNumber(key)}`;
+  const key = room ? params.seed : params.key;
+  $("title").textContent = room ? "Quiz" : practice ? "Práctica" : "Quiz del día";
+  $("meta").textContent = room ? "Sala con amigos" : practice ? "Preguntas al azar" : `Reto #${dayNumber(key)}`;
 
   let bank;
   try {
@@ -186,7 +165,7 @@ async function start() {
     return showResult(done, rounds, key);
   }
 
-  const chosen = practice ? shuffle(bank).slice(0, ROUNDS) : pickDaily(bank, ROUNDS, MODE, key);
+  const chosen = practice && !room ? shuffle(bank).slice(0, ROUNDS) : pickDaily(bank, ROUNDS, MODE, key);
   playRound(prepare(chosen, key), 0, [], key);
 }
 

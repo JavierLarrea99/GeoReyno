@@ -15,11 +15,18 @@ Documento de trabajo para retomar el proyecto en cualquier sesión. Las decision
 - **Multijugador con amigos**: PeerJS (igual que en `adivina-el-juego`) como primera versión sin servidor.
 - **Recompensas**: solo virtuales (rachas, insignias, niveles). Nada de premios reales.
 - **Nombre**: no usar «GeoGuessr» ni parecidos (es marca registrada).
+- **Cabecera y pie comunes** se generan con `js/layout.js` en cada página (`<header data-layout>` y `<footer data-layout>`), para no repetir el menú en 15 archivos. El logo y el contenido siguen en el HTML.
+- **Menú**: en pantallas de menos de 1060 px se pliega en un botón «Menú». Los modos aún no hechos aparecen atenuados («Próximamente») gracias al campo `ready` de `MODES` en `js/engine.js`.
+- **Tema claro/oscuro**: por defecto el del sistema; el botón del menú alterna sistema → claro → oscuro y se guarda en `localStorage` (`georeyno:theme`). `js/theme.js` lo aplica en el `<head>` para que no parpadee.
+- **Esquema de resultado común** para todos los modos: `{ score, total, grid, label? , ...}`. `grid` son los cuadritos para compartir y el historial; `label` es el texto corto cuando no basta con `score/total` (p. ej. «3/6» intentos).
+- **Salas con amigos**: el juego se abre dentro de un iframe con `?sala=CÓDIGO&semilla=XXXX`. Con `semilla` el reto se elige con esa semilla en vez de la fecha y no cuenta para la racha. El juego avisa a la sala de cada ronda con `postMessage` (`reportRound` / `reportFinal` del motor).
+- **Rama**: se trabaja en `claude/keen-turing-puhwzl` y se sube también a `main`, como se pidió.
 
 ## Estado
 
 - [x] Motor común (`js/engine.js`): reto diario por semilla, rachas, compartir resultado.
 - [x] Quiz del día con 34 preguntas.
+- [x] Fase 1 · Base común: barra superior con todos los modos y menú plegable en el móvil, botón de tema, página de estadísticas (partidas, rachas, media e historial por modo, botón para borrar), página «Cómo se juega», pie con enlaces legales, registro de modos y esquema de resultado común en el motor.
 - [ ] Revisar todas las preguntas contra una fuente fiable. Se escribieron de memoria y pueden tener errores.
 - [ ] Ampliar el banco a 150 o más preguntas: con 34 se repiten en pocas semanas.
 - [ ] Pueblo misterioso: necesita el GeoJSON de municipios de IDENA (descargarlo y meterlo en `data/`).

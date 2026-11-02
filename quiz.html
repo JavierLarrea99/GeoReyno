@@ -7,17 +7,10 @@
   <meta name="description" content="Cinco preguntas diarias sobre Navarra. El mismo reto para todo el mundo.">
   <link rel="icon" href="img/icon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/style.css">
+  <script src="js/theme.js"></script>
 </head>
 <body>
-  <header class="top">
-    <div class="wrap">
-      <a class="brand" href="./">
-        <img class="chain" src="img/icon.svg" alt="">
-        <b>Geo<span>Reyno</span></b>
-      </a>
-      <a class="top-link" href="./">Todos los juegos</a>
-    </div>
-  </header>
+  <header class="top" data-layout></header>
 
   <main class="wrap game">
     <div class="game-head">
@@ -30,7 +23,11 @@
     </div>
   </main>
 
+  <footer class="foot" data-layout></footer>
+
   <div class="toast" id="toast" role="status"></div>
+
+  <script type="module" src="js/layout.js"></script>
 
   <script type="module" src="js/quiz.js"></script>
 </body>

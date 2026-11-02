@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cómo se juega · GeoReyno</title>
+  <meta name="description" content="Reglas de los juegos de GeoReyno: quiz, pueblo misterioso, desde el aire, escudos, ¿cuál tiene más?, Navarra Street y salas con amigos.">
+  <link rel="icon" href="img/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/theme.js"></script>
+</head>
+<body>
+  <header class="top" data-layout></header>
+
+  <main class="wrap prose">
+    <h1>Cómo se juega</h1>
+    <p class="lead">Cada juego tiene un reto nuevo a medianoche (hora de tu dispositivo), el mismo para todo el mundo. Si juegas todos los días, sumas racha. Al terminar puedes compartir tu resultado con cuadritos, sin destripar la respuesta.</p>
+
+    <div class="howto">
+      <section class="card" id="quiz">
+        <h2>Quiz del día</h2>
+        <p>Cinco preguntas tipo test sobre historia, geografía, tradiciones, gastronomía, naturaleza, personajes, euskera y topónimos de Navarra. Tras cada respuesta verás una breve explicación. Un punto por acierto.</p>
+      </section>
+
+      <section class="card" id="pueblo">
+        <h2>Pueblo misterioso</h2>
+        <p>Ves la silueta de un municipio navarro. Escribe su nombre (no importan las tildes ni las mayúsculas; vale en castellano o en euskera) y elige uno de la lista. Tienes 6 intentos.</p>
+        <p>Si fallas, te decimos a cuántos kilómetros está tu respuesta, en qué dirección está el municipio buscado (la flecha) y un porcentaje de cercanía: 100&nbsp;% es acertar, 0&nbsp;% es estar en la otra punta de Navarra. Al terminar se muestra el municipio en el mapa.</p>
+      </section>
+
+      <section class="card" id="aire">
+        <h2>Desde el aire</h2>
+        <p>Cinco rondas. En cada una ves un recorte de la ortofoto del Gobierno de Navarra. Busca en el mapa el sitio que crees que es, pon la chincheta y confirma. Puedes ampliar la foto.</p>
+        <p>Puntos por ronda: <b>5000 × e<sup>−d/30</sup></b>, donde <i>d</i> es la distancia en km. Clavarlo da 5000; a 30&nbsp;km, unos 1840; a 100&nbsp;km, unos 180. Máximo: 25&nbsp;000.</p>
+      </section>
+
+      <section class="card" id="escudos">
+        <h2>Escudos</h2>
+        <p>Cinco escudos municipales, cada uno con cuatro opciones. Un punto por acierto. Las imágenes vienen de Wikimedia Commons y debajo de cada una verás su autor y su licencia.</p>
+      </section>
+
+      <section class="card" id="mas">
+        <h2>¿Cuál tiene más?</h2>
+        <p>Diez parejas de municipios. En cada una se pregunta qué municipio tiene más superficie, más altitud o más habitantes, y eliges uno. Al responder verás los dos valores y su fuente.</p>
+      </section>
+
+      <section class="card" id="street">
+        <h2>Navarra Street</h2>
+        <p>Cinco rondas con fotos a pie de calle de Mapillary, hechas por voluntarios. Puedes moverte por la secuencia de fotos con las flechas. Cuando lo tengas, marca en el mapa dónde estás. Se puntúa igual que «Desde el aire». Cada foto muestra el nombre de su autor.</p>
+      </section>
+
+      <section class="card" id="amigos">
+        <h2>Jugar con amigos</h2>
+        <p>Una persona crea la sala, elige el juego y comparte el código de 6 letras. El resto entra con ese código. Todos jugáis el mismo reto a la vez y veréis la tabla de puntos ronda a ronda y al final. La conexión es directa entre navegadores (PeerJS); si alguien se desconecta, puede volver a entrar con el mismo código y nombre.</p>
+        <p>Las partidas en sala no cuentan para tu racha diaria.</p>
+      </section>
+
+      <section class="card" id="practica">
+        <h2>Práctica y estadísticas</h2>
+        <p>Cuando acabas el reto del día puedes seguir con partidas de práctica, que no cuentan. Tus partidas, rachas e historial están en <a href="estadisticas.html">Estadísticas</a>. Todo se guarda solo en tu navegador: no hay cuentas ni servidor.</p>
+      </section>
+    </div>
+  </main>
+
+  <footer class="foot" data-layout></footer>
+  <script type="module" src="js/layout.js"></script>
+</body>
+</html>
