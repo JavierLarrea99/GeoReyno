@@ -760,7 +760,7 @@ select.field { appearance: auto; }
 .lobby-controls { margin-top: 12px; }
 .room-play { display: grid; gap: 12px; }
 @media (min-width: 1000px) {
-  .room-play { grid-template-columns: 320px minmax(0, 1fr); align-items: start; }
+  .room-play { grid-template-columns: 360px minmax(0, 1fr); align-items: start; }
   .board-card { position: sticky; top: 76px; }
 }
 .board-card { padding: 14px; }

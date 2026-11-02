@@ -8,7 +8,7 @@ Documento de trabajo para retomar el proyecto en cualquier sesión. Las decision
 - **Solo fuentes con licencia abierta**, siempre con atribución:
   - Mapillary (CC BY-SA 4.0): visor con movimiento, cobertura limitada en Navarra.
   - Panoramax (licencia abierta según instancia).
-  - IDENA, Gobierno de Navarra (CC BY 4.0): límites municipales y ortofotos.
+  - IDENA, Gobierno de Navarra (CC BY 4.0): ortofotos. Límites municipales: IGN (CC BY 4.0) vía es-atlas.
   - Mapa base: OpenStreetMap («© OpenStreetMap contributors»).
 - **Lanzar primero lo que no depende de fotos de calle**: quiz, pueblos, escudos.
 - **Hosting**: GitHub Pages mientras no haga falta servidor. Cloudflare (Workers + D1) cuando lleguen cuentas, ranking y salas.
@@ -34,49 +34,47 @@ Documento de trabajo para retomar el proyecto en cualquier sesión. Las decision
 
 ## Estado
 
-- [x] Motor común (`js/engine.js`): reto diario por semilla, rachas, compartir resultado.
-- [x] Quiz del día con 34 preguntas.
-- [x] Fase 1 · Base común: barra superior con todos los modos y menú plegable en el móvil, botón de tema, página de estadísticas (partidas, rachas, media e historial por modo, botón para borrar), página «Cómo se juega», pie con enlaces legales, registro de modos y esquema de resultado común en el motor.
-- [x] Fase 3 · Quiz ampliado a 183 preguntas (historia, geografía, tradiciones, gastronomía, naturaleza, personajes, euskera, topónimos, patrimonio y Camino de Santiago). Los 34 ids anteriores no cambian.
-- [ ] ⚠️ **Revisar preguntas antes de publicar.** Están escritas de memoria, solo con datos que se consideraron seguros y descartando los dudosos, pero hay que contrastarlas con una fuente fiable (sobre todo cifras y fechas: superficie, población, años).
-- [x] Fase 2 · Pueblo misterioso: `data/municipios.json` (272 municipios, 80 KB) generado con `tools/build_municipios.mjs` desde es-atlas 0.6.0; silueta, autocompletado sin tildes, 6 intentos con km, flecha y %, mapa final y compartir con cuadritos.
-- [ ] Mejorar las siluetas: es-atlas es de baja resolución (algunos municipios tienen 10-15 vértices). Para siluetas más finas, descargar los límites municipales de IDENA (Gobierno de Navarra, CC BY 4.0) o las «Líneas límite municipales» del CNIG, y adaptar `tools/build_municipios.mjs` para leerlos.
-- [x] Fase 5 · Escudos: 5 rondas con 4 opciones (el municipio correcto y 3 al azar de los 272), crédito de cada imagen (archivo, autor, licencia, enlace a Commons), las imágenes que no cargan se saltan.
-- [ ] **Completar los escudos** (desde aquí no había acceso a Wikimedia Commons). Ahora `data/escudos.json` tiene **5 ejemplos** marcados con `"ejemplo": true` y la autoría sin verificar. Para generar la lista real:
-  1. En tu ordenador, desde la carpeta del proyecto: `python3 tools/escudos_commons.py` (solo usa la biblioteca estándar, no necesita claves).
-  2. El script recorre la categoría «Coats of arms of municipalities of Navarre», empareja cada archivo con su municipio, pide autor y licencia a la API de Commons, descarta lo que no tenga licencia libre y reescribe `data/escudos.json` (con `"ejemplo": false`).
-  3. Revisa `tools/escudos_faltan.txt` (municipios sin escudo) y, si quieres, añade a mano entradas con el mismo formato.
-- [x] Fase 4 · Desde el aire: 5 rondas con recorte de ortofoto pedido por WMS desde el navegador (1,2 km de lado, se puede alejar a 2,4 y 4,8 km), mapa MapLibre con teselas de OSM y contorno de Navarra, 5000 · e^(−d/30 km) por ronda, partida a medias guardada. Variante con la foto de 1956-1957 (`aire.html?antigua`), que cuenta como modo aparte en estadísticas.
-- [ ] **Verificar las capas WMS** (desde aquí no había acceso a IDENA). Abre en el navegador:
-  - <https://idena.navarra.es/ogc/wms?SERVICE=WMS&REQUEST=GetCapabilities> y busca el `<Name>` de la ortofoto más reciente y de la de 1956-1957 (y, si quieres, la de 1929-1931).
-  - Pon esos nombres en `data/ortofotos.json` (campo `capa`). Ahora mismo están `ortofoto_maxima_actualidad` y `ortofoto_1956_1957`, que son una suposición.
-  - Si IDENA falla, el juego usa automáticamente el PNOA del IGN (`OI.OrthoimageCoverage`, verificado como capa estándar INSPIRE) y, para la antigua, el vuelo americano del IGN (`AMS_1956-1957` en `https://www.ign.es/wms/pnoa-historico`, también por verificar).
-- [ ] Teselas de OpenStreetMap: la política de uso de tile.openstreetmap.org no permite tráfico alto. Si el juego crece, pasar a un proveedor con plan gratuito (MapTiler, Stadia) o a teselas propias (Protomaps/PMTiles en GitHub Pages).
-- [x] Fase 6 · ¿Cuál tiene más?: 10 parejas al día con silueta de cada municipio; categorías «más superficie» y «más al norte» (calculadas de la geometría del IGN) y, en cuanto haya datos, «más habitantes» y «más altitud». Cada respuesta muestra los dos valores y la fuente.
-- [ ] **Población y altitud para «¿Cuál tiene más?»** (INE, datos.gob.es y Wikidata no eran accesibles desde aquí):
-  1. Población: en <https://www.ine.es> → «Cifras oficiales de población de los municipios españoles: Revisión del Padrón Municipal» → Navarra → «Población por municipios y sexo». Marca solo «Total», el último año, y descarga en **CSV separado por «;»**.
-  2. Altitud: en <https://centrodedescargas.cnig.es> → «Nomenclátor Geográfico de Municipios y Entidades de Población» → descarga el CSV de municipios (columnas `COD_INE` y `ALTITUD`).
-  3. Ejecuta `python3 tools/datos_municipios.py --poblacion RUTA_INE.csv --anio 2025 --altitud RUTA_MUNICIPIOS.csv`. Rellena `data/municipios_datos.json` y el juego empieza a usar esas categorías solo (con su fuente).
-- [x] Fase 7 · Navarra Street: visor MapillaryJS 4.1.2 (con movimiento por la secuencia), mapa MapLibre para responder, 5 rondas con la puntuación de «Desde el aire», autor de cada foto siempre visible (el enlace a la foto en Mapillary solo aparece tras responder, para no destripar el sitio). Sin token, la página explica cómo configurarlo y permite pegarlo (se guarda solo en ese navegador).
-- [ ] **Generar `data/street.json` con tu token.** Ahora tiene 5 plazas de ejemplo (marcadas con `"ejemplo": true`) sin id de foto: el juego busca en vivo la foto más cercana. Para la lista real:
-  1. Copia `config.example.js` como `config.js` y pon tu Client Token (o usa la variable `MAPILLARY_TOKEN`).
-  2. `python3 tools/cobertura_mapillary.py` (opciones: `--por-municipio 2`, `--desde 2015`, `--solo-pano`).
-  3. Revisa `tools/cobertura_mapillary.txt`: dice cuántos municipios tienen fotos. Si la cobertura es baja, mejor `--por-municipio 3` en los que sí tienen.
-- [ ] **Token en GitHub Pages**: como `config.js` no se sube, en la web publicada el modo pedirá el token. Para que funcione para todos sin subirlo, usa la plantilla `tools/pages-con-token.yml` (crea `config.js` desde un secreto del repositorio al publicar; instrucciones dentro). Recuerda que un token de cliente siempre es visible en el navegador: usa uno solo de lectura.
-- [ ] Probar el visor real de Mapillary: en este entorno no había acceso a Mapillary, así que la partida se probó con la API y el visor simulados.
-- [x] Fase 8 · Jugar con amigos (`amigos.html`): el anfitrión crea una sala con código de 6 letras (sin I ni O) y elige el juego; los demás entran con el código o el enlace «Invitar». Todos juegan el mismo reto (misma semilla) dentro de un iframe; tabla de puntos por ronda en directo y podio final; «Otra partida» con otro juego. Reconexión básica: los invitados reintentan solos y, si recargan, pueden «Volver a entrar» con el mismo jugador; el anfitrión puede «Recuperar la sala» tras recargar (hasta 6 h). Máximo 12 jugadores.
-- [ ] Las salas usan el servidor público gratuito de PeerJS (0.peerjs.com) solo para presentarse; luego la conexión es directa. Si falla o se satura, montar un PeerServer propio (o pasar a Cloudflare Workers + Durable Objects, como estaba previsto). Algunas redes muy cerradas (NAT simétrico) pueden necesitar un servidor TURN.
-- [x] Fase 9 · Legal y publicación: privacidad, cookies, aviso legal y créditos de datos; aviso de independencia respecto al Gobierno de Navarra en el pie de todas las páginas, en el aviso legal y en créditos; `manifest.json` con iconos PNG (192, 512, maskable, apple-touch) y service worker básico (red primero, copia sin conexión); metadatos Open Graph/Twitter con `img/og.png` en todas las páginas.
-- [ ] **Rellenar tus datos** en `aviso-legal.html`, `privacidad.html`, `cookies.html` y `creditos.html`: busca los huecos marcados en amarillo entre corchetes (`[NOMBRE Y APELLIDOS…]`, `[NIF]`, `[DOMICILIO]`, `[CORREO DE CONTACTO]`, `[DOMINIO]`, `[CIUDAD]`, `[FECHA]`, licencia del código).
-- [ ] Si cambias de dominio, sustituye `https://javierlarrea99.github.io/GeoReyno/` en las etiquetas `og:url` y `og:image` de los HTML.
-- [ ] Dominio propio (cuando haya juego que enseñar).
-- [ ] Anuncios: solo con contenido y visitas, y con CMP certificada.
+Hecho (fases 1-10, todo probado con Playwright a 390×844 y 1280×900, en claro y oscuro, sin errores de consola salvo el 404 esperado de `config.js` cuando no existe):
+
+- [x] Motor común (`js/engine.js`): reto diario por semilla, rachas, compartir, registro de modos y esquema de resultado común.
+- [x] Fase 1 · Base común: menú con todos los modos (plegable en el móvil), botón de tema, estadísticas por modo con historial, «Cómo se juega», pie con enlaces legales.
+- [x] Fase 2 · Pueblo misterioso: `data/municipios.json` (272 municipios, 80 KB) con `tools/build_municipios.mjs` desde es-atlas 0.6.0; silueta, autocompletado sin tildes, 6 intentos con km, flecha y %, mapa final y compartir.
+- [x] Fase 3 · Quiz ampliado de 34 a 183 preguntas, sin cambiar los ids existentes.
+- [x] Fase 4 · Desde el aire: ortofoto por WMS, mapa MapLibre/OSM, 5000 · e^(−d/30 km), 5 rondas, variante 1956-1957.
+- [x] Fase 5 · Escudos: 4 opciones, crédito por imagen; 5 ejemplos + script para Commons.
+- [x] Fase 6 · ¿Cuál tiene más?: superficie y latitud del IGN; población y altitud listas para cargar.
+- [x] Fase 7 · Navarra Street: MapillaryJS + mapa, autor de cada foto, explicación si no hay token; script de cobertura.
+- [x] Fase 8 · Jugar con amigos: salas PeerJS con código de 6 letras, tabla por rondas, podio, reconexión básica (probado con un PeerServer local y dos navegadores, en quiz, pueblo y desde el aire).
+- [x] Fase 9 · Legal y publicación: privacidad, cookies, aviso legal, créditos, aviso de independencia, manifest + iconos + service worker, metadatos para redes.
+- [x] Fase 10 · Repaso final: todos los modos jugados de nuevo en móvil y ordenador; corregidos la tabla de la sala (total cortado) y la descripción de «¿Cuál tiene más?». README actualizado.
+
+## Pendientes para ti (por orden de prioridad)
+
+1. [ ] ⚠️ **Revisar preguntas antes de publicar.** Las 183 están escritas de memoria, solo con datos que se consideraron seguros y descartando los dudosos, pero hay que contrastarlas con una fuente fiable (sobre todo cifras y fechas). Se editan en `data/preguntas.json`; no cambies los `id`.
+2. [ ] **Rellenar tus datos** en `aviso-legal.html`, `privacidad.html`, `cookies.html` y `creditos.html`: huecos en amarillo entre corchetes (`[NOMBRE Y APELLIDOS…]`, `[NIF]`, `[DOMICILIO]`, `[CORREO DE CONTACTO]`, `[DOMINIO]`, `[CIUDAD]`, `[FECHA]`, licencia del código).
+3. [ ] **Verificar las capas WMS** de «Desde el aire» (desde aquí no había acceso a IDENA):
+   - Abre <https://idena.navarra.es/ogc/wms?SERVICE=WMS&REQUEST=GetCapabilities> y busca el `<Name>` de la ortofoto más reciente y de la de 1956-1957 (y, si quieres, la de 1929-1931 para otra variante).
+   - Ponlos en `data/ortofotos.json` (campo `capa`). Ahora hay `ortofoto_maxima_actualidad` y `ortofoto_1956_1957`, que son una suposición.
+   - Si IDENA falla, el juego usa solo el PNOA del IGN (`OI.OrthoimageCoverage` en `https://www.ign.es/wms-inspire/pnoa-ma`) y, para la antigua, `AMS_1956-1957` en `https://www.ign.es/wms/pnoa-historico` (este nombre también hay que comprobarlo). Si no existe ninguna ortofoto antigua, quita el enlace «Foto de 1956» de `aire.html`.
+4. [ ] **Completar los escudos** (desde aquí no había acceso a Wikimedia Commons). `data/escudos.json` tiene **5 ejemplos** marcados con `"ejemplo": true` y la autoría sin verificar. En tu ordenador, desde la carpeta del proyecto: `python3 tools/escudos_commons.py`. Reescribe `data/escudos.json` con archivo, autor y licencia reales y deja en `tools/escudos_faltan.txt` los municipios sin escudo.
+5. [ ] **Población y altitud** para «¿Cuál tiene más?» (INE, datos.gob.es y Wikidata no eran accesibles desde aquí):
+   - Población: <https://www.ine.es> → «Cifras oficiales de población de los municipios españoles: Revisión del Padrón Municipal» → Navarra → «Población por municipios y sexo». Solo «Total», último año, **CSV separado por «;»**.
+   - Altitud: <https://centrodedescargas.cnig.es> → «Nomenclátor Geográfico de Municipios y Entidades de Población» → CSV de municipios (columnas `COD_INE` y `ALTITUD`).
+   - `python3 tools/datos_municipios.py --poblacion RUTA_INE.csv --anio 2025 --altitud RUTA_MUNICIPIOS.csv` → rellena `data/municipios_datos.json`; el juego empieza a usar esas categorías solo.
+6. [ ] **Mapillary**: copia `config.example.js` como `config.js` con tu Client Token y ejecuta `python3 tools/cobertura_mapillary.py` para generar `data/street.json` (ahora hay 5 plazas de ejemplo sin id de foto) y el informe `tools/cobertura_mapillary.txt`. Prueba el visor real (aquí solo se pudo probar con el visor y la API simulados).
+7. [ ] **Token en la web publicada**: como `config.js` no se sube, en GitHub Pages el modo pedirá el token. Para que funcione para todos sin subirlo, usa `tools/pages-con-token.yml` (crea `config.js` desde un secreto al publicar). Un token de cliente siempre es visible en el navegador: usa uno solo de lectura.
+8. [ ] **Siluetas más finas**: es-atlas es de baja resolución (algunos municipios tienen 10-15 vértices). Para mejorarlas, descarga los límites municipales de IDENA o las «Líneas límite municipales» del CNIG y adapta `tools/build_municipios.mjs`.
+9. [ ] **Teselas de OpenStreetMap**: la política de tile.openstreetmap.org no permite tráfico alto. Si crece, pasar a MapTiler/Stadia (plan gratuito) o a teselas propias (Protomaps/PMTiles).
+10. [ ] **Salas**: usan el servidor público gratuito de PeerJS. Si falla o se satura, montar un PeerServer propio o pasar a Cloudflare Workers + Durable Objects. Redes muy cerradas pueden necesitar un servidor TURN.
+11. [ ] Si cambias de dominio, sustituye `https://javierlarrea99.github.io/GeoReyno/` en `og:url` y `og:image` de los HTML.
+12. [ ] Dominio propio (cuando haya juego que enseñar).
+13. [ ] Anuncios: solo con contenido y visitas, y con CMP certificada.
 
 ## Ideas guardadas
 
-- Antes y después: ortofoto antigua frente a la actual.
-- ¿Cuál tiene más? (habitantes, altitud).
-- Topónimos y su significado.
+- Antes y después: ortofoto antigua frente a la actual, con deslizador.
+- Topónimos y su significado (modo propio, no solo preguntas del quiz).
+- Pista opcional en «Pueblo misterioso» (merindad o comarca) a cambio de puntos.
 - Liga de pueblos: los jugadores suman puntos para su municipio.
 - Mapa de colección que se rellena con los pueblos acertados.
 - Insignia «Cartógrafo» para quien suba fotos de zonas sin cobertura.

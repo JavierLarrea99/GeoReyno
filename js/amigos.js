@@ -385,7 +385,7 @@ function scoreboard() {
           ${rows.map((p) => `<tr class="${p.pid === me.pid ? "me" : ""}">
             <td class="b-name"><span class="dot ${p.connected ? "on" : "off"}" title="${p.connected ? "Conectado" : "Desconectado"}"></span>${esc(p.name)}${p.host ? " ★" : ""}</td>
             ${Array.from({ length: n }, (_, i) => `<td>${p.rounds[i] != null ? formatNumber(p.rounds[i]) : "·"}</td>`).join("")}
-            <td class="b-total">${p.final ? esc(p.final.label) : formatNumber(total(p))}${p.final ? " ✓" : ""}</td>
+            <td class="b-total">${p.final && p.final.total <= 10 ? esc(p.final.label) : formatNumber(total(p))}${p.final ? " ✓" : ""}</td>
           </tr>`).join("")}
         </tbody>
       </table>
