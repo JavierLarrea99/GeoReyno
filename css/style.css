@@ -731,3 +731,59 @@ img, svg, canvas, video { max-width: 100%; }
 .prose-card a { color: var(--red); }
 .prose-card code { background: var(--bg); padding: 1px 5px; border-radius: 5px; font-size: 0.9em; overflow-wrap: anywhere; }
 .prose-card .guess-form { margin-top: 8px; }
+
+/* ===== Jugar con amigos ===== */
+.room #stage { display: grid; gap: 12px; max-width: 100%; }
+.room #stage > .card:not(.room-head), .room #stage > .room-choices, .room #stage > .hint, .room #stage > .note { width: 100%; max-width: 688px; margin-left: auto; margin-right: auto; }
+.room #stage > .room-head { width: 100%; }
+.field-label { display: block; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 6px; }
+select.field { appearance: auto; }
+.room-choices { display: grid; gap: 12px; }
+@media (min-width: 700px) { .room-choices { grid-template-columns: 1fr 1fr; } }
+.room-choices .question { font-size: 1.15rem; }
+.code-input { text-transform: uppercase; letter-spacing: 0.2em; font-weight: 700; font-variant-numeric: tabular-nums; }
+.resume { background: var(--gold-soft); }
+.resume p { margin: 0; }
+.room-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; padding: 14px 18px; }
+.room-head .actions { margin: 0; }
+.room-code { font-family: var(--serif); font-size: 2rem; font-weight: 700; letter-spacing: 0.15em; line-height: 1.1; }
+.conn-status { font-size: 0.82rem; color: var(--muted); }
+.conn-status.ok { color: var(--good); }
+.conn-status.warn { color: var(--gold); }
+.conn-status.bad { color: var(--bad); }
+.players { list-style: none; padding: 0; margin: 0 0 12px; display: grid; gap: 6px; }
+.players li { padding: 8px 12px; background: var(--bg); border-radius: 8px; display: flex; align-items: center; gap: 8px; }
+.players small { color: var(--muted); }
+.dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; flex: none; margin-right: 6px; }
+.dot.on { background: var(--good); }
+.dot.off { background: var(--line); }
+.lobby-controls { margin-top: 12px; }
+.room-play { display: grid; gap: 12px; }
+@media (min-width: 1000px) {
+  .room-play { grid-template-columns: 320px minmax(0, 1fr); align-items: start; }
+  .board-card { position: sticky; top: 76px; }
+}
+.board-card { padding: 14px; }
+.board-card .question { font-size: 1.1rem; margin-bottom: 8px; }
+.game-frame {
+  width: 100%;
+  height: calc(100dvh - 90px);
+  min-height: 640px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--bg);
+}
+.board { width: 100%; border-collapse: collapse; font-size: 0.85rem; font-variant-numeric: tabular-nums; }
+.board th, .board td { padding: 6px 5px; border-bottom: 1px solid var(--line); text-align: right; white-space: nowrap; }
+.board th:first-child, .board td:first-child { text-align: left; }
+.board th { color: var(--muted); font-weight: 600; font-size: 0.75rem; }
+.board tr.me td { background: var(--gold-soft); }
+.b-name { max-width: 9em; overflow: hidden; text-overflow: ellipsis; }
+.b-total { font-weight: 700; }
+.podium { list-style: none; padding: 0; margin: 10px 0 18px; display: grid; gap: 6px; text-align: left; }
+.podium li { display: grid; grid-template-columns: 2.2em 1fr auto; align-items: center; gap: 8px; padding: 10px 12px; background: var(--bg); border-radius: 10px; font-size: 1.05rem; }
+.podium li.me { background: var(--gold-soft); }
+.podium .pos { font-size: 1.3rem; }
+.p-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.result h3 { font-family: var(--serif); text-align: left; }
+.result .lobby-controls { text-align: left; }

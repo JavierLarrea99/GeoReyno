@@ -160,7 +160,7 @@ export const MODES = [
 ];
 
 export const EXTRA_PAGES = [
-  { id: "amigos", ready: false, name: "Jugar con amigos", short: "Amigos", href: "amigos.html" },
+  { id: "amigos", ready: true, name: "Jugar con amigos", short: "Amigos", href: "amigos.html" },
   { id: "estadisticas", name: "Estadísticas", short: "Estadísticas", href: "estadisticas.html" },
   { id: "ayuda", name: "Cómo se juega", short: "Cómo se juega", href: "como-se-juega.html" },
 ];

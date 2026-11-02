@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Jugar con amigos · GeoReyno</title>
+  <meta name="description" content="Crea una sala, comparte el código de 6 letras y jugad el mismo reto de GeoReyno a la vez.">
+  <link rel="icon" href="img/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/theme.js"></script>
+</head>
+<body>
+  <header class="top" data-layout></header>
+
+  <main class="wrap wide game room">
+    <div class="game-head">
+      <h1 id="title">Jugar con amigos</h1>
+      <span class="meta" id="meta">Salas con PeerJS</span>
+    </div>
+    <div id="stage" aria-live="polite">
+      <div class="card"><p>Cargando…</p></div>
+    </div>
+  </main>
+
+  <footer class="foot" data-layout></footer>
+
+  <div class="toast" id="toast" role="status"></div>
+
+  <script type="module" src="js/layout.js"></script>
+
+  <script type="module" src="js/amigos.js"></script>
+</body>
+</html>
