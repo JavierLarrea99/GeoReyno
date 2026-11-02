@@ -1,0 +1,47 @@
+{
+  "fuente": "Wikimedia Commons",
+  "ejemplo": true,
+  "nota": "DATOS DE EJEMPLO. Los nombres de archivo, autores y licencias están sin verificar. Genera la lista real con tools/escudos_commons.py (ver PLAN.md).",
+  "escudos": [
+    {
+      "ine": "31201",
+      "municipio": "Pamplona / Iruña",
+      "archivo": "Escudo de Pamplona.svg",
+      "autor": "Pendiente de verificar en Wikimedia Commons",
+      "licencia": "Pendiente de verificar",
+      "licencia_url": ""
+    },
+    {
+      "ine": "31232",
+      "municipio": "Tudela",
+      "archivo": "Escudo de Tudela.svg",
+      "autor": "Pendiente de verificar en Wikimedia Commons",
+      "licencia": "Pendiente de verificar",
+      "licencia_url": ""
+    },
+    {
+      "ine": "31097",
+      "municipio": "Estella-Lizarra",
+      "archivo": "Escudo de Estella.svg",
+      "autor": "Pendiente de verificar en Wikimedia Commons",
+      "licencia": "Pendiente de verificar",
+      "licencia_url": ""
+    },
+    {
+      "ine": "31227",
+      "municipio": "Tafalla",
+      "archivo": "Escudo de Tafalla.svg",
+      "autor": "Pendiente de verificar en Wikimedia Commons",
+      "licencia": "Pendiente de verificar",
+      "licencia_url": ""
+    },
+    {
+      "ine": "31216",
+      "municipio": "Sangüesa / Zangoza",
+      "archivo": "Escudo de Sangüesa.svg",
+      "autor": "Pendiente de verificar en Wikimedia Commons",
+      "licencia": "Pendiente de verificar",
+      "licencia_url": ""
+    }
+  ]
+}

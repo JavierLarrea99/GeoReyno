@@ -24,6 +24,7 @@ Documento de trabajo para retomar el proyecto en cualquier sesión. Las decision
 - **Superficie** de cada municipio: calculada con la geometría del IGN antes de simplificar (aproximada; p. ej. Pamplona da 28,6 km² frente a los ~25 km² oficiales).
 - **Quiz**: las preguntas nuevas usan el tema «Euskera»; la única antigua con tema «Lengua» se deja igual para no tocar lo publicado. Se descartaron preguntas con datos discutidos (etimología de Tudela, altitud exacta de la Mesa de los Tres Reyes, embalse más grande…).
 - **Desde el aire**: los 5 puntos del día se eligen con la semilla: un municipio al azar y un punto a menos de 900 m de su centroide, comprobando que cae dentro del municipio. Así casi siempre se ve el pueblo o sus alrededores (un punto totalmente al azar suele caer en un campo o un bosque imposible de reconocer). WMS 1.1.1 con EPSG:4326 (orden lon,lat), que es lo que más servidores admiten. Las fuentes están en `data/ortofotos.json` para poder cambiarlas sin tocar código; si una falla se prueba la siguiente.
+- **Escudos**: las imágenes se enlazan desde Commons (no se copian al repositorio). Sin URL guardada se usa `Special:FilePath`, que redirige al archivo. Antes de empezar se comprueba que cada imagen carga; si alguna falla se coge la siguiente.
 - **Rama**: se trabaja en `claude/keen-turing-puhwzl` y se sube también a `main`, como se pidió.
 
 ## Estado
@@ -35,7 +36,11 @@ Documento de trabajo para retomar el proyecto en cualquier sesión. Las decision
 - [ ] ⚠️ **Revisar preguntas antes de publicar.** Están escritas de memoria, solo con datos que se consideraron seguros y descartando los dudosos, pero hay que contrastarlas con una fuente fiable (sobre todo cifras y fechas: superficie, población, años).
 - [x] Fase 2 · Pueblo misterioso: `data/municipios.json` (272 municipios, 80 KB) generado con `tools/build_municipios.mjs` desde es-atlas 0.6.0; silueta, autocompletado sin tildes, 6 intentos con km, flecha y %, mapa final y compartir con cuadritos.
 - [ ] Mejorar las siluetas: es-atlas es de baja resolución (algunos municipios tienen 10-15 vértices). Para siluetas más finas, descargar los límites municipales de IDENA (Gobierno de Navarra, CC BY 4.0) o las «Líneas límite municipales» del CNIG, y adaptar `tools/build_municipios.mjs` para leerlos.
-- [ ] Escudos: imágenes con licencia que permita reutilizarlas; anotar la licencia de cada una.
+- [x] Fase 5 · Escudos: 5 rondas con 4 opciones (el municipio correcto y 3 al azar de los 272), crédito de cada imagen (archivo, autor, licencia, enlace a Commons), las imágenes que no cargan se saltan.
+- [ ] **Completar los escudos** (desde aquí no había acceso a Wikimedia Commons). Ahora `data/escudos.json` tiene **5 ejemplos** marcados con `"ejemplo": true` y la autoría sin verificar. Para generar la lista real:
+  1. En tu ordenador, desde la carpeta del proyecto: `python3 tools/escudos_commons.py` (solo usa la biblioteca estándar, no necesita claves).
+  2. El script recorre la categoría «Coats of arms of municipalities of Navarre», empareja cada archivo con su municipio, pide autor y licencia a la API de Commons, descarta lo que no tenga licencia libre y reescribe `data/escudos.json` (con `"ejemplo": false`).
+  3. Revisa `tools/escudos_faltan.txt` (municipios sin escudo) y, si quieres, añade a mano entradas con el mismo formato.
 - [x] Fase 4 · Desde el aire: 5 rondas con recorte de ortofoto pedido por WMS desde el navegador (1,2 km de lado, se puede alejar a 2,4 y 4,8 km), mapa MapLibre con teselas de OSM y contorno de Navarra, 5000 · e^(−d/30 km) por ronda, partida a medias guardada. Variante con la foto de 1956-1957 (`aire.html?antigua`), que cuenta como modo aparte en estadísticas.
 - [ ] **Verificar las capas WMS** (desde aquí no había acceso a IDENA). Abre en el navegador:
   - <https://idena.navarra.es/ogc/wms?SERVICE=WMS&REQUEST=GetCapabilities> y busca el `<Name>` de la ortofoto más reciente y de la de 1956-1957 (y, si quieres, la de 1929-1931).

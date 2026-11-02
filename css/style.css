@@ -665,3 +665,22 @@ img, svg, canvas, video { max-width: 100%; }
 .round-list { list-style: none; padding: 0; margin: 0 0 6px; display: grid; gap: 4px; text-align: left; }
 .round-list li { display: grid; grid-template-columns: 1fr auto auto; gap: 12px; padding: 7px 12px; background: var(--bg); border-radius: 8px; font-size: 0.92rem; }
 .pin-wrap { width: 22px; height: 34px; display: flex; justify-content: center; }
+
+/* ===== Escudos ===== */
+.shield { margin: 0 0 16px; text-align: center; }
+.shield img {
+  display: block;
+  margin: 0 auto;
+  width: auto;
+  height: 220px;
+  max-width: 100%;
+  object-fit: contain;
+  background: #fff;
+  border-radius: 12px;
+  padding: 10px;
+}
+.shield .credit, .shield-grid .credit { font-size: 0.72rem; color: var(--muted); overflow-wrap: anywhere; }
+.shield-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
+.shield-grid figure { margin: 0; padding: 10px; background: var(--bg); border-radius: 10px; text-align: center; }
+.shield-grid img { height: 110px; width: auto; max-width: 100%; object-fit: contain; background: #fff; border-radius: 8px; padding: 6px; }
+.shield-grid figcaption { font-size: 0.85rem; margin-top: 6px; }

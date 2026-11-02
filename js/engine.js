@@ -151,7 +151,7 @@ export const MODES = [
     desc: "Cinco ortofotos: marca en el mapa dónde se tomaron." },
   { id: "aire-antigua", ready: true, sub: true, name: "Desde el aire · foto antigua", short: "Aire antiguo", href: "aire.html?antigua",
     desc: "La misma idea con la ortofoto de 1956-1957." },
-  { id: "escudos", ready: false, name: "Escudos", short: "Escudos", href: "escudos.html",
+  { id: "escudos", ready: true, name: "Escudos", short: "Escudos", href: "escudos.html",
     desc: "¿De qué municipio es este escudo? Cinco escudos, cuatro opciones." },
   { id: "mas", ready: false, name: "¿Cuál tiene más?", short: "¿Cuál tiene más?", href: "mas.html",
     desc: "Dos municipios: elige el que tiene más superficie, altitud o habitantes." },
