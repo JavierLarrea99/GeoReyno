@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="GeoReyno">
+  <rect width="64" height="64" rx="14" fill="#b3122e"/>
+  <g fill="none" stroke="#e0b44a" stroke-width="4" stroke-linecap="round">
+    <rect x="14" y="14" width="36" height="36" rx="3"/>
+    <path d="M14 14 L50 50 M50 14 L14 50 M32 14 V50 M14 32 H50"/>
+  </g>
+  <circle cx="32" cy="32" r="6" fill="#2f7d4a" stroke="#e0b44a" stroke-width="3"/>
+</svg>

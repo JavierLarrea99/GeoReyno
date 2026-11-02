@@ -1,0 +1,274 @@
+[
+  {
+    "id": "capital",
+    "tema": "Geografía",
+    "pregunta": "¿Cuál es la capital de Navarra?",
+    "opciones": ["Pamplona / Iruña", "Tudela", "Estella-Lizarra", "Tafalla"],
+    "correcta": 0,
+    "explicacion": "Pamplona, Iruña en euskera, es la capital y la ciudad más poblada de la Comunidad Foral."
+  },
+  {
+    "id": "merindades",
+    "tema": "Historia",
+    "pregunta": "¿Cuántas merindades históricas tiene Navarra?",
+    "opciones": ["Cinco", "Tres", "Siete", "Nueve"],
+    "correcta": 0,
+    "explicacion": "Son cinco: Pamplona, Estella, Tudela, Sangüesa y Olite."
+  },
+  {
+    "id": "rio-tudela",
+    "tema": "Geografía",
+    "pregunta": "¿Qué río pasa por Tudela?",
+    "opciones": ["Ebro", "Arga", "Aragón", "Bidasoa"],
+    "correcta": 0,
+    "explicacion": "El Ebro atraviesa la Ribera de Navarra y pasa junto a Tudela."
+  },
+  {
+    "id": "rio-pamplona",
+    "tema": "Geografía",
+    "pregunta": "¿Cuál es el río principal que atraviesa Pamplona?",
+    "opciones": ["Arga", "Ebro", "Ega", "Irati"],
+    "correcta": 0,
+    "explicacion": "El Arga rodea el casco antiguo de Pamplona por el norte."
+  },
+  {
+    "id": "chupinazo",
+    "tema": "Tradiciones",
+    "pregunta": "¿Qué día se lanza el chupinazo que abre los Sanfermines?",
+    "opciones": ["6 de julio", "7 de julio", "24 de junio", "15 de agosto"],
+    "correcta": 0,
+    "explicacion": "El chupinazo es el 6 de julio a mediodía; el 7 es el día de San Fermín."
+  },
+  {
+    "id": "cadenas",
+    "tema": "Historia",
+    "pregunta": "Las cadenas del escudo de Navarra se asocian tradicionalmente a una batalla. ¿Cuál?",
+    "opciones": ["Las Navas de Tolosa", "Roncesvalles", "Covadonga", "Clavijo"],
+    "correcta": 0,
+    "explicacion": "La tradición las relaciona con la batalla de las Navas de Tolosa, en 1212."
+  },
+  {
+    "id": "sancho-fuerte",
+    "tema": "Historia",
+    "pregunta": "¿Qué rey de Navarra combatió en la batalla de las Navas de Tolosa?",
+    "opciones": ["Sancho VII el Fuerte", "Sancho III el Mayor", "Carlos III el Noble", "Teobaldo I"],
+    "correcta": 0,
+    "explicacion": "Sancho VII el Fuerte participó junto a los reyes de Castilla y Aragón en 1212."
+  },
+  {
+    "id": "conquista",
+    "tema": "Historia",
+    "pregunta": "¿En qué año conquistaron las tropas de Fernando el Católico el Reino de Navarra?",
+    "opciones": ["1512", "1492", "1610", "1841"],
+    "correcta": 0,
+    "explicacion": "La conquista castellana del reino comenzó en 1512."
+  },
+  {
+    "id": "bardenas",
+    "tema": "Naturaleza",
+    "pregunta": "¿Qué paraje semidesértico del sur de Navarra es Reserva de la Biosfera?",
+    "opciones": ["Bardenas Reales", "Sierra de Urbasa", "Selva de Irati", "Valle de Baztán"],
+    "correcta": 0,
+    "explicacion": "Las Bardenas Reales son parque natural y Reserva de la Biosfera de la UNESCO."
+  },
+  {
+    "id": "olite",
+    "tema": "Patrimonio",
+    "pregunta": "¿En qué localidad está el Palacio Real que mandó construir Carlos III el Noble?",
+    "opciones": ["Olite / Erriberri", "Estella-Lizarra", "Sangüesa / Zangoza", "Puente la Reina / Gares"],
+    "correcta": 0,
+    "explicacion": "El Palacio Real de Olite fue una de las cortes del reino en tiempos de Carlos III el Noble."
+  },
+  {
+    "id": "leyre",
+    "tema": "Patrimonio",
+    "pregunta": "¿Sobre qué embalse se asoma el Monasterio de Leyre?",
+    "opciones": ["Yesa", "Itoiz", "Alloz", "Eugi"],
+    "correcta": 0,
+    "explicacion": "El monasterio está en la sierra de Leyre, sobre el embalse de Yesa."
+  },
+  {
+    "id": "irati",
+    "tema": "Naturaleza",
+    "pregunta": "¿Qué tipo de bosque domina en la Selva de Irati?",
+    "opciones": ["Hayedo-abetal", "Pinar", "Encinar", "Alcornocal"],
+    "correcta": 0,
+    "explicacion": "Irati es uno de los mayores hayedo-abetales de Europa."
+  },
+  {
+    "id": "javier",
+    "tema": "Historia",
+    "pregunta": "¿Qué santo, patrón de Navarra, nació en el castillo de Javier?",
+    "opciones": ["San Francisco Javier", "San Fermín", "San Ignacio de Loyola", "San Miguel"],
+    "correcta": 0,
+    "explicacion": "San Francisco Javier nació en el castillo de Javier en 1506."
+  },
+  {
+    "id": "puente-reina",
+    "tema": "Camino de Santiago",
+    "pregunta": "¿En qué localidad se unen los dos ramales del Camino de Santiago que cruzan Navarra?",
+    "opciones": ["Puente la Reina / Gares", "Estella-Lizarra", "Viana", "Roncesvalles / Orreaga"],
+    "correcta": 0,
+    "explicacion": "El camino que llega por Roncesvalles y el que entra desde Aragón se juntan en Puente la Reina."
+  },
+  {
+    "id": "ochagavia",
+    "tema": "Geografía",
+    "pregunta": "¿En qué valle pirenaico está Ochagavía / Otsagabia?",
+    "opciones": ["Salazar", "Roncal", "Baztán", "Aezkoa"],
+    "correcta": 0,
+    "explicacion": "Ochagavía es la localidad más poblada del valle de Salazar."
+  },
+  {
+    "id": "roncal-queso",
+    "tema": "Gastronomía",
+    "pregunta": "¿Qué queso navarro obtuvo la primera Denominación de Origen de un queso en España?",
+    "opciones": ["Roncal", "Idiazabal", "Manchego", "Cabrales"],
+    "correcta": 0,
+    "explicacion": "El queso Roncal fue el primero en conseguir la Denominación de Origen, en 1981."
+  },
+  {
+    "id": "piquillo",
+    "tema": "Gastronomía",
+    "pregunta": "¿Qué localidad da nombre a la Denominación de Origen del pimiento del piquillo?",
+    "opciones": ["Lodosa", "Peralta / Azkoien", "Cintruénigo", "Viana"],
+    "correcta": 0,
+    "explicacion": "La DOP se llama Pimiento del Piquillo de Lodosa."
+  },
+  {
+    "id": "cipotegato",
+    "tema": "Tradiciones",
+    "pregunta": "¿En qué ciudad sale el Cipotegato al inicio de sus fiestas?",
+    "opciones": ["Tudela", "Tafalla", "Corella", "Estella-Lizarra"],
+    "correcta": 0,
+    "explicacion": "El Cipotegato abre las fiestas de Santa Ana de Tudela cada 24 de julio."
+  },
+  {
+    "id": "roncesvalles",
+    "tema": "Historia",
+    "pregunta": "¿Qué batalla del año 778, en la que murió Roldán, tuvo lugar en Navarra?",
+    "opciones": ["Roncesvalles", "Las Navas de Tolosa", "Clavijo", "Guadalete"],
+    "correcta": 0,
+    "explicacion": "En el paso de Roncesvalles fue derrotada la retaguardia del ejército de Carlomagno."
+  },
+  {
+    "id": "pompeyo",
+    "tema": "Historia",
+    "pregunta": "Según la tradición, ¿qué general romano fundó Pompaelo, la actual Pamplona?",
+    "opciones": ["Pompeyo", "Julio César", "Augusto", "Trajano"],
+    "correcta": 0,
+    "explicacion": "El nombre Pompaelo procede de Pompeyo, que acampó allí hacia el 75 a. C."
+  },
+  {
+    "id": "amejoramiento",
+    "tema": "Historia",
+    "pregunta": "¿En qué año se aprobó la Ley de Amejoramiento del Fuero (LORAFNA)?",
+    "opciones": ["1982", "1978", "1841", "1992"],
+    "correcta": 0,
+    "explicacion": "La LORAFNA, la norma institucional básica de Navarra, es de 1982."
+  },
+  {
+    "id": "urederra",
+    "tema": "Naturaleza",
+    "pregunta": "¿Junto a qué localidad está el nacedero del río Urederra?",
+    "opciones": ["Baquedano", "Lekunberri", "Isaba / Izaba", "Ujué / Uxue"],
+    "correcta": 0,
+    "explicacion": "El nacedero está en Baquedano, en el valle de Améscoa Baja."
+  },
+  {
+    "id": "foz-lumbier",
+    "tema": "Naturaleza",
+    "pregunta": "¿Qué río excavó la Foz de Lumbier?",
+    "opciones": ["Irati", "Salazar", "Arga", "Ega"],
+    "correcta": 0,
+    "explicacion": "La Foz de Lumbier la forma el Irati; la cercana Foz de Arbayún, el Salazar."
+  },
+  {
+    "id": "cumbre",
+    "tema": "Geografía",
+    "pregunta": "¿Cuál es la cumbre más alta de Navarra?",
+    "opciones": ["Mesa de los Tres Reyes", "Orhi", "Higa de Monreal", "San Donato / Beriain"],
+    "correcta": 0,
+    "explicacion": "La Mesa de los Tres Reyes, en el Pirineo, en la frontera con Aragón y Francia."
+  },
+  {
+    "id": "limites",
+    "tema": "Geografía",
+    "pregunta": "¿Cuál de estas comunidades NO limita con Navarra?",
+    "opciones": ["Cantabria", "País Vasco", "La Rioja", "Aragón"],
+    "correcta": 0,
+    "explicacion": "Navarra limita con el País Vasco, La Rioja, Aragón y Francia."
+  },
+  {
+    "id": "zonas-euskera",
+    "tema": "Lengua",
+    "pregunta": "¿En cuántas zonas lingüísticas divide Navarra la Ley Foral del Vascuence?",
+    "opciones": ["Tres", "Dos", "Cuatro", "Cinco"],
+    "correcta": 0,
+    "explicacion": "Zona vascófona, zona mixta y zona no vascófona."
+  },
+  {
+    "id": "tafalla",
+    "tema": "Historia",
+    "pregunta": "¿A qué merindad pertenece Tafalla?",
+    "opciones": ["Olite", "Tudela", "Estella", "Sangüesa"],
+    "correcta": 0,
+    "explicacion": "Tafalla forma parte de la merindad de Olite."
+  },
+  {
+    "id": "alsasua",
+    "tema": "Historia",
+    "pregunta": "¿A qué merindad pertenece Alsasua / Altsasu?",
+    "opciones": ["Pamplona", "Estella", "Sangüesa", "Olite"],
+    "correcta": 0,
+    "explicacion": "La Sakana, con Alsasua, está en la merindad de Pamplona."
+  },
+  {
+    "id": "esparrago",
+    "tema": "Gastronomía",
+    "pregunta": "¿Qué Indicación Geográfica Protegida comparten Navarra, La Rioja y Aragón?",
+    "opciones": ["Espárrago de Navarra", "Alcachofa de Tudela", "Pimiento del Piquillo de Lodosa", "Queso Roncal"],
+    "correcta": 0,
+    "explicacion": "La IGP Espárrago de Navarra incluye zonas de Navarra, La Rioja y Aragón."
+  },
+  {
+    "id": "urbasa",
+    "tema": "Naturaleza",
+    "pregunta": "¿Qué sierra, famosa por su raso y sus hayedos, separa Tierra Estella de la Sakana?",
+    "opciones": ["Urbasa", "Aralar", "Leyre", "El Perdón"],
+    "correcta": 0,
+    "explicacion": "La sierra de Urbasa forma parte del Parque Natural de Urbasa y Andía."
+  },
+  {
+    "id": "orbaizeta",
+    "tema": "Patrimonio",
+    "pregunta": "¿En qué valle están las ruinas de la Real Fábrica de Armas de Orbaizeta?",
+    "opciones": ["Aezkoa", "Baztán", "Roncal", "Erro"],
+    "correcta": 0,
+    "explicacion": "La fábrica, del siglo XVIII, está en el valle de Aezkoa, junto a la Selva de Irati."
+  },
+  {
+    "id": "gayarre",
+    "tema": "Personajes",
+    "pregunta": "¿En qué localidad nació el tenor Julián Gayarre?",
+    "opciones": ["Roncal / Erronkari", "Isaba / Izaba", "Pamplona / Iruña", "Tudela"],
+    "correcta": 0,
+    "explicacion": "Julián Gayarre nació en Roncal en 1844; allí está su casa museo."
+  },
+  {
+    "id": "sarasate",
+    "tema": "Personajes",
+    "pregunta": "¿Qué instrumento tocaba el pamplonés Pablo Sarasate?",
+    "opciones": ["Violín", "Piano", "Guitarra", "Txistu"],
+    "correcta": 0,
+    "explicacion": "Pablo Sarasate fue uno de los violinistas más famosos del siglo XIX."
+  },
+  {
+    "id": "indurain",
+    "tema": "Personajes",
+    "pregunta": "¿En qué localidad nació el ciclista Miguel Induráin?",
+    "opciones": ["Villava / Atarrabia", "Burlada / Burlata", "Estella-Lizarra", "Tafalla"],
+    "correcta": 0,
+    "explicacion": "Induráin, ganador de cinco Tours de Francia, nació en Villava en 1964."
+  }
+]

@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Quiz del día · GeoReyno</title>
+  <meta name="description" content="Cinco preguntas diarias sobre Navarra. El mismo reto para todo el mundo.">
+  <link rel="icon" href="img/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="top">
+    <div class="wrap">
+      <a class="brand" href="./">
+        <img class="chain" src="img/icon.svg" alt="">
+        <b>Geo<span>Reyno</span></b>
+      </a>
+      <a class="top-link" href="./">Todos los juegos</a>
+    </div>
+  </header>
+
+  <main class="wrap game">
+    <div class="game-head">
+      <h1 id="title">Quiz del día</h1>
+      <span class="meta" id="meta"></span>
+    </div>
+    <div class="progress" id="progress" aria-hidden="true"></div>
+    <div id="stage" aria-live="polite">
+      <div class="card"><p>Cargando…</p></div>
+    </div>
+  </main>
+
+  <div class="toast" id="toast" role="status"></div>
+
+  <script type="module" src="js/quiz.js"></script>
+</body>
+</html>

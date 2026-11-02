@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GeoReyno · Juegos de Navarra</title>
+  <meta name="description" content="Juegos diarios de geografía e historia de Navarra: quiz del día, pueblos, escudos y más.">
+  <link rel="icon" href="img/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="top">
+    <div class="wrap">
+      <a class="brand" href="./">
+        <img class="chain" src="img/icon.svg" alt="">
+        <b>Geo<span>Reyno</span></b>
+      </a>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <h1>¿Cuánto conoces Navarra?</h1>
+      <p>Un reto nuevo cada día, el mismo para todo el mundo. Juega, compara con tus amigos y no rompas la racha.</p>
+    </section>
+
+    <section class="modes" aria-label="Modos de juego">
+      <a class="mode" href="quiz.html">
+        <span class="tag live">Diario</span>
+        <h2>Quiz del día</h2>
+        <p>Cinco preguntas sobre la historia, la geografía y las tradiciones de Navarra.</p>
+        <span class="status" id="status-quiz"></span>
+      </a>
+
+      <div class="mode disabled" aria-disabled="true">
+        <span class="tag soon">Próximamente</span>
+        <h2>Pueblo misterioso</h2>
+        <p>Adivina el municipio por su silueta, con pistas de distancia y dirección.</p>
+      </div>
+
+      <div class="mode disabled" aria-disabled="true">
+        <span class="tag soon">Próximamente</span>
+        <h2>Escudos</h2>
+        <p>¿De qué pueblo es este escudo?</p>
+      </div>
+
+      <div class="mode disabled" aria-disabled="true">
+        <span class="tag soon">Próximamente</span>
+        <h2>Desde el aire</h2>
+        <p>Encuentra el lugar en la ortofoto, de hoy o de hace décadas.</p>
+      </div>
+
+      <div class="mode disabled" aria-disabled="true">
+        <span class="tag soon">Próximamente</span>
+        <h2>Navarra Street</h2>
+        <p>Muévete por las calles y marca en el mapa dónde estás.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="wrap">
+      <p>GeoReyno es un proyecto independiente, sin relación con el Gobierno de Navarra.</p>
+    </div>
+  </footer>
+
+  <script type="module">
+    import { getTodayResult } from "./js/engine.js";
+    const done = getTodayResult("quiz");
+    if (done) {
+      document.getElementById("status-quiz").textContent = `Hoy: ${done.score}/${done.total} ✓`;
+    }
+  </script>
+</body>
+</html>
