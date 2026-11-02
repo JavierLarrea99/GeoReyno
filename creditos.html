@@ -4,8 +4,21 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Créditos de datos · GeoReyno</title>
-  <meta name="description" content="Créditos de datos de GeoReyno.">
+  <meta name="description" content="Fuentes de datos, imágenes y bibliotecas de GeoReyno, con sus licencias y atribuciones.">
   <link rel="icon" href="img/icon.svg" type="image/svg+xml">
+  <meta name="theme-color" content="#b3122e">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="GeoReyno">
+  <meta property="og:locale" content="es_ES">
+  <meta property="og:title" content="Créditos de datos · GeoReyno">
+  <meta property="og:description" content="Fuentes de datos, imágenes y bibliotecas de GeoReyno, con sus licencias y atribuciones.">
+  <meta property="og:url" content="https://javierlarrea99.github.io/GeoReyno/creditos.html">
+  <meta property="og:image" content="https://javierlarrea99.github.io/GeoReyno/img/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="stylesheet" href="css/style.css">
   <script src="js/theme.js"></script>
 </head>
@@ -14,7 +27,43 @@
 
   <main class="wrap prose">
     <h1>Créditos de datos</h1>
-    <p class="lead">Página en preparación.</p>
+    <p class="lead">GeoReyno solo usa datos e imágenes con licencia abierta. Esta es la lista de fuentes, con su licencia y cómo se atribuyen. Gracias a todas las personas e instituciones que los publican.</p>
+    <p class="note">GeoReyno es un proyecto independiente. No tiene relación con el Gobierno de Navarra, el Instituto Geográfico Nacional, OpenStreetMap, Mapillary ni Wikimedia, y ninguno de ellos respalda este juego.</p>
+
+    <h2>Mapas y geografía</h2>
+    <div class="table-scroll"><table>
+      <thead><tr><th>Fuente</th><th>Uso en GeoReyno</th><th>Licencia</th></tr></thead>
+      <tbody>
+        <tr><td>© <a href="https://www.ign.es" target="_blank" rel="noopener">Instituto Geográfico Nacional</a> (IGN), límites municipales, vía el paquete <a href="https://github.com/martgnz/es-atlas" target="_blank" rel="noopener">es-atlas</a></td><td>Siluetas de «Pueblo misterioso», contorno de Navarra, superficies y latitudes calculadas</td><td><a href="https://creativecommons.org/licenses/by/4.0/deed.es" target="_blank" rel="noopener">CC BY 4.0</a> (datos) · MIT (es-atlas)</td></tr>
+        <tr><td>© <a href="https://idena.navarra.es" target="_blank" rel="noopener">Gobierno de Navarra · IDENA</a>, ortofotos</td><td>Imágenes de «Desde el aire», actuales y de 1956-1957</td><td><a href="https://creativecommons.org/licenses/by/4.0/deed.es" target="_blank" rel="noopener">CC BY 4.0</a></td></tr>
+        <tr><td>© Instituto Geográfico Nacional, <a href="https://pnoa.ign.es" target="_blank" rel="noopener">PNOA</a> y vuelo americano 1956-1957</td><td>Ortofotos de respaldo cuando IDENA no responde</td><td><a href="https://creativecommons.org/licenses/by/4.0/deed.es" target="_blank" rel="noopener">CC BY 4.0</a></td></tr>
+        <tr><td>© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap contributors</a></td><td>Mapa base para responder en «Desde el aire» y «Navarra Street»</td><td>Datos <a href="https://opendatacommons.org/licenses/odbl/" target="_blank" rel="noopener">ODbL</a></td></tr>
+      </tbody>
+    </table></div>
+    <p>Cada imagen de ortofoto lleva debajo la fuente concreta que se ha usado, y el mapa muestra su atribución en la esquina.</p>
+
+    <h2>Fotos e imágenes</h2>
+    <div class="table-scroll"><table>
+      <thead><tr><th>Fuente</th><th>Uso</th><th>Licencia</th></tr></thead>
+      <tbody>
+        <tr><td><a href="https://www.mapillary.com" target="_blank" rel="noopener">Mapillary</a> y sus colaboradores</td><td>Fotos a pie de calle de «Navarra Street». El nombre de la persona autora aparece debajo de cada foto.</td><td><a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" target="_blank" rel="noopener">CC BY-SA 4.0</a></td></tr>
+        <tr><td><a href="https://commons.wikimedia.org" target="_blank" rel="noopener">Wikimedia Commons</a></td><td>Escudos municipales. Cada escudo muestra su archivo, autor y licencia, con enlace a su página en Commons.</td><td>La de cada archivo (dominio público, CC BY, CC BY-SA…)</td></tr>
+      </tbody>
+    </table></div>
+
+    <h2>Datos estadísticos</h2>
+    <p>Si se muestran población o altitud en «¿Cuál tiene más?», proceden del Instituto Nacional de Estadística (INE, Padrón municipal) y del Nomenclátor del IGN, y la fuente aparece en cada respuesta. Las superficies son aproximadas, calculadas a partir de los límites del IGN.</p>
+
+    <h2>Preguntas del quiz</h2>
+    <p>Las preguntas y explicaciones son de elaboración propia. Si encuentras un error, escríbenos a <span class="fill">[CORREO DE CONTACTO]</span>.</p>
+
+    <h2>Bibliotecas</h2>
+    <ul>
+      <li><a href="https://maplibre.org" target="_blank" rel="noopener">MapLibre GL JS</a> 4.7.1 · licencia BSD-3-Clause.</li>
+      <li><a href="https://github.com/mapillary/mapillary-js" target="_blank" rel="noopener">MapillaryJS</a> 4.1.2 · licencia MIT.</li>
+      <li><a href="https://peerjs.com" target="_blank" rel="noopener">PeerJS</a> 1.5.4 · licencia MIT (salas con amigos).</li>
+    </ul>
+
   </main>
 
   <footer class="foot" data-layout></footer>

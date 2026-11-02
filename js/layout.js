@@ -108,3 +108,10 @@ const header = document.querySelector("header[data-layout]");
 const footer = document.querySelector("footer[data-layout]");
 if (header) renderHeader(header);
 if (footer) renderFooter(footer);
+
+// PWA básica: registra el service worker (fuera de las salas y solo en https o localhost).
+if ("serviceWorker" in navigator && !document.documentElement.classList.contains("in-room")) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("sw.js").catch(() => { /* sin service worker la web funciona igual */ });
+  });
+}
