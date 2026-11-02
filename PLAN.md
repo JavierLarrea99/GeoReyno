@@ -22,6 +22,7 @@ Documento de trabajo para retomar el proyecto en cualquier sesión. Las decision
 - **Salas con amigos**: el juego se abre dentro de un iframe con `?sala=CÓDIGO&semilla=XXXX`. Con `semilla` el reto se elige con esa semilla en vez de la fecha y no cuenta para la racha. El juego avisa a la sala de cada ronda con `postMessage` (`reportRound` / `reportFinal` del motor).
 - **Pueblo misterioso**: el municipio del día sale de una permutación fija de los 272 (`dailyFromCycle`), así no se repite hasta pasados 272 días. El porcentaje de cercanía es `100 × (1 − d / dmáx)`, con dmáx la mayor distancia entre centroides de Navarra (~190 km). Se aceptan los nombres en castellano y en euskera por separado. Los intentos a medias se guardan para no perderlos al recargar. El mapa final es un SVG propio (sin teselas) para que cargue rápido.
 - **Superficie** de cada municipio: calculada con la geometría del IGN antes de simplificar (aproximada; p. ej. Pamplona da 28,6 km² frente a los ~25 km² oficiales).
+- **Quiz**: las preguntas nuevas usan el tema «Euskera»; la única antigua con tema «Lengua» se deja igual para no tocar lo publicado. Se descartaron preguntas con datos discutidos (etimología de Tudela, altitud exacta de la Mesa de los Tres Reyes, embalse más grande…).
 - **Rama**: se trabaja en `claude/keen-turing-puhwzl` y se sube también a `main`, como se pidió.
 
 ## Estado
@@ -29,8 +30,8 @@ Documento de trabajo para retomar el proyecto en cualquier sesión. Las decision
 - [x] Motor común (`js/engine.js`): reto diario por semilla, rachas, compartir resultado.
 - [x] Quiz del día con 34 preguntas.
 - [x] Fase 1 · Base común: barra superior con todos los modos y menú plegable en el móvil, botón de tema, página de estadísticas (partidas, rachas, media e historial por modo, botón para borrar), página «Cómo se juega», pie con enlaces legales, registro de modos y esquema de resultado común en el motor.
-- [ ] Revisar todas las preguntas contra una fuente fiable. Se escribieron de memoria y pueden tener errores.
-- [ ] Ampliar el banco a 150 o más preguntas: con 34 se repiten en pocas semanas.
+- [x] Fase 3 · Quiz ampliado a 183 preguntas (historia, geografía, tradiciones, gastronomía, naturaleza, personajes, euskera, topónimos, patrimonio y Camino de Santiago). Los 34 ids anteriores no cambian.
+- [ ] ⚠️ **Revisar preguntas antes de publicar.** Están escritas de memoria, solo con datos que se consideraron seguros y descartando los dudosos, pero hay que contrastarlas con una fuente fiable (sobre todo cifras y fechas: superficie, población, años).
 - [x] Fase 2 · Pueblo misterioso: `data/municipios.json` (272 municipios, 80 KB) generado con `tools/build_municipios.mjs` desde es-atlas 0.6.0; silueta, autocompletado sin tildes, 6 intentos con km, flecha y %, mapa final y compartir con cuadritos.
 - [ ] Mejorar las siluetas: es-atlas es de baja resolución (algunos municipios tienen 10-15 vértices). Para siluetas más finas, descargar los límites municipales de IDENA (Gobierno de Navarra, CC BY 4.0) o las «Líneas límite municipales» del CNIG, y adaptar `tools/build_municipios.mjs` para leerlos.
 - [ ] Escudos: imágenes con licencia que permita reutilizarlas; anotar la licencia de cada una.

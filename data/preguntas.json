@@ -270,5 +270,1197 @@
     "opciones": ["Villava / Atarrabia", "Burlada / Burlata", "Estella-Lizarra", "Tafalla"],
     "correcta": 0,
     "explicacion": "Induráin, ganador de cinco Tours de Francia, nació en Villava en 1964."
+  },
+  {
+    "id": "navas-fecha",
+    "tema": "Historia",
+    "pregunta": "¿En qué año se libró la batalla de las Navas de Tolosa?",
+    "opciones": ["1212", "1512", "1076", "1341"],
+    "correcta": 0,
+    "explicacion": "Fue en 1212. Sancho VII el Fuerte luchó junto a Castilla y Aragón contra los almohades."
+  },
+  {
+    "id": "sancho-fuerte-tumba",
+    "tema": "Historia",
+    "pregunta": "¿Dónde está enterrado Sancho VII el Fuerte?",
+    "opciones": ["Roncesvalles / Orreaga", "Monasterio de Leyre", "Catedral de Tudela", "Olite / Erriberri"],
+    "correcta": 0,
+    "explicacion": "Su sepulcro está en la Real Colegiata de Roncesvalles."
+  },
+  {
+    "id": "leyre-panteon",
+    "tema": "Historia",
+    "pregunta": "¿Qué monasterio fue panteón de los primeros reyes de Pamplona?",
+    "opciones": ["Leyre", "La Oliva", "Iranzu", "Irache"],
+    "correcta": 0,
+    "explicacion": "El monasterio de San Salvador de Leyre guardó los restos de los primeros reyes."
+  },
+  {
+    "id": "privilegio-union",
+    "tema": "Historia",
+    "pregunta": "¿Qué rey unió en 1423 los burgos de Pamplona con el Privilegio de la Unión?",
+    "opciones": ["Carlos III el Noble", "Sancho VII el Fuerte", "Teobaldo I", "Juan III de Albret"],
+    "correcta": 0,
+    "explicacion": "Carlos III el Noble acabó así con las luchas entre los burgos."
+  },
+  {
+    "id": "burgos-pamplona",
+    "tema": "Historia",
+    "pregunta": "¿Cuántos burgos se unieron en 1423 para formar una sola Pamplona?",
+    "opciones": ["Tres", "Dos", "Cinco", "Siete"],
+    "correcta": 0,
+    "explicacion": "La Navarrería, San Cernin y San Nicolás."
+  },
+  {
+    "id": "teobaldo-champana",
+    "tema": "Historia",
+    "pregunta": "¿De qué casa nobiliaria francesa era Teobaldo I, rey de Navarra desde 1234?",
+    "opciones": ["Champaña", "Borbón", "Évreux", "Foix"],
+    "correcta": 0,
+    "explicacion": "Con Teobaldo I, sobrino de Sancho VII, llegó la dinastía de Champaña."
+  },
+  {
+    "id": "sancho-mayor",
+    "tema": "Historia",
+    "pregunta": "¿Qué rey de Pamplona, muerto en 1035, extendió su dominio por buena parte de la España cristiana?",
+    "opciones": ["Sancho III el Mayor", "Sancho VII el Fuerte", "García Ramírez", "Carlos II el Malo"],
+    "correcta": 0,
+    "explicacion": "Sancho III el Mayor llegó a dominar territorios desde Ribagorza hasta Castilla."
+  },
+  {
+    "id": "iñigo-arista",
+    "tema": "Historia",
+    "pregunta": "¿A quién se considera tradicionalmente el primer rey de Pamplona?",
+    "opciones": ["Íñigo Arista", "Sancho el Mayor", "Teobaldo I", "García Ramírez"],
+    "correcta": 0,
+    "explicacion": "Íñigo Arista, en el siglo IX, inicia la monarquía pamplonesa."
+  },
+  {
+    "id": "albret-1512",
+    "tema": "Historia",
+    "pregunta": "¿Qué reyes de Navarra perdieron la Alta Navarra en 1512?",
+    "opciones": ["Juan III de Albret y Catalina de Foix", "Carlos III y Leonor de Trastámara", "Sancho VII y Clemencia", "Teobaldo I y Margarita"],
+    "correcta": 0,
+    "explicacion": "Juan de Albret y Catalina de Foix se refugiaron al norte de los Pirineos."
+  },
+  {
+    "id": "ley-paccionada",
+    "tema": "Historia",
+    "pregunta": "¿Cómo se llama la ley de 1841 que convirtió el Reino de Navarra en provincia con régimen foral?",
+    "opciones": ["Ley Paccionada", "Ley de Amejoramiento", "Fuero General", "Ley de Abolición"],
+    "correcta": 0,
+    "explicacion": "La Ley Paccionada de 1841 mantuvo parte del autogobierno navarro."
+  },
+  {
+    "id": "gamazada",
+    "tema": "Historia",
+    "pregunta": "¿Cómo se conoce la protesta navarra de 1893-1894 contra un ministro que quería subir los impuestos a Navarra?",
+    "opciones": ["Gamazada", "Sanjuanada", "Paccionada", "Montejurrada"],
+    "correcta": 0,
+    "explicacion": "Debe su nombre al ministro de Hacienda Germán Gamazo."
+  },
+  {
+    "id": "monumento-fueros",
+    "tema": "Historia",
+    "pregunta": "¿Qué monumento del Paseo de Sarasate de Pamplona recuerda la Gamazada?",
+    "opciones": ["El Monumento a los Fueros", "El Monumento al Encierro", "La estatua de Sarasate", "El Monumento a los Caídos"],
+    "correcta": 0,
+    "explicacion": "Se inauguró en 1903, pagado por suscripción popular."
+  },
+  {
+    "id": "pompaelo-nombre",
+    "tema": "Historia",
+    "pregunta": "¿Cómo se llamaba Pamplona en época romana?",
+    "opciones": ["Pompaelo", "Cascantum", "Andelos", "Turiaso"],
+    "correcta": 0,
+    "explicacion": "Pompaelo, en honor de Pompeyo según la tradición."
+  },
+  {
+    "id": "cascantum",
+    "tema": "Historia",
+    "pregunta": "¿Qué localidad de la Ribera se llamaba Cascantum en época romana?",
+    "opciones": ["Cascante", "Corella", "Cintruénigo", "Tudela"],
+    "correcta": 0,
+    "explicacion": "Cascantum llegó a acuñar moneda propia."
+  },
+  {
+    "id": "andelos",
+    "tema": "Historia",
+    "pregunta": "¿En qué municipio está la ciudad romana de Andelos?",
+    "opciones": ["Mendigorría", "Tafalla", "Olite / Erriberri", "Lumbier"],
+    "correcta": 0,
+    "explicacion": "Andelos conserva un notable sistema hidráulico romano."
+  },
+  {
+    "id": "villa-musas",
+    "tema": "Historia",
+    "pregunta": "¿En qué localidad está la villa romana de las Musas, con grandes mosaicos?",
+    "opciones": ["Arellano", "Liédena", "Falces", "Funes"],
+    "correcta": 0,
+    "explicacion": "La villa de las Musas de Arellano, en Tierra Estella, tenía también una gran bodega."
+  },
+  {
+    "id": "tudela-fundacion",
+    "tema": "Historia",
+    "pregunta": "¿Quién fundó Tudela a comienzos del siglo IX?",
+    "opciones": ["Los musulmanes de al-Ándalus", "Los romanos", "Los visigodos", "Los reyes de Pamplona"],
+    "correcta": 0,
+    "explicacion": "Tudela fue fundada hacia el año 802 en época andalusí."
+  },
+  {
+    "id": "carlismo",
+    "tema": "Historia",
+    "pregunta": "¿Qué movimiento político, con gran apoyo en Navarra, protagonizó varias guerras en el siglo XIX?",
+    "opciones": ["El carlismo", "El cantonalismo", "El liberalismo progresista", "El federalismo"],
+    "correcta": 0,
+    "explicacion": "Las guerras carlistas enfrentaron a los partidarios de don Carlos con los liberales."
+  },
+  {
+    "id": "montejurra",
+    "tema": "Historia",
+    "pregunta": "¿En qué monte cercano a Estella se celebraban concentraciones carlistas anuales?",
+    "opciones": ["Montejurra", "Monjardín", "San Donato", "Higa de Monreal"],
+    "correcta": 0,
+    "explicacion": "Montejurra fue escenario de batallas y de concentraciones carlistas."
+  },
+  {
+    "id": "estella-carlista",
+    "tema": "Historia",
+    "pregunta": "¿Qué ciudad navarra fue corte de don Carlos durante la Tercera Guerra Carlista?",
+    "opciones": ["Estella-Lizarra", "Tudela", "Tafalla", "Sangüesa / Zangoza"],
+    "correcta": 0,
+    "explicacion": "Estella fue capital carlista entre 1873 y 1876."
+  },
+  {
+    "id": "loyola-1521",
+    "tema": "Historia",
+    "pregunta": "¿Qué futuro santo fue herido en 1521 defendiendo Pamplona?",
+    "opciones": ["Ignacio de Loyola", "Francisco Javier", "Fermín", "Teresa de Jesús"],
+    "correcta": 0,
+    "explicacion": "Ignacio de Loyola cayó herido durante el asedio francés de 1521."
+  },
+  {
+    "id": "ciudadela-rey",
+    "tema": "Historia",
+    "pregunta": "¿Qué rey mandó construir la Ciudadela de Pamplona?",
+    "opciones": ["Felipe II", "Carlos III el Noble", "Fernando el Católico", "Carlos V"],
+    "correcta": 0,
+    "explicacion": "Las obras empezaron en 1571, en tiempos de Felipe II."
+  },
+  {
+    "id": "ciudadela-forma",
+    "tema": "Patrimonio",
+    "pregunta": "¿Qué forma tiene la Ciudadela de Pamplona?",
+    "opciones": ["Pentágono con cinco baluartes", "Círculo", "Cuadrado", "Hexágono"],
+    "correcta": 0,
+    "explicacion": "Es un pentágono con baluartes en sus cinco puntas."
+  },
+  {
+    "id": "sanfermin-julio",
+    "tema": "Tradiciones",
+    "pregunta": "¿En qué año se trasladaron las fiestas de San Fermín de octubre a julio?",
+    "opciones": ["1591", "1512", "1808", "1923"],
+    "correcta": 0,
+    "explicacion": "El cambio se hizo en 1591, buscando mejor tiempo para las ferias."
+  },
+  {
+    "id": "hemingway",
+    "tema": "Personajes",
+    "pregunta": "¿Qué escritor estadounidense dio fama mundial a los Sanfermines con su novela «Fiesta»?",
+    "opciones": ["Ernest Hemingway", "John Steinbeck", "Mark Twain", "Orson Welles"],
+    "correcta": 0,
+    "explicacion": "«Fiesta» (The Sun Also Rises) se publicó en 1926."
+  },
+  {
+    "id": "upna",
+    "tema": "Historia",
+    "pregunta": "¿En qué año se creó la Universidad Pública de Navarra?",
+    "opciones": ["1987", "1952", "1975", "2001"],
+    "correcta": 0,
+    "explicacion": "La UPNA se creó por ley foral en 1987."
+  },
+  {
+    "id": "afluentes-ebro",
+    "tema": "Geografía",
+    "pregunta": "¿Cuál de estos ríos NO vierte sus aguas al Ebro?",
+    "opciones": ["Bidasoa", "Ega", "Aragón", "Queiles"],
+    "correcta": 0,
+    "explicacion": "El Bidasoa desemboca en el mar Cantábrico, entre Hondarribia y Hendaya."
+  },
+  {
+    "id": "bidasoa-mar",
+    "tema": "Geografía",
+    "pregunta": "¿En qué mar desemboca el río Bidasoa?",
+    "opciones": ["Cantábrico", "Mediterráneo", "Atlántico, en Portugal", "No llega al mar"],
+    "correcta": 0,
+    "explicacion": "Desemboca en la bahía de Txingudi, en el Cantábrico."
+  },
+  {
+    "id": "arga-desemboca",
+    "tema": "Geografía",
+    "pregunta": "¿En qué río desemboca el Arga?",
+    "opciones": ["Aragón", "Ebro", "Ega", "Irati"],
+    "correcta": 0,
+    "explicacion": "El Arga se une al Aragón cerca de Funes, poco antes de que este llegue al Ebro."
+  },
+  {
+    "id": "rio-estella",
+    "tema": "Geografía",
+    "pregunta": "¿Qué río pasa por Estella-Lizarra?",
+    "opciones": ["Ega", "Arga", "Cidacos", "Urederra"],
+    "correcta": 0,
+    "explicacion": "Estella creció a orillas del Ega."
+  },
+  {
+    "id": "rio-queiles",
+    "tema": "Geografía",
+    "pregunta": "¿Qué río desemboca en el Ebro en Tudela tras pasar por Tarazona?",
+    "opciones": ["Queiles", "Alhama", "Cidacos", "Arga"],
+    "correcta": 0,
+    "explicacion": "El Queiles nace en el Moncayo."
+  },
+  {
+    "id": "rio-sanguesa",
+    "tema": "Geografía",
+    "pregunta": "¿Qué río pasa por Sangüesa / Zangoza?",
+    "opciones": ["Aragón", "Arga", "Irati", "Ega"],
+    "correcta": 0,
+    "explicacion": "El puente sobre el Aragón es paso del Camino aragonés."
+  },
+  {
+    "id": "rio-tafalla",
+    "tema": "Geografía",
+    "pregunta": "¿Qué río atraviesa Tafalla y Olite?",
+    "opciones": ["Cidacos", "Arga", "Ega", "Arakil"],
+    "correcta": 0,
+    "explicacion": "El Cidacos pasa por Tafalla y Olite y desemboca en el Aragón."
+  },
+  {
+    "id": "francia",
+    "tema": "Geografía",
+    "pregunta": "¿Con qué país limita Navarra?",
+    "opciones": ["Francia", "Andorra", "Portugal", "Con ninguno"],
+    "correcta": 0,
+    "explicacion": "Navarra tiene frontera con Francia a lo largo del Pirineo."
+  },
+  {
+    "id": "no-limita-bizkaia",
+    "tema": "Geografía",
+    "pregunta": "¿Con qué provincia vasca NO limita Navarra?",
+    "opciones": ["Bizkaia", "Gipuzkoa", "Álava / Araba", "Limita con las tres"],
+    "correcta": 0,
+    "explicacion": "Navarra limita con Gipuzkoa y Álava, pero no con Bizkaia."
+  },
+  {
+    "id": "provincias-aragon",
+    "tema": "Geografía",
+    "pregunta": "¿Con qué provincias de Aragón limita Navarra?",
+    "opciones": ["Huesca y Zaragoza", "Solo Zaragoza", "Teruel y Zaragoza", "Huesca y Teruel"],
+    "correcta": 0,
+    "explicacion": "Limita con Huesca y Zaragoza; con Teruel no."
+  },
+  {
+    "id": "superficie-navarra",
+    "tema": "Geografía",
+    "pregunta": "¿Cuál es, aproximadamente, la superficie de Navarra?",
+    "opciones": ["Unos 10.400 km²", "Unos 5.000 km²", "Unos 18.000 km²", "Unos 30.000 km²"],
+    "correcta": 0,
+    "explicacion": "Navarra mide unos 10.390 km²."
+  },
+  {
+    "id": "poblacion-navarra",
+    "tema": "Geografía",
+    "pregunta": "¿Cuántos habitantes tiene Navarra, aproximadamente?",
+    "opciones": ["Unos 670.000", "Unos 300.000", "Unos 1,5 millones", "Unos 3 millones"],
+    "correcta": 0,
+    "explicacion": "Ronda los 670.000-680.000 habitantes."
+  },
+  {
+    "id": "segunda-ciudad",
+    "tema": "Geografía",
+    "pregunta": "¿Cuál es el segundo municipio más poblado de Navarra?",
+    "opciones": ["Tudela", "Estella-Lizarra", "Tafalla", "Barañáin / Barañain"],
+    "correcta": 0,
+    "explicacion": "Tudela, capital de la Ribera, supera los 35.000 habitantes."
+  },
+  {
+    "id": "castildetierra",
+    "tema": "Naturaleza",
+    "pregunta": "¿Cómo se llama la chimenea de arcilla más famosa de las Bardenas Reales?",
+    "opciones": ["Castildetierra", "Peña Rota", "El Fraile", "La Blanca"],
+    "correcta": 0,
+    "explicacion": "Castildetierra es el símbolo de las Bardenas."
+  },
+  {
+    "id": "bardenas-poligono",
+    "tema": "Geografía",
+    "pregunta": "¿Qué instalación militar hay en el centro de las Bardenas Reales?",
+    "opciones": ["Un polígono de tiro aéreo", "Una base naval", "Un cuartel de infantería", "Un radar de la OTAN"],
+    "correcta": 0,
+    "explicacion": "El polígono de tiro del Ejército del Aire está en la Bardena Blanca."
+  },
+  {
+    "id": "yesa-rio",
+    "tema": "Geografía",
+    "pregunta": "¿Qué río embalsa el pantano de Yesa?",
+    "opciones": ["Aragón", "Irati", "Arga", "Ebro"],
+    "correcta": 0,
+    "explicacion": "Yesa embalsa el Aragón en el límite con Zaragoza."
+  },
+  {
+    "id": "itoiz-rio",
+    "tema": "Geografía",
+    "pregunta": "¿Qué río embalsa el pantano de Itoiz?",
+    "opciones": ["Irati", "Aragón", "Arga", "Salazar"],
+    "correcta": 0,
+    "explicacion": "Itoiz está sobre el Irati, cerca de Aoiz / Agoitz."
+  },
+  {
+    "id": "eugi-rio",
+    "tema": "Geografía",
+    "pregunta": "¿Qué río embalsa el pantano de Eugi?",
+    "opciones": ["Arga", "Ega", "Ulzama", "Irati"],
+    "correcta": 0,
+    "explicacion": "Eugi, en el valle de Esteríbar, abastece en parte a la comarca de Pamplona."
+  },
+  {
+    "id": "belagua",
+    "tema": "Geografía",
+    "pregunta": "¿En qué valle está Belagua, valle de origen glaciar?",
+    "opciones": ["Roncal", "Salazar", "Baztan", "Aezkoa"],
+    "correcta": 0,
+    "explicacion": "Belagua está en la cabecera del valle de Roncal."
+  },
+  {
+    "id": "larra",
+    "tema": "Naturaleza",
+    "pregunta": "¿Qué macizo kárstico del Pirineo navarro es famoso por sus simas?",
+    "opciones": ["Larra", "Urbasa", "Montejurra", "El Perdón"],
+    "correcta": 0,
+    "explicacion": "Larra, junto a Belagua, tiene algunas de las simas más profundas de Europa."
+  },
+  {
+    "id": "orhi",
+    "tema": "Geografía",
+    "pregunta": "¿Qué monte del Pirineo navarro se considera el primer «dosmil» desde el Cantábrico?",
+    "opciones": ["Orhi", "Mesa de los Tres Reyes", "Ortzanzurieta", "Aitzkorri"],
+    "correcta": 0,
+    "explicacion": "El Orhi supera por poco los 2.000 metros."
+  },
+  {
+    "id": "mesa-tres-reyes",
+    "tema": "Geografía",
+    "pregunta": "¿Qué tres reinos se dice que confluían en la Mesa de los Tres Reyes?",
+    "opciones": ["Navarra, Aragón y Bearne", "Navarra, Castilla y Aragón", "Navarra, Francia y Castilla", "Navarra, León y Aragón"],
+    "correcta": 0,
+    "explicacion": "Según la tradición, los tres reyes podían comer en la misma mesa sin salir de su reino."
+  },
+  {
+    "id": "san-miguel-aralar",
+    "tema": "Patrimonio",
+    "pregunta": "¿Qué santuario se alza en la sierra de Aralar?",
+    "opciones": ["San Miguel de Aralar", "Ujué", "Codés", "San Gregorio Ostiense"],
+    "correcta": 0,
+    "explicacion": "San Miguel in Excelsis guarda un famoso frontal de esmaltes."
+  },
+  {
+    "id": "sakana",
+    "tema": "Geografía",
+    "pregunta": "¿Por qué corredor natural pasa la autovía que une Pamplona con Vitoria?",
+    "opciones": ["La Sakana / Barranca", "El valle de Baztan", "La Valdorba", "El valle de Roncal"],
+    "correcta": 0,
+    "explicacion": "La Sakana, entre Aralar y Urbasa-Andia, une Navarra con Álava."
+  },
+  {
+    "id": "baztan-extenso",
+    "tema": "Geografía",
+    "pregunta": "¿Cuál es el municipio más extenso de Navarra?",
+    "opciones": ["Baztan", "Tudela", "Pamplona / Iruña", "Estella-Lizarra"],
+    "correcta": 0,
+    "explicacion": "Baztan tiene unos 376 km²."
+  },
+  {
+    "id": "zugarramurdi",
+    "tema": "Tradiciones",
+    "pregunta": "¿Qué localidad es famosa por su cueva y por el proceso de brujería de 1610?",
+    "opciones": ["Zugarramurdi", "Urdazubi / Urdax", "Bera", "Lesaka"],
+    "correcta": 0,
+    "explicacion": "Varios vecinos fueron juzgados por la Inquisición en el auto de fe de Logroño de 1610."
+  },
+  {
+    "id": "bertiz",
+    "tema": "Naturaleza",
+    "pregunta": "¿Qué parque natural con un jardín botánico centenario está en el valle de Bertizarana?",
+    "opciones": ["Señorío de Bertiz", "Urbasa-Andia", "Bardenas Reales", "Selva de Irati"],
+    "correcta": 0,
+    "explicacion": "El Señorío de Bertiz fue legado a Navarra por Pedro Ciga."
+  },
+  {
+    "id": "arbayun",
+    "tema": "Naturaleza",
+    "pregunta": "¿Qué río forma la Foz de Arbayún?",
+    "opciones": ["Salazar", "Irati", "Aragón", "Esca"],
+    "correcta": 0,
+    "explicacion": "El Salazar excavó esta foz de casi seis kilómetros."
+  },
+  {
+    "id": "roncal-este",
+    "tema": "Geografía",
+    "pregunta": "¿Cuál de estos valles pirenaicos navarros está más al este?",
+    "opciones": ["Roncal", "Salazar", "Aezkoa", "Baztan"],
+    "correcta": 0,
+    "explicacion": "De oeste a este: Baztan, Aezkoa, Salazar y Roncal, que limita con Aragón."
+  },
+  {
+    "id": "pitillas",
+    "tema": "Naturaleza",
+    "pregunta": "¿Qué laguna de la Zona Media es reserva natural y refugio de aves?",
+    "opciones": ["Laguna de Pitillas", "Laguna de Lor", "Laguna de Gallocanta", "Lagunas de Ruidera"],
+    "correcta": 0,
+    "explicacion": "La laguna de Pitillas es un humedal estepario de gran valor para las aves."
+  },
+  {
+    "id": "encierro-hora",
+    "tema": "Tradiciones",
+    "pregunta": "¿A qué hora empieza el encierro de los Sanfermines?",
+    "opciones": ["A las 8 de la mañana", "A las 6 de la mañana", "A mediodía", "A las 7 de la tarde"],
+    "correcta": 0,
+    "explicacion": "Desde 1974 el encierro sale a las 8:00."
+  },
+  {
+    "id": "encierro-longitud",
+    "tema": "Tradiciones",
+    "pregunta": "¿Cuánto mide, aproximadamente, el recorrido del encierro de Pamplona?",
+    "opciones": ["Unos 850 metros", "Unos 300 metros", "Unos 2 kilómetros", "Unos 5 kilómetros"],
+    "correcta": 0,
+    "explicacion": "Del corral de Santo Domingo a la plaza de toros hay unos 850 m."
+  },
+  {
+    "id": "pobre-de-mi",
+    "tema": "Tradiciones",
+    "pregunta": "¿Qué canción despide los Sanfermines la medianoche del 14 de julio?",
+    "opciones": ["«Pobre de mí»", "«Riau-riau»", "«Uno de enero»", "«Agur jaunak»"],
+    "correcta": 0,
+    "explicacion": "«Pobre de mí, pobre de mí, que se han acabado las fiestas de San Fermín»."
+  },
+  {
+    "id": "estafeta",
+    "tema": "Tradiciones",
+    "pregunta": "¿Qué calle forma el tramo más largo del encierro?",
+    "opciones": ["Estafeta", "Mercaderes", "Santo Domingo", "Chapitela"],
+    "correcta": 0,
+    "explicacion": "La calle Estafeta mide unos 300 metros del recorrido."
+  },
+  {
+    "id": "kilikis",
+    "tema": "Tradiciones",
+    "pregunta": "¿Cómo se llaman los cabezudos pequeños que persiguen a los niños en los Sanfermines?",
+    "opciones": ["Kilikis", "Zaldikos", "Joaldunak", "Momotxorros"],
+    "correcta": 0,
+    "explicacion": "Los kilikis van armados con espumas; los zaldikos son los caballitos."
+  },
+  {
+    "id": "gigantes-pamplona",
+    "tema": "Tradiciones",
+    "pregunta": "¿Cuántos gigantes tiene la comparsa de Pamplona?",
+    "opciones": ["Ocho", "Cuatro", "Seis", "Doce"],
+    "correcta": 0,
+    "explicacion": "Cuatro parejas de reyes y reinas: Europa, Asia, África y América."
+  },
+  {
+    "id": "olentzero",
+    "tema": "Tradiciones",
+    "pregunta": "¿Qué carbonero trae los regalos en Navidad según la tradición vasconavarra?",
+    "opciones": ["Olentzero", "Miel Otxin", "Basajaun", "Mari Domingi"],
+    "correcta": 0,
+    "explicacion": "Olentzero baja del monte en Nochebuena cargado de regalos."
+  },
+  {
+    "id": "joaldunak",
+    "tema": "Tradiciones",
+    "pregunta": "¿De qué dos localidades son los joaldunak, con sus grandes cencerros a la espalda?",
+    "opciones": ["Ituren y Zubieta", "Lantz y Arizkun", "Tudela y Cascante", "Estella y Ayegui"],
+    "correcta": 0,
+    "explicacion": "Su carnaval, a finales de enero, es uno de los más antiguos del Pirineo."
+  },
+  {
+    "id": "miel-otxin",
+    "tema": "Tradiciones",
+    "pregunta": "¿Qué personaje es juzgado y quemado en el carnaval de Lantz?",
+    "opciones": ["Miel Otxin", "Olentzero", "Ziripot", "Zaldiko"],
+    "correcta": 0,
+    "explicacion": "Miel Otxin es el bandido gigante del carnaval de Lantz."
+  },
+  {
+    "id": "javierada",
+    "tema": "Tradiciones",
+    "pregunta": "¿Cómo se llama la peregrinación anual al castillo de Javier en marzo?",
+    "opciones": ["Javierada", "Romería de Ujué", "Misterio de Obanos", "Bajada del Ángel"],
+    "correcta": 0,
+    "explicacion": "Miles de personas caminan hasta Javier cada marzo."
+  },
+  {
+    "id": "tres-vacas",
+    "tema": "Tradiciones",
+    "pregunta": "¿Qué entrega el valle francés de Baretous al valle de Roncal cada 13 de julio?",
+    "opciones": ["Tres vacas", "Un queso", "Una llave de plata", "Un caballo"],
+    "correcta": 0,
+    "explicacion": "El Tributo de las Tres Vacas se celebra en la Piedra de San Martín desde la Edad Media."
+  },
+  {
+    "id": "obanos",
+    "tema": "Tradiciones",
+    "pregunta": "¿En qué localidad se representa el «Misterio» de San Guillén y Santa Felicia?",
+    "opciones": ["Obanos", "Olite / Erriberri", "Javier", "Tafalla"],
+    "correcta": 0,
+    "explicacion": "El Misterio de Obanos se representa al aire libre con cientos de vecinos."
+  },
+  {
+    "id": "bajada-angel",
+    "tema": "Tradiciones",
+    "pregunta": "¿En qué ciudad se celebra la Bajada del Ángel el Domingo de Resurrección?",
+    "opciones": ["Tudela", "Estella-Lizarra", "Pamplona / Iruña", "Corella"],
+    "correcta": 0,
+    "explicacion": "Un niño vestido de ángel baja por una cuerda hasta la Virgen en la plaza de los Fueros."
+  },
+  {
+    "id": "jota",
+    "tema": "Tradiciones",
+    "pregunta": "¿Qué canto y baile es típico de la Ribera navarra?",
+    "opciones": ["La jota", "La sardana", "La muñeira", "El fandango asturiano"],
+    "correcta": 0,
+    "explicacion": "La jota navarra se canta con voces potentes y estrofas de cuatro versos."
+  },
+  {
+    "id": "dia-navarra",
+    "tema": "Tradiciones",
+    "pregunta": "¿Qué día se celebra el Día de Navarra?",
+    "opciones": ["3 de diciembre", "7 de julio", "25 de julio", "12 de octubre"],
+    "correcta": 0,
+    "explicacion": "Coincide con la festividad de San Francisco Javier."
+  },
+  {
+    "id": "patron-pamplona",
+    "tema": "Tradiciones",
+    "pregunta": "¿Quién es el patrón de la ciudad de Pamplona?",
+    "opciones": ["San Saturnino (San Cernin)", "San Fermín", "San Francisco Javier", "San Miguel"],
+    "correcta": 0,
+    "explicacion": "San Saturnino se celebra el 29 de noviembre; San Fermín es copatrón de Navarra."
+  },
+  {
+    "id": "chistorra",
+    "tema": "Gastronomía",
+    "pregunta": "¿Qué embutido fino y rojo, típico de Navarra, se come frito?",
+    "opciones": ["Chistorra", "Morcilla", "Sobrasada", "Lomo embuchado"],
+    "correcta": 0,
+    "explicacion": "La chistorra se hace con carne picada de cerdo, ajo, sal y pimentón."
+  },
+  {
+    "id": "cuajada",
+    "tema": "Gastronomía",
+    "pregunta": "¿De qué leche se hace tradicionalmente la cuajada navarra?",
+    "opciones": ["Oveja", "Vaca", "Cabra", "Burra"],
+    "correcta": 0,
+    "explicacion": "Se cuaja con leche de oveja; antes se calentaba con piedras al rojo."
+  },
+  {
+    "id": "idiazabal",
+    "tema": "Gastronomía",
+    "pregunta": "¿Qué queso de oveja con Denominación de Origen comparten Navarra y Euskadi?",
+    "opciones": ["Idiazabal", "Roncal", "Manchego", "Torta del Casar"],
+    "correcta": 0,
+    "explicacion": "La DO Idiazabal abarca gran parte de Navarra y de la Comunidad Autónoma Vasca."
+  },
+  {
+    "id": "patxaran",
+    "tema": "Gastronomía",
+    "pregunta": "¿Qué fruto se macera en anís para hacer el pacharán?",
+    "opciones": ["Endrinas", "Moras", "Cerezas", "Ciruelas claudias"],
+    "correcta": 0,
+    "explicacion": "Las endrinas son el fruto del endrino; el Pacharán Navarro tiene Indicación Geográfica."
+  },
+  {
+    "id": "alcachofa",
+    "tema": "Gastronomía",
+    "pregunta": "¿Qué hortaliza de Tudela tiene Indicación Geográfica Protegida?",
+    "opciones": ["La alcachofa", "El tomate", "La berenjena", "La calabaza"],
+    "correcta": 0,
+    "explicacion": "La IGP Alcachofa de Tudela protege la variedad Blanca de Tudela."
+  },
+  {
+    "id": "menestra",
+    "tema": "Gastronomía",
+    "pregunta": "¿Qué plato de verduras es emblema de la Ribera de Navarra?",
+    "opciones": ["Menestra", "Pisto", "Escalivada", "Samfaina"],
+    "correcta": 0,
+    "explicacion": "Lleva alcachofa, espárrago, guisantes, habas, borraja o acelga según la temporada."
+  },
+  {
+    "id": "ajoarriero",
+    "tema": "Gastronomía",
+    "pregunta": "¿Qué pescado es la base del ajoarriero?",
+    "opciones": ["Bacalao", "Merluza", "Trucha", "Sardina"],
+    "correcta": 0,
+    "explicacion": "El bacalao al ajoarriero lleva también ajo, pimiento y tomate."
+  },
+  {
+    "id": "trucha-navarra",
+    "tema": "Gastronomía",
+    "pregunta": "¿Con qué se rellena la trucha a la navarra?",
+    "opciones": ["Con jamón", "Con queso", "Con setas", "Con pimientos"],
+    "correcta": 0,
+    "explicacion": "Se le mete una loncha de jamón y se fríe."
+  },
+  {
+    "id": "ternera-igp",
+    "tema": "Gastronomía",
+    "pregunta": "¿Qué carne navarra tiene Indicación Geográfica Protegida?",
+    "opciones": ["Ternera de Navarra", "Pollo de corral", "Conejo de monte", "Jabalí"],
+    "correcta": 0,
+    "explicacion": "La IGP Ternera de Navarra (Nafarroako Aratxea) protege la carne de terneros criados en Navarra."
+  },
+  {
+    "id": "rosado",
+    "tema": "Gastronomía",
+    "pregunta": "¿Por qué tipo de vino ha sido tradicionalmente famosa la DO Navarra?",
+    "opciones": ["Rosado", "Blanco de albariño", "Generoso", "Espumoso"],
+    "correcta": 0,
+    "explicacion": "El rosado de garnacha es el vino navarro más conocido."
+  },
+  {
+    "id": "garnacha",
+    "tema": "Gastronomía",
+    "pregunta": "¿Con qué variedad de uva se elabora tradicionalmente el rosado navarro?",
+    "opciones": ["Garnacha", "Albariño", "Verdejo", "Palomino"],
+    "correcta": 0,
+    "explicacion": "La garnacha es la uva tinta tradicional de Navarra."
+  },
+  {
+    "id": "pochas",
+    "tema": "Gastronomía",
+    "pregunta": "¿Qué son las pochas?",
+    "opciones": ["Alubias blancas tiernas", "Pimientos asados", "Setas de primavera", "Habas secas"],
+    "correcta": 0,
+    "explicacion": "Se recogen antes de secarse y se guisan a finales del verano."
+  },
+  {
+    "id": "txantxigorri",
+    "tema": "Gastronomía",
+    "pregunta": "¿Qué ingrediente da nombre a la torta de txantxigorri?",
+    "opciones": ["Chicharrones de cerdo", "Nueces", "Queso de oveja", "Manzana"],
+    "correcta": 0,
+    "explicacion": "Txantxigorri significa chicharrón."
+  },
+  {
+    "id": "quebrantahuesos",
+    "tema": "Naturaleza",
+    "pregunta": "¿Qué ave carroñera del Pirineo navarro se alimenta sobre todo de huesos?",
+    "opciones": ["El quebrantahuesos", "El buitre leonado", "El alimoche", "El águila real"],
+    "correcta": 0,
+    "explicacion": "Rompe los huesos dejándolos caer sobre las rocas."
+  },
+  {
+    "id": "buitre-foces",
+    "tema": "Naturaleza",
+    "pregunta": "¿Qué ave anida en gran número en las foces de Lumbier y Arbayún?",
+    "opciones": ["El buitre leonado", "El flamenco", "La cigüeña blanca", "La gaviota"],
+    "correcta": 0,
+    "explicacion": "Ambas foces tienen colonias importantes de buitre leonado."
+  },
+  {
+    "id": "irati-europa",
+    "tema": "Naturaleza",
+    "pregunta": "Se suele decir que la Selva de Irati es el segundo hayedo-abetal más extenso de Europa. ¿Cuál es el primero?",
+    "opciones": ["La Selva Negra", "El bosque de Białowieża", "Las Landas", "El bosque de Fontainebleau"],
+    "correcta": 0,
+    "explicacion": "Irati es el segundo hayedo-abetal de Europa tras la Selva Negra alemana."
+  },
+  {
+    "id": "bardenas-biosfera",
+    "tema": "Naturaleza",
+    "pregunta": "¿En qué año fueron declaradas las Bardenas Reales Reserva de la Biosfera?",
+    "opciones": ["2000", "1975", "1992", "2015"],
+    "correcta": 0,
+    "explicacion": "La UNESCO las declaró Reserva de la Biosfera en el año 2000."
+  },
+  {
+    "id": "urbasa-andia",
+    "tema": "Naturaleza",
+    "pregunta": "¿Qué sierra forma parque natural junto con Urbasa?",
+    "opciones": ["Andia", "Aralar", "El Perdón", "Codés"],
+    "correcta": 0,
+    "explicacion": "El Parque Natural de Urbasa-Andia se declaró en 1997."
+  },
+  {
+    "id": "urederra-color",
+    "tema": "Naturaleza",
+    "pregunta": "¿Por qué es famoso el nacedero del Urederra?",
+    "opciones": ["Por el color turquesa de sus pozas", "Por sus aguas termales", "Por una cascada de 300 metros", "Por sus géiseres"],
+    "correcta": 0,
+    "explicacion": "Urederra significa «agua hermosa» en euskera."
+  },
+  {
+    "id": "azpilcueta",
+    "tema": "Personajes",
+    "pregunta": "¿Cómo se conoció al economista Martín de Azpilcueta, nacido en Barásoain?",
+    "opciones": ["El Doctor Navarro", "El Tostado", "El Fénix", "El Divino"],
+    "correcta": 0,
+    "explicacion": "Fue uno de los grandes pensadores de la Escuela de Salamanca."
+  },
+  {
+    "id": "eslava",
+    "tema": "Personajes",
+    "pregunta": "¿Qué compositor, autor de un famoso Miserere, nació en Burlada?",
+    "opciones": ["Hilarión Eslava", "Pablo Sarasate", "Julián Gayarre", "Joaquín Larregla"],
+    "correcta": 0,
+    "explicacion": "Hilarión Eslava fue maestro de la Capilla Real en Madrid."
+  },
+  {
+    "id": "villoslada",
+    "tema": "Personajes",
+    "pregunta": "¿Qué escritor de Viana escribió la novela «Amaya o los vascos en el siglo VIII»?",
+    "opciones": ["Francisco Navarro Villoslada", "Pío Baroja", "Arturo Campión", "Félix Urabayen"],
+    "correcta": 0,
+    "explicacion": "Se publicó a finales del siglo XIX y fue un gran éxito."
+  },
+  {
+    "id": "cesar-borgia",
+    "tema": "Personajes",
+    "pregunta": "¿Qué famoso personaje italiano murió en 1507 en combate cerca de Viana?",
+    "opciones": ["César Borgia", "Lorenzo de Médicis", "Nicolás Maquiavelo", "Leonardo da Vinci"],
+    "correcta": 0,
+    "explicacion": "César Borgia está enterrado ante la iglesia de Santa María de Viana."
+  },
+  {
+    "id": "benjamin-tudela",
+    "tema": "Personajes",
+    "pregunta": "¿Por qué es conocido Benjamín de Tudela, judío tudelano del siglo XII?",
+    "opciones": ["Por sus viajes por Europa, Asia y África", "Por ser rey de Navarra", "Por construir la catedral de Tudela", "Por inventar la imprenta"],
+    "correcta": 0,
+    "explicacion": "Su «Libro de viajes» describe comunidades judías de medio mundo."
+  },
+  {
+    "id": "espoz-mina",
+    "tema": "Personajes",
+    "pregunta": "¿Qué guerrillero de la Guerra de la Independencia nació en Idocin?",
+    "opciones": ["Francisco Espoz y Mina", "El Empecinado", "Tomás de Zumalacárregui", "Agustina de Aragón"],
+    "correcta": 0,
+    "explicacion": "Espoz y Mina dirigió la guerrilla navarra contra los franceses."
+  },
+  {
+    "id": "baroja-itzea",
+    "tema": "Personajes",
+    "pregunta": "¿En qué localidad navarra está Itzea, la casa de la familia Baroja?",
+    "opciones": ["Bera", "Elizondo", "Lesaka", "Sunbilla"],
+    "correcta": 0,
+    "explicacion": "Pío Baroja pasó muchos veranos en Itzea, en Bera."
+  },
+  {
+    "id": "indurain-tours",
+    "tema": "Personajes",
+    "pregunta": "¿Cuántos Tours de Francia ganó Miguel Induráin?",
+    "opciones": ["Cinco", "Tres", "Siete", "Uno"],
+    "correcta": 0,
+    "explicacion": "Ganó cinco seguidos, de 1991 a 1995."
+  },
+  {
+    "id": "fermin-amiens",
+    "tema": "Personajes",
+    "pregunta": "Según la tradición, ¿de qué ciudad fue obispo San Fermín?",
+    "opciones": ["Amiens", "Toulouse", "Roma", "Burdeos"],
+    "correcta": 0,
+    "explicacion": "San Fermín, hijo de un senador de Pompaelo, fue obispo de Amiens, donde murió mártir."
+  },
+  {
+    "id": "teobaldo-trovador",
+    "tema": "Personajes",
+    "pregunta": "¿Por qué otra actividad, además de reinar, es famoso Teobaldo I de Navarra?",
+    "opciones": ["Fue un célebre trovador", "Fue un gran arquitecto", "Fue astrónomo", "Fue pintor de retablos"],
+    "correcta": 0,
+    "explicacion": "Teobaldo I fue uno de los poetas líricos más importantes de su tiempo."
+  },
+  {
+    "id": "armendariz",
+    "tema": "Personajes",
+    "pregunta": "¿Qué director navarro rodó la película «Tasio» (1984)?",
+    "opciones": ["Montxo Armendáriz", "Pedro Almodóvar", "Julio Medem", "Alejandro Amenábar"],
+    "correcta": 0,
+    "explicacion": "Montxo Armendáriz nació en Olleta, en la Valdorba."
+  },
+  {
+    "id": "alfredo-landa",
+    "tema": "Personajes",
+    "pregunta": "¿En qué ciudad nació el actor Alfredo Landa?",
+    "opciones": ["Pamplona / Iruña", "Tudela", "Madrid", "Bilbao"],
+    "correcta": 0,
+    "explicacion": "Alfredo Landa nació en Pamplona en 1933."
+  },
+  {
+    "id": "jasso",
+    "tema": "Personajes",
+    "pregunta": "¿Cuál era el apellido de familia de San Francisco Javier?",
+    "opciones": ["De Jasso", "De Loyola", "De Albret", "De Goñi"],
+    "correcta": 0,
+    "explicacion": "Se llamaba Francisco de Jasso y Azpilicueta; «Javier» viene de su castillo natal."
+  },
+  {
+    "id": "eus-agur",
+    "tema": "Euskera",
+    "pregunta": "¿Qué significa «agur» en euskera?",
+    "opciones": ["Adiós (o saludo)", "Gracias", "Por favor", "Perdón"],
+    "correcta": 0,
+    "explicacion": "«Agur» sirve para despedirse y también para saludar."
+  },
+  {
+    "id": "eus-eskerrik",
+    "tema": "Euskera",
+    "pregunta": "¿Qué significa «eskerrik asko»?",
+    "opciones": ["Muchas gracias", "Buenos días", "Hasta luego", "Lo siento"],
+    "correcta": 0,
+    "explicacion": "«Eskerrik asko» es «muchas gracias»."
+  },
+  {
+    "id": "eus-ibai",
+    "tema": "Euskera",
+    "pregunta": "¿Qué significa «ibai» en euskera?",
+    "opciones": ["Río", "Monte", "Casa", "Puente"],
+    "correcta": 0,
+    "explicacion": "«Ibai» es río."
+  },
+  {
+    "id": "eus-mendi",
+    "tema": "Euskera",
+    "pregunta": "¿Qué significa «mendi» en euskera?",
+    "opciones": ["Monte", "Valle", "Río", "Bosque"],
+    "correcta": 0,
+    "explicacion": "«Mendi» es monte o montaña."
+  },
+  {
+    "id": "eus-etxe",
+    "tema": "Euskera",
+    "pregunta": "¿Qué significa «etxe» en euskera?",
+    "opciones": ["Casa", "Iglesia", "Calle", "Pueblo"],
+    "correcta": 0,
+    "explicacion": "«Etxe» es casa; está en apellidos como Etxeberria («casa nueva»)."
+  },
+  {
+    "id": "eus-berri",
+    "tema": "Euskera",
+    "pregunta": "¿Qué significa «berri» en euskera?",
+    "opciones": ["Nuevo", "Viejo", "Grande", "Rojo"],
+    "correcta": 0,
+    "explicacion": "«Berri» es nuevo, como en Etxeberri o Erriberri."
+  },
+  {
+    "id": "eus-zubi",
+    "tema": "Euskera",
+    "pregunta": "¿Qué significa «zubi» en euskera?",
+    "opciones": ["Puente", "Camino", "Fuente", "Molino"],
+    "correcta": 0,
+    "explicacion": "«Zubi» es puente: Zubiri, Urdazubi…"
+  },
+  {
+    "id": "eus-ur",
+    "tema": "Euskera",
+    "pregunta": "¿Qué significa «ur» en euskera?",
+    "opciones": ["Agua", "Fuego", "Tierra", "Aire"],
+    "correcta": 0,
+    "explicacion": "«Ur» es agua; aparece en Urederra o Uharte."
+  },
+  {
+    "id": "eus-nafarroa",
+    "tema": "Euskera",
+    "pregunta": "¿Cómo se dice «Navarra» en euskera?",
+    "opciones": ["Nafarroa", "Nafarrera", "Naparra", "Nabarre"],
+    "correcta": 0,
+    "explicacion": "Nafarroa; la Comunidad Foral es Nafarroako Foru Komunitatea."
+  },
+  {
+    "id": "eus-haran",
+    "tema": "Euskera",
+    "pregunta": "¿Qué significa «haran» (o «aran») en euskera?",
+    "opciones": ["Valle", "Llanura", "Lago", "Cumbre"],
+    "correcta": 0,
+    "explicacion": "Por eso el Valle de Ollo es Ollaran."
+  },
+  {
+    "id": "eus-bertsolari",
+    "tema": "Euskera",
+    "pregunta": "¿Qué es un «bertsolari»?",
+    "opciones": ["Un improvisador de versos cantados", "Un pelotari", "Un pastor trashumante", "Un bailarín de jota"],
+    "correcta": 0,
+    "explicacion": "El bertsolarismo es la improvisación oral de versos con rima y métrica."
+  },
+  {
+    "id": "eus-txistu",
+    "tema": "Euskera",
+    "pregunta": "¿Qué es el «txistu»?",
+    "opciones": ["Una flauta de tres agujeros", "Un tambor", "Un tipo de alpargata", "Una danza"],
+    "correcta": 0,
+    "explicacion": "Se toca con una mano mientras la otra golpea el tamboril."
+  },
+  {
+    "id": "eus-kale",
+    "tema": "Euskera",
+    "pregunta": "¿Qué significa «kale» en euskera?",
+    "opciones": ["Calle", "Plaza", "Iglesia", "Mercado"],
+    "correcta": 0,
+    "explicacion": "«Kale» es calle; «kale nagusia» es la calle mayor."
+  },
+  {
+    "id": "top-estella",
+    "tema": "Topónimos",
+    "pregunta": "¿Cuál es el nombre en euskera de Estella?",
+    "opciones": ["Lizarra", "Lizarraga", "Leitza", "Lizaso"],
+    "correcta": 0,
+    "explicacion": "El nombre oficial es Estella-Lizarra."
+  },
+  {
+    "id": "top-sanguesa",
+    "tema": "Topónimos",
+    "pregunta": "¿Cuál es el nombre en euskera de Sangüesa?",
+    "opciones": ["Zangoza", "Zarautz", "Zuasti", "Sunbilla"],
+    "correcta": 0,
+    "explicacion": "Sangüesa / Zangoza, a orillas del Aragón."
+  },
+  {
+    "id": "top-puente",
+    "tema": "Topónimos",
+    "pregunta": "¿Cuál es el nombre en euskera de Puente la Reina?",
+    "opciones": ["Gares", "Garralda", "Gartzain", "Garde"],
+    "correcta": 0,
+    "explicacion": "Puente la Reina / Gares."
+  },
+  {
+    "id": "top-roncesvalles",
+    "tema": "Topónimos",
+    "pregunta": "¿Cuál es el nombre en euskera de Roncesvalles?",
+    "opciones": ["Orreaga", "Orbaizeta", "Oronoz", "Orokieta"],
+    "correcta": 0,
+    "explicacion": "Orreaga / Roncesvalles, primera parada del Camino en Navarra."
+  },
+  {
+    "id": "top-valcarlos",
+    "tema": "Topónimos",
+    "pregunta": "¿Cuál es el nombre en euskera de Valcarlos?",
+    "opciones": ["Luzaide", "Lesaka", "Luzaro", "Larraun"],
+    "correcta": 0,
+    "explicacion": "Luzaide / Valcarlos, junto a la frontera con Francia."
+  },
+  {
+    "id": "top-burguete",
+    "tema": "Topónimos",
+    "pregunta": "¿Cuál es el nombre en euskera de Burguete?",
+    "opciones": ["Auritz", "Aurizberri", "Arizkun", "Aribe"],
+    "correcta": 0,
+    "explicacion": "Auritz / Burguete. Aurizberri es Espinal."
+  },
+  {
+    "id": "top-santesteban",
+    "tema": "Topónimos",
+    "pregunta": "¿Cuál es el nombre en euskera de Santesteban?",
+    "opciones": ["Doneztebe", "Donibane", "Donamaria", "Donostia"],
+    "correcta": 0,
+    "explicacion": "Doneztebe / Santesteban, en Malerreka."
+  },
+  {
+    "id": "top-aoiz",
+    "tema": "Topónimos",
+    "pregunta": "¿Cuál es el nombre en euskera de Aoiz?",
+    "opciones": ["Agoitz", "Aibar", "Artaitz", "Aoizberri"],
+    "correcta": 0,
+    "explicacion": "Aoiz / Agoitz, junto al río Irati."
+  },
+  {
+    "id": "top-peralta",
+    "tema": "Topónimos",
+    "pregunta": "¿Cuál es el nombre en euskera de Peralta?",
+    "opciones": ["Azkoien", "Azpilkueta", "Arguedas", "Andosilla"],
+    "correcta": 0,
+    "explicacion": "Peralta / Azkoien, a orillas del Arga."
+  },
+  {
+    "id": "top-monreal",
+    "tema": "Topónimos",
+    "pregunta": "¿Cuál es el nombre en euskera de Monreal?",
+    "opciones": ["Elo", "Elizondo", "Eltso", "Erro"],
+    "correcta": 0,
+    "explicacion": "Monreal / Elo, al pie de la Higa de Monreal."
+  },
+  {
+    "id": "top-isaba",
+    "tema": "Topónimos",
+    "pregunta": "¿Cuál es el nombre en euskera de Isaba?",
+    "opciones": ["Izaba", "Itsaso", "Isasa", "Izalzu"],
+    "correcta": 0,
+    "explicacion": "Isaba / Izaba, en el valle de Roncal."
+  },
+  {
+    "id": "top-ujue",
+    "tema": "Topónimos",
+    "pregunta": "¿Cuál es el nombre en euskera de Ujué?",
+    "opciones": ["Uxue", "Ultzama", "Urroz", "Uztarroze"],
+    "correcta": 0,
+    "explicacion": "Ujué / Uxue, con su santuario-fortaleza."
+  },
+  {
+    "id": "top-huarte",
+    "tema": "Topónimos",
+    "pregunta": "¿Qué significa probablemente el topónimo Uharte (Huarte)?",
+    "opciones": ["Entre aguas", "Casa nueva", "Monte alto", "Puente viejo"],
+    "correcta": 0,
+    "explicacion": "Viene de «ur» (agua) y «arte» (entre)."
+  },
+  {
+    "id": "top-zubiri",
+    "tema": "Topónimos",
+    "pregunta": "¿Qué significa el topónimo Zubiri?",
+    "opciones": ["Pueblo del puente", "Casa del río", "Monte del puente", "Valle nuevo"],
+    "correcta": 0,
+    "explicacion": "De «zubi» (puente) e «iri/hiri» (pueblo)."
+  },
+  {
+    "id": "top-erriberri",
+    "tema": "Topónimos",
+    "pregunta": "¿Qué significa Erriberri, nombre en euskera de Olite?",
+    "opciones": ["Pueblo nuevo", "Ribera", "Castillo real", "Viña grande"],
+    "correcta": 0,
+    "explicacion": "De «herri» (pueblo) y «berri» (nuevo)."
+  },
+  {
+    "id": "top-lizarra",
+    "tema": "Topónimos",
+    "pregunta": "¿Qué árbol se esconde en el nombre de Lizarra (Estella)?",
+    "opciones": ["El fresno", "El roble", "El haya", "El castaño"],
+    "correcta": 0,
+    "explicacion": "«Lizar» es fresno en euskera."
+  },
+  {
+    "id": "catedral-fachada",
+    "tema": "Patrimonio",
+    "pregunta": "¿De qué estilo es la fachada principal de la catedral de Pamplona?",
+    "opciones": ["Neoclásico", "Románico", "Gótico flamígero", "Barroco churrigueresco"],
+    "correcta": 0,
+    "explicacion": "La fachada es neoclásica, de Ventura Rodríguez; el interior y el claustro son góticos."
+  },
+  {
+    "id": "sepulcro-carlos-iii",
+    "tema": "Patrimonio",
+    "pregunta": "¿Dónde está el sepulcro de Carlos III el Noble y Leonor de Trastámara?",
+    "opciones": ["En la catedral de Pamplona", "En el palacio de Olite", "En el monasterio de Leyre", "En Roncesvalles"],
+    "correcta": 0,
+    "explicacion": "El sepulcro de alabastro, obra de Janin Lomme, está en la nave central."
+  },
+  {
+    "id": "palacio-estella",
+    "tema": "Patrimonio",
+    "pregunta": "¿Qué es el Palacio de los Reyes de Navarra de Estella?",
+    "opciones": ["Un raro ejemplo de románico civil", "Un castillo gótico", "Un palacio barroco", "Una fortaleza árabe"],
+    "correcta": 0,
+    "explicacion": "Es uno de los pocos edificios civiles románicos que se conservan en España."
+  },
+  {
+    "id": "toledo-norte",
+    "tema": "Patrimonio",
+    "pregunta": "¿Qué ciudad navarra es conocida como «la Toledo del Norte» por su patrimonio?",
+    "opciones": ["Estella-Lizarra", "Tudela", "Sangüesa / Zangoza", "Olite / Erriberri"],
+    "correcta": 0,
+    "explicacion": "Estella acumula iglesias, palacios y conventos medievales."
+  },
+  {
+    "id": "eunate",
+    "tema": "Patrimonio",
+    "pregunta": "¿Qué forma tiene la planta de la iglesia románica de Santa María de Eunate?",
+    "opciones": ["Octogonal", "Circular", "De cruz griega", "Rectangular"],
+    "correcta": 0,
+    "explicacion": "Eunate, cerca de Muruzábal, es octogonal y está rodeada por un claustro."
+  },
+  {
+    "id": "fuente-vino",
+    "tema": "Camino de Santiago",
+    "pregunta": "¿Junto a qué monasterio está la famosa «fuente del vino» para los peregrinos?",
+    "opciones": ["Irache", "Leyre", "La Oliva", "Iranzu"],
+    "correcta": 0,
+    "explicacion": "Está junto al monasterio de Irache, en Ayegui / Aiegi."
+  },
+  {
+    "id": "la-oliva",
+    "tema": "Patrimonio",
+    "pregunta": "¿En qué municipio está el monasterio cisterciense de La Oliva?",
+    "opciones": ["Carcastillo", "Fitero", "Abárzuza / Abartzuza", "Yesa"],
+    "correcta": 0,
+    "explicacion": "La Oliva, en Carcastillo, sigue habitado por monjes."
+  },
+  {
+    "id": "iranzu",
+    "tema": "Patrimonio",
+    "pregunta": "¿A qué orden pertenece el monasterio de Iranzu?",
+    "opciones": ["Cisterciense", "Benedictina de Cluny", "Franciscana", "Jesuita"],
+    "correcta": 0,
+    "explicacion": "Iranzu, en Abárzuza, es un monasterio cisterciense del siglo XII."
+  },
+  {
+    "id": "puerta-juicio",
+    "tema": "Patrimonio",
+    "pregunta": "¿Cómo se llama la portada románica de la catedral de Tudela con escenas del Juicio Final?",
+    "opciones": ["Puerta del Juicio", "Puerta del Perdón", "Pórtico de la Gloria", "Puerta de los Leones"],
+    "correcta": 0,
+    "explicacion": "Tiene más de cien grupos escultóricos."
+  },
+  {
+    "id": "ujue-corazon",
+    "tema": "Patrimonio",
+    "pregunta": "¿Qué se guarda en el santuario de Santa María de Ujué?",
+    "opciones": ["El corazón de Carlos II el Malo", "La espada de Sancho el Fuerte", "La corona de Navarra", "Las cadenas de las Navas"],
+    "correcta": 0,
+    "explicacion": "Carlos II pidió que su corazón se guardara en Ujué."
+  },
+  {
+    "id": "cerco-artajona",
+    "tema": "Patrimonio",
+    "pregunta": "¿Cómo se llama el recinto amurallado medieval de Artajona?",
+    "opciones": ["El Cerco", "La Muela", "El Castillo", "La Villavieja"],
+    "correcta": 0,
+    "explicacion": "El Cerco de Artajona es un recinto fortificado medieval que conserva varias de sus torres."
+  },
+  {
+    "id": "museo-navarra",
+    "tema": "Patrimonio",
+    "pregunta": "¿En qué edificio está el Museo de Navarra?",
+    "opciones": ["El antiguo hospital de Nuestra Señora de la Misericordia", "Un antiguo cuartel", "El Palacio de Navarra", "Una antigua estación"],
+    "correcta": 0,
+    "explicacion": "El museo ocupa el antiguo hospital, cuya portada renacentista se conserva."
+  },
+  {
+    "id": "puente-arga",
+    "tema": "Patrimonio",
+    "pregunta": "¿Sobre qué río está el famoso puente románico de Puente la Reina?",
+    "opciones": ["Arga", "Ega", "Aragón", "Robo"],
+    "correcta": 0,
+    "explicacion": "El puente, del siglo XI, se construyó para los peregrinos."
+  },
+  {
+    "id": "camino-entrada",
+    "tema": "Camino de Santiago",
+    "pregunta": "¿Desde qué localidad francesa suelen salir los peregrinos que cruzan el Pirineo hasta Roncesvalles?",
+    "opciones": ["Donibane Garazi / Saint-Jean-Pied-de-Port", "Lourdes", "Bayona", "Pau"],
+    "correcta": 0,
+    "explicacion": "Es el inicio más habitual del Camino francés."
+  },
+  {
+    "id": "camino-viana",
+    "tema": "Camino de Santiago",
+    "pregunta": "¿Cuál es la última localidad navarra del Camino francés antes de entrar en La Rioja?",
+    "opciones": ["Viana", "Los Arcos", "Torres del Río", "Lodosa"],
+    "correcta": 0,
+    "explicacion": "Después de Viana el Camino llega a Logroño."
+  },
+  {
+    "id": "alto-perdon",
+    "tema": "Camino de Santiago",
+    "pregunta": "¿Qué sierra con aerogeneradores y un monumento a los peregrinos cruza el Camino al sur de Pamplona?",
+    "opciones": ["El Perdón", "Urbasa", "Aralar", "Codés"],
+    "correcta": 0,
+    "explicacion": "El monumento de chapa del Alto del Perdón es de 1996."
   }
 ]
