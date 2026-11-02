@@ -1,0 +1,4 @@
+{
+  "nota": "Fotos propias o de Wikimedia Commons para «Adivina el municipio». Cada foto: ine (código INE del municipio), url, autor, licencia, licencia_url y pagina (enlace a la fuente). Hacen falta al menos 2 fotos por municipio. Mientras esté vacío, el juego usa fotos de Mapillary buscadas en vivo (necesita el token).",
+  "fotos": []
+}

@@ -180,6 +180,20 @@ def main():
     if skipped:
         print("\nDescartados por licencia:")
         print("\n".join("  " + s for s in skipped))
+    # Página para revisar a ojo que cada escudo corresponde a su municipio.
+    cards = "".join(
+        f'<figure><img src="{html.escape(e["url"])}" alt=""><figcaption><b>{html.escape(e["municipio"])}</b><br>'
+        f'<a href="{html.escape(e["pagina"] or "")}">{html.escape(e["archivo"])}</a><br>{html.escape(e["autor"])} · {html.escape(e["licencia"])}</figcaption></figure>'
+        for e in escudos
+    )
+    (ROOT / "tools/revisar_escudos.html").write_text(
+        "<!doctype html><meta charset='utf-8'><title>Revisar escudos</title>"
+        "<style>body{font-family:system-ui;margin:20px}main{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}"
+        "figure{margin:0;padding:10px;border:1px solid #ddd;border-radius:10px;text-align:center;font-size:13px}img{height:120px;max-width:100%;object-fit:contain}</style>"
+        f"<h1>Revisar escudos ({len(escudos)})</h1><p>Si alguno no corresponde, borra su entrada de data/escudos.json.</p><main>{cards}</main>",
+        "utf-8",
+    )
+    print("Para revisarlos: abre tools/revisar_escudos.html en el navegador.")
     report = ROOT / "tools/escudos_faltan.txt"
     report.write_text("\n".join(without) + "\n", "utf-8")
     print(f"Lista de municipios sin escudo en {report.relative_to(ROOT)}")

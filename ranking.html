@@ -3,22 +3,23 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Quiz del día · GeoReyno</title>
-  <meta name="description" content="Cinco preguntas diarias sobre Navarra. El mismo reto para todo el mundo.">
-  <link rel="icon" href="img/icon.svg" type="image/svg+xml">
-  <meta name="theme-color" content="#b3122e">
+  <title>Clasificación · GeoReyno</title>
+  <meta name="description" content="Clasificación de GeoReyno: los mejores jugadores de hoy, de la semana, del mes y de siempre en cada juego.">
+  <link rel="icon" href="img/logo.svg" type="image/svg+xml">
+  <meta name="theme-color" content="#0a0e16">
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="GeoReyno">
   <meta property="og:locale" content="es_ES">
-  <meta property="og:title" content="Quiz del día · GeoReyno">
-  <meta property="og:description" content="Cinco preguntas diarias sobre Navarra. El mismo reto para todo el mundo.">
-  <meta property="og:url" content="https://javierlarrea99.github.io/GeoReyno/quiz.html">
+  <meta property="og:title" content="Clasificación · GeoReyno">
+  <meta property="og:description" content="Clasificación de GeoReyno: los mejores jugadores de hoy, de la semana, del mes y de siempre en cada juego.">
+  <meta property="og:url" content="https://javierlarrea99.github.io/GeoReyno/ranking.html">
   <meta property="og:image" content="https://javierlarrea99.github.io/GeoReyno/img/og.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
+  <link rel="preload" href="fonts/barlow-condensed-latin-800-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="css/style.css">
   <script src="js/theme.js"></script>
 </head>
@@ -27,21 +28,20 @@
 
   <main class="wrap game">
     <div class="game-head">
-      <h1 id="title">Quiz del día</h1>
-      <span class="meta" id="meta"></span>
+      <h1>Clasificación</h1>
+      <span class="meta">Retos diarios</span>
     </div>
-    <div class="progress" id="progress" aria-hidden="true"></div>
-    <div id="stage" aria-live="polite">
-      <div class="card"><p>Cargando…</p></div>
-    </div>
+    <div id="join"></div>
+    <section class="card">
+      <div id="tabs"></div>
+      <div id="board"><p class="empty">Cargando…</p></div>
+    </section>
   </main>
 
   <footer class="foot" data-layout></footer>
-
   <div class="toast" id="toast" role="status"></div>
 
   <script type="module" src="js/layout.js"></script>
-
-  <script type="module" src="js/quiz.js"></script>
+  <script type="module" src="js/ranking.js"></script>
 </body>
 </html>

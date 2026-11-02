@@ -3,7 +3,9 @@
 #
 # Cómo usarla:
 #   1. En GitHub: Settings → Secrets and variables → Actions → New repository secret
-#      Nombre: MAPILLARY_TOKEN   Valor: tu Client Token (MLY|...)
+#      MAPILLARY_TOKEN     tu token de Mapillary (MLY|...)
+#      SUPABASE_URL        la «Project URL» de Supabase (si usas cuentas)
+#      SUPABASE_ANON_KEY   la clave «anon public» de Supabase (si usas cuentas)
 #   2. Settings → Pages → Source: «GitHub Actions».
 #   3. Copia este archivo a .github/workflows/pages.yml y súbelo.
 # Cada push a main publicará la web y creará config.js en el servidor a partir del secreto.
@@ -36,8 +38,14 @@ jobs:
       - name: Crear config.js desde el secreto
         env:
           MAPILLARY_TOKEN: ${{ secrets.MAPILLARY_TOKEN }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
         run: |
-          printf 'export const MAPILLARY_TOKEN = "%s";\n' "$MAPILLARY_TOKEN" > config.js
+          {
+            printf 'export const MAPILLARY_TOKEN = "%s";\n' "$MAPILLARY_TOKEN"
+            printf 'export const SUPABASE_URL = "%s";\n' "$SUPABASE_URL"
+            printf 'export const SUPABASE_ANON_KEY = "%s";\n' "$SUPABASE_ANON_KEY"
+          } > config.js
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

@@ -9,11 +9,11 @@ import {
 } from "./engine.js";
 import { loadMunicipios, municipioAt } from "./geo.js";
 import { createAnswerMap, roundPoints, pointsSquare } from "./map.js";
+import { getToken, forgetToken, TokenError, nearestImage, loadViewerLib, photoCredit, renderNoToken } from "./mapillary.js";
 
 const MODE = "street";
 const ROUNDS = 5;
 const MAX = 5000 * ROUNDS;
-const MAPILLARY = "https://unpkg.com/mapillary-js@4.1.2/dist/mapillary";
 const params = gameParams();
 const room = Boolean(params.seed);
 const practice = params.practice || room;
@@ -25,96 +25,14 @@ let data;
 let token = "";
 let sample = false;
 
-// Token: primero config.js (en el servidor), si no, el guardado en este navegador.
-async function getToken() {
-  try {
-    const cfg = await import("../config.js");
-    if (cfg.MAPILLARY_TOKEN) return String(cfg.MAPILLARY_TOKEN).trim();
-  } catch {
-    /* sin config.js: es lo normal en una copia recién descargada */
-  }
-  return String(loadPref("mapillary-token", "") || "").trim();
-}
-
-function loadMapillary() {
-  if (window.mapillary) return Promise.resolve(window.mapillary);
-  const load = (el) => new Promise((resolve, reject) => {
-    el.onload = resolve;
-    el.onerror = () => reject(new Error("No se ha podido cargar MapillaryJS"));
-    document.head.appendChild(el);
-  });
-  const css = document.createElement("link");
-  css.rel = "stylesheet";
-  css.href = `${MAPILLARY}.css`;
-  const js = document.createElement("script");
-  js.src = `${MAPILLARY}.js`;
-  return Promise.all([load(css), load(js)]).then(() => window.mapillary);
-}
-
-// Busca la foto de Mapillary más cercana a un punto (se prefieren las panorámicas).
-async function nearestImage([lon, lat]) {
-  for (const d of [0.002, 0.006]) {
-    const q = new URLSearchParams({
-      access_token: token,
-      fields: "id,geometry,creator,captured_at,is_pano",
-      bbox: [lon - d, lat - d, lon + d, lat + d].map((v) => v.toFixed(6)).join(","),
-      limit: "30",
-    });
-    const res = await fetch(`https://graph.mapillary.com/images?${q}`);
-    if (res.status === 401 || res.status === 403) throw Object.assign(new Error("token"), { code: "token" });
-    if (!res.ok) throw new Error(`Mapillary ${res.status}`);
-    const json = await res.json();
-    const list = (json.data || []).filter((i) => i.geometry);
-    if (list.length) {
-      list.sort((a, b) => (b.is_pano - a.is_pano) ||
-        (distanceKm([lon, lat], a.geometry.coordinates) - distanceKm([lon, lat], b.geometry.coordinates)));
-      const best = list[0];
-      return {
-        imagen: best.id,
-        lon: best.geometry.coordinates[0],
-        lat: best.geometry.coordinates[1],
-        autor: best.creator?.username || "",
-      };
-    }
-  }
-  return null;
-}
-
 // Ubicación lista para jugar: con id de foto y coordenadas reales de la foto.
 async function resolveLocation(u) {
   if (u.imagen) return { ...u };
-  const found = await nearestImage([u.lon, u.lat]);
-  return found ? { ...u, ...found } : null;
+  const found = await nearestImage(token, [u.lon, u.lat]);
+  return found ? { ...u, imagen: found.id, lon: found.lon, lat: found.lat, autor: found.autor } : null;
 }
 
-function noToken(reason = "") {
-  stage.innerHTML = `
-    <div class="card prose-card">
-      <div class="topic">Falta configurar Mapillary</div>
-      <h2 class="question">Navarra Street necesita un token de Mapillary</h2>
-      ${reason ? `<p class="note">${esc(reason)}</p>` : ""}
-      <p>Las fotos de este modo vienen de <a href="https://www.mapillary.com" target="_blank" rel="noopener">Mapillary</a>, fotos a pie de calle hechas por voluntarios (licencia CC BY-SA 4.0). Para pedirlas hace falta un <b>token de cliente</b>, que es gratuito:</p>
-      <ol>
-        <li>Entra en <a href="https://www.mapillary.com/dashboard/developers" target="_blank" rel="noopener">mapillary.com/dashboard/developers</a> con tu cuenta.</li>
-        <li>Pulsa «Register application», ponle un nombre (GeoReyno) y permiso de lectura.</li>
-        <li>Copia el <b>Client Token</b> (empieza por <code>MLY|</code>).</li>
-        <li>En la carpeta del proyecto, copia <code>config.example.js</code> como <code>config.js</code> y pega el token en <code>MAPILLARY_TOKEN</code>. Ese archivo no se sube al repositorio.</li>
-      </ol>
-      <p>Para probar ya, también puedes pegarlo aquí. Se guarda solo en este navegador:</p>
-      <form class="guess-form" id="token-form" autocomplete="off">
-        <label class="sr" for="token">Token de Mapillary</label>
-        <input class="field" id="token" type="password" placeholder="MLY|…" spellcheck="false">
-        <button class="btn" type="submit">Guardar</button>
-      </form>
-    </div>`;
-  $("token-form").addEventListener("submit", (e) => {
-    e.preventDefault();
-    const value = $("token").value.trim();
-    if (!/^MLY\|/.test(value)) return toast("El token debe empezar por MLY|");
-    savePref("mapillary-token", value);
-    location.reload();
-  });
-}
+const noToken = (reason = "") => renderNoToken(stage, "Navarra Street", reason);
 
 function label(key) {
   return room ? "Partida en sala" : practice ? "Práctica" : `Reto #${dayNumber(key)}`;
@@ -126,14 +44,6 @@ function drawProgress(results) {
     if (!r) return `<i class="${i === results.length ? "now" : ""}"></i>`;
     return `<i class="${r.points >= 2000 ? "ok" : r.points >= 500 ? "mid" : "ko"}"></i>`;
   }).join("");
-}
-
-function photoCredit(author, imageId, reveal) {
-  const who = author ? esc(author) : "autor desconocido";
-  const link = reveal && imageId
-    ? ` · <a href="https://www.mapillary.com/app/?pKey=${encodeURIComponent(imageId)}" target="_blank" rel="noopener">ver en Mapillary</a>`
-    : "";
-  return `Foto: ${who} · © Mapillary, <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" target="_blank" rel="noopener">CC BY-SA 4.0</a>${link}`;
 }
 
 async function play(locations, key, saved = []) {
@@ -156,7 +66,7 @@ async function play(locations, key, saved = []) {
   let mly;
   let answerMap;
   try {
-    [mly, answerMap] = await Promise.all([loadMapillary(), createAnswerMap(($("map").innerHTML = "", $("map")), data)]);
+    [mly, answerMap] = await Promise.all([loadViewerLib(), createAnswerMap(($("map").innerHTML = "", $("map")), data)]);
   } catch {
     stage.innerHTML = `<div class="card"><p>No se ha podido cargar el visor o el mapa. Comprueba la conexión y recarga la página.</p></div>`;
     return;
@@ -250,7 +160,7 @@ function showResult(result, key) {
     <div class="card result">
       <div class="topic">${esc(label(key))}</div>
       <div class="score">${formatNumber(result.score)}</div>
-      <p class="verdict">de ${formatNumber(MAX)} puntos.</p>
+      <p class="verdict">de ${formatNumber(MAX)} puntos. ${result.score >= 22000 ? "¡Eres un GPS con patas!" : result.score >= 15000 ? "Muy bien: te conoces Navarra calle a calle." : result.score >= 8000 ? "Nada mal. Fíjate en los carteles y las montañas." : "Navarra es grande… ¡mañana más!"}</p>
       <div class="grid">${result.grid}</div>
       <ol class="round-list">
         ${result.rounds.map((r, i) => `<li><span>Ronda ${i + 1}</span><span>${r.km.toLocaleString("es-ES")} km</span><b>${formatNumber(r.points)} pts</b></li>`).join("")}
@@ -295,24 +205,28 @@ async function start() {
     stage.innerHTML = `<div class="card"><p>No se han podido cargar las ubicaciones. Recarga la página.</p></div>`;
     return;
   }
-  if (!list.length) {
+  if (!list.length && !sample) {
     stage.innerHTML = `<div class="card"><p>No hay ubicaciones en <code>data/street.json</code>. Genera la lista con <code>tools/cobertura_mapillary.py</code>.</p></div>`;
     return;
   }
 
   stage.innerHTML = `<div class="card"><p>Buscando las fotos de hoy…</p></div>`;
   const rand = practice && !room ? Math.random : seededRandom(`${MODE}:${key}`);
-  const order = shuffle(list, rand);
+  // Con la lista real se usan sus ubicaciones. Con la de ejemplo, se buscan fotos en vivo
+  // alrededor del centro de municipios elegidos al azar (con la semilla del día).
+  const order = sample
+    ? shuffle(data.municipios, rand).slice(0, 30).map((m) => ({ lon: m.centro[0], lat: m.centro[1], ine: m.ine, municipio: m.nombre }))
+    : shuffle(list, rand);
   const locations = [];
   try {
-    for (const u of order) {
-      if (locations.length >= ROUNDS) break;
-      const loc = await resolveLocation(u);
-      if (loc) locations.push(loc);
+    // En tandas de 5 peticiones a la vez; se respeta el orden para que el reto sea igual para todos.
+    for (let i = 0; i < order.length && locations.length < ROUNDS; i += 5) {
+      const found = await Promise.all(order.slice(i, i + 5).map(resolveLocation));
+      for (const loc of found) if (loc && locations.length < ROUNDS) locations.push(loc);
     }
   } catch (e) {
-    if (e.code === "token") {
-      savePref("mapillary-token", null);
+    if (e instanceof TokenError) {
+      forgetToken();
       return noToken("Mapillary no ha aceptado el token. Revisa que sea el «Client Token» de tu aplicación.");
     }
     stage.innerHTML = `<div class="card"><p>No se ha podido conectar con Mapillary. Comprueba la conexión y recarga la página.</p></div>`;
@@ -322,9 +236,8 @@ async function start() {
     stage.innerHTML = `<div class="card"><p>No se han encontrado fotos de Mapillary cerca de las ubicaciones de la lista.</p></div>`;
     return;
   }
-  // Con pocas ubicaciones (datos de ejemplo) se repiten para completar las 5 rondas.
+  // Si hay pocas fotos, se repiten para completar las 5 rondas.
   while (locations.length < ROUNDS) locations.push(locations[locations.length % Math.max(1, locations.length)]);
-  if (sample) toast("Datos de ejemplo: pocas ubicaciones");
 
   const saved = practice ? [] : loadPref(`${MODE}:partida:${key}`, []);
   play(locations, key, Array.isArray(saved) ? saved : []);

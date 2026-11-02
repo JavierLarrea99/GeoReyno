@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Política de privacidad · GeoReyno</title>
   <meta name="description" content="Qué datos trata GeoReyno y cómo: sin cuentas, sin anuncios y con las estadísticas guardadas solo en tu navegador.">
-  <link rel="icon" href="img/icon.svg" type="image/svg+xml">
-  <meta name="theme-color" content="#b3122e">
+  <link rel="icon" href="img/logo.svg" type="image/svg+xml">
+  <meta name="theme-color" content="#0a0e16">
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
   <meta property="og:type" content="website">
@@ -19,6 +19,7 @@
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
+  <link rel="preload" href="fonts/barlow-condensed-latin-800-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="css/style.css">
   <script src="js/theme.js"></script>
 </head>
@@ -27,41 +28,48 @@
 
   <main class="wrap prose">
     <h1>Política de privacidad</h1>
-    <p class="lead">Resumen: GeoReyno no tiene cuentas ni servidor propio de datos. Tus partidas y rachas se guardan solo en tu navegador. Algunas funciones piden mapas, fotos o conexiones a servicios de terceros, que reciben tu dirección IP como cualquier web que visitas.</p>
+    <p class="lead">Resumen: puedes jugar sin registrarte y entonces todo se guarda solo en tu navegador. Si creas una cuenta, guardamos tu correo, tu nombre de jugador y tus resultados para mostrarte tus estadísticas y la clasificación. Algunas funciones piden mapas o fotos a servicios de terceros, que reciben tu dirección IP como cualquier web que visitas.</p>
 
     <h2>Responsable</h2>
     <p><span class="fill">[NOMBRE Y APELLIDOS O RAZÓN SOCIAL]</span> · <span class="fill">[NIF]</span> · <span class="fill">[DOMICILIO]</span> · Correo: <span class="fill">[CORREO DE CONTACTO]</span>.</p>
 
-    <h2>Qué se guarda en tu dispositivo</h2>
+    <h2>Si juegas sin cuenta</h2>
     <p>GeoReyno usa el almacenamiento local del navegador (<code>localStorage</code>), no cookies. Nada de esto se envía a ningún servidor:</p>
     <ul>
       <li><code>georeyno:stats</code>: resultados, partidas y rachas de cada juego.</li>
       <li><code>georeyno:theme</code>: si prefieres el tema claro u oscuro.</li>
-      <li><code>georeyno:pueblo:partida:…</code>, <code>georeyno:aire:partida:…</code>, etc.: la partida del día a medias, para no perderla si recargas.</li>
+      <li><code>georeyno:palabra:partida:…</code>, <code>georeyno:municipio:partida:…</code>, etc.: la partida del día a medias, para no perderla si recargas.</li>
       <li><code>georeyno:nombre</code>, <code>georeyno:pid</code>, <code>georeyno:sala-…</code>: tu nombre, un identificador aleatorio de jugador y la última sala, solo si usas «Jugar con amigos».</li>
-      <li><code>georeyno:mapillary-token</code>: solo si pegas tú un token de Mapillary en «Navarra Street».</li>
+      <li><code>georeyno:mapillary-token</code>: solo si pegas tú un token de Mapillary.</li>
     </ul>
-    <p>Puedes borrarlo todo desde <a href="estadisticas.html">Estadísticas</a> («Borrar mis estadísticas») o borrando los datos del sitio en tu navegador. Además, la web guarda una copia de sus propios archivos (service worker) para abrir sin conexión.</p>
+    <p>Puedes borrarlo desde <a href="perfil.html">tu perfil</a> o borrando los datos del sitio en tu navegador. Además, la web guarda una copia de sus propios archivos (service worker) para abrir sin conexión.</p>
+
+    <h2>Si creas una cuenta</h2>
+    <ul>
+      <li><b>Qué guardamos:</b> tu correo electrónico y tu contraseña (cifrada), tu nombre de jugador y tus resultados diarios (juego, fecha, puntos y cuadritos).</li>
+      <li><b>Para qué:</b> identificarte, mostrarte tus estadísticas en cualquier dispositivo y publicar la clasificación. Base legal: la ejecución del servicio que pides al registrarte.</li>
+      <li><b>Qué es público:</b> solo tu nombre de jugador y tus puntos, en la clasificación. Tu correo no se muestra nunca.</li>
+      <li><b>Dónde:</b> en <a href="https://supabase.com/privacy" target="_blank" rel="noopener">Supabase</a>, que actúa como encargado del tratamiento (<span class="fill">[REGIÓN DEL PROYECTO, p. ej. Unión Europea (Fráncfort)]</span>). La sesión se guarda en tu navegador (<code>georeyno:auth</code>).</li>
+      <li><b>Cuánto tiempo:</b> mientras mantengas la cuenta. Puedes borrarla tú mismo desde <a href="perfil.html">tu perfil</a> («Opciones de la cuenta» → «Borrar mi cuenta»): se eliminan tu perfil y todos tus resultados.</li>
+    </ul>
 
     <h2>Servicios de terceros</h2>
-    <p>Al jugar, tu navegador pide directamente contenidos a estos servicios, que reciben tu dirección IP y los datos técnicos habituales de cualquier petición web:</p>
+    <p>Al jugar, tu navegador pide contenidos directamente a estos servicios, que reciben tu dirección IP y los datos técnicos habituales de cualquier petición web:</p>
     <ul>
-      <li><b>unpkg.com</b>: descarga de las bibliotecas MapLibre, MapillaryJS y PeerJS.</li>
-      <li><b>OpenStreetMap</b> (tile.openstreetmap.org): teselas del mapa. <a href="https://osmfoundation.org/wiki/Privacy_Policy" target="_blank" rel="noopener">Su política</a>.</li>
-      <li><b>Gobierno de Navarra (IDENA)</b> e <b>IGN</b>: ortofotos de «Desde el aire».</li>
+      <li><b>unpkg.com</b>: descarga de las bibliotecas MapLibre, MapillaryJS, PeerJS y Supabase.</li>
+      <li><b>OpenStreetMap</b> (tile.openstreetmap.org): teselas del mapa de Navarra Street. <a href="https://osmfoundation.org/wiki/Privacy_Policy" target="_blank" rel="noopener">Su política</a>.</li>
+      <li><b>Mapillary</b> (Meta): fotos de «Navarra Street» y «Adivina el municipio». <a href="https://www.mapillary.com/privacy" target="_blank" rel="noopener">Su política</a>.</li>
       <li><b>Wikimedia Commons</b>: imágenes de escudos. <a href="https://foundation.wikimedia.org/wiki/Policy:Privacy_policy/es" target="_blank" rel="noopener">Su política</a>.</li>
-      <li><b>Mapillary</b> (Meta): fotos de «Navarra Street». <a href="https://www.mapillary.com/privacy" target="_blank" rel="noopener">Su política</a>.</li>
-      <li><b>PeerJS</b> (0.peerjs.com): solo en «Jugar con amigos», para poner en contacto a los jugadores. Después, los navegadores se conectan directamente entre sí (WebRTC): los demás jugadores de la sala pueden llegar a conocer tu dirección IP. En la sala se comparten tu nombre y tus puntos.</li>
+      <li><b>PeerJS</b> (0.peerjs.com): solo en «Jugar con amigos», para poner en contacto a los jugadores. Después, los navegadores se conectan directamente (WebRTC): los demás jugadores de la sala pueden llegar a conocer tu dirección IP. En la sala se comparten tu nombre y tus puntos.</li>
     </ul>
 
-    <h2>Base legal y derechos</h2>
-    <p>GeoReyno no recoge datos personales en un servidor propio. Si nos escribes por correo, usaremos tus datos solo para responderte (base legal: tu consentimiento) y los borraremos cuando ya no hagan falta. Puedes ejercer tus derechos de acceso, rectificación, supresión, oposición, limitación y portabilidad escribiendo a <span class="fill">[CORREO DE CONTACTO]</span>, y reclamar ante la <a href="https://www.aepd.es" target="_blank" rel="noopener">Agencia Española de Protección de Datos</a>.</p>
+    <h2>Tus derechos</h2>
+    <p>Puedes ejercer tus derechos de acceso, rectificación, supresión, oposición, limitación y portabilidad escribiendo a <span class="fill">[CORREO DE CONTACTO]</span>, y reclamar ante la <a href="https://www.aepd.es" target="_blank" rel="noopener">Agencia Española de Protección de Datos</a>.</p>
 
     <h2>Menores</h2>
-    <p>GeoReyno no pide datos personales. Recomendamos que los menores de 14 años usen las salas con amigos con supervisión.</p>
+    <p>Para crear una cuenta hay que tener al menos 14 años (o el consentimiento de tus padres o tutores). Recomendamos que los menores usen las salas con amigos con supervisión.</p>
 
     <p class="empty">Última actualización: <span class="fill">[FECHA]</span>.</p>
-
   </main>
 
   <footer class="foot" data-layout></footer>

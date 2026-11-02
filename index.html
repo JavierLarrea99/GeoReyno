@@ -3,61 +3,125 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>GeoReyno · Juegos de Navarra</title>
-  <meta name="description" content="Juegos diarios de geografía e historia de Navarra: quiz del día, pueblos, escudos y más.">
-  <link rel="icon" href="img/icon.svg" type="image/svg+xml">
-  <meta name="theme-color" content="#b3122e">
+  <title>GeoReyno · ¿Cuánto conoces Navarra?</title>
+  <meta name="description" content="Juegos diarios de Navarra: Navarra Street (¿dónde estás?), adivina el municipio, palabra del día, escudos y pregunta del día. Solo o con amigos.">
+  <link rel="icon" href="img/logo.svg" type="image/svg+xml">
+  <meta name="theme-color" content="#0a0e16">
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="GeoReyno">
   <meta property="og:locale" content="es_ES">
-  <meta property="og:title" content="GeoReyno · Juegos de Navarra">
-  <meta property="og:description" content="Juegos diarios de geografía e historia de Navarra: quiz del día, pueblos, escudos y más.">
+  <meta property="og:title" content="GeoReyno · ¿Cuánto conoces Navarra?">
+  <meta property="og:description" content="Juegos diarios de Navarra: Navarra Street (¿dónde estás?), adivina el municipio, palabra del día, escudos y pregunta del día. Solo o con amigos.">
   <meta property="og:url" content="https://javierlarrea99.github.io/GeoReyno/">
   <meta property="og:image" content="https://javierlarrea99.github.io/GeoReyno/img/og.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
+  <link rel="preload" href="fonts/barlow-condensed-latin-800-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="css/style.css">
   <script src="js/theme.js"></script>
 </head>
 <body>
   <header class="top" data-layout></header>
 
-  <main class="wrap">
-    <section class="hero">
-      <h1>¿Cuánto conoces Navarra?</h1>
-      <p>Un reto nuevo cada día, el mismo para todo el mundo. Juega, compara con tus amigos y no rompas la racha.</p>
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="wrap wide">
+      <div class="hero-grid">
+        <div>
+          <span class="hero-kicker">Juego principal · Navarra Street</span>
+          <h1 id="hero-title">¿Sabrías decir <em>dónde estás?</em></h1>
+          <p class="lead">Apareces en una calle cualquiera de Navarra. Muévete, fíjate en las casas, las montañas y los carteles, y marca en el mapa dónde crees que estás. Del Pirineo a la Ribera.</p>
+          <div class="hero-actions">
+            <a class="btn big" href="street.html">Jugar ahora</a>
+            <a class="btn big light" href="#retos">Retos del día</a>
+          </div>
+          <div class="hero-facts">
+            <span><b>272</b>municipios</span>
+            <span><b>5</b>rondas</span>
+            <span><b>25.000</b>puntos en juego</span>
+          </div>
+        </div>
+        <div class="hero-map" aria-hidden="true">
+          <img src="img/navarra.svg" alt="" width="470" height="520">
+          <img class="hero-pin" src="img/logo.svg" alt="" style="left:48.1%;top:36.2%"><img class="hero-pin" src="img/logo.svg" alt="" style="left:47.9%;top:84.4%"><img class="hero-pin" src="img/logo.svg" alt="" style="left:54.0%;top:15.1%">
+        </div>
+      </div>
+    </div>
+    <svg class="hero-land" viewBox="0 0 1600 360" preserveAspectRatio="xMidYMax slice" aria-hidden="true" focusable="false">
+  <path fill="#2a1626" d="M0 250L80 210L140 230L230 170L300 205L380 160L470 200L560 150L640 190L720 140L800 185L900 120L960 160L1040 100L1120 150L1200 90L1260 130L1330 78L1400 125L1480 95L1600 140V360H0Z"/>
+  <path fill="#e9edf5" opacity=".18" d="M1180 104L1200 90L1222 104L1210 100L1200 106ZM1312 92L1330 78L1350 94L1338 90L1330 96ZM1024 112L1040 100L1058 113L1046 110Z"/>
+  <path fill="#3d1324" d="M0 290C200 250 350 300 520 270C700 240 850 290 1000 262C1150 236 1300 280 1600 250V360H0Z"/>
+  <g fill="#5c1426">
+    <path d="M160 302C215 268 335 268 392 302Z"/>
+    <path d="M262 280L267 212L260 205L268 194L292 192L301 200L294 207L300 280Z"/>
+    <ellipse cx="282" cy="193" rx="26" ry="7"/>
+    <rect x="752" y="176" width="30" height="104"/><polygon points="749,177 767,150 785,177"/>
+    <rect x="1010" y="182" width="26" height="70"/><rect x="1010" y="176" width="5" height="6"/><rect x="1019" y="176" width="5" height="6"/><rect x="1028" y="176" width="5" height="6"/><rect x="1048" y="150" width="32" height="102"/><rect x="1048" y="144" width="5" height="6"/><rect x="1057" y="144" width="5" height="6"/><rect x="1066" y="144" width="5" height="6"/><rect x="1075" y="144" width="5" height="6"/><rect x="1094" y="190" width="22" height="62"/><rect x="1128" y="138" width="36" height="114"/><rect x="1128" y="132" width="5" height="6"/><rect x="1137" y="132" width="5" height="6"/><rect x="1146" y="132" width="5" height="6"/><rect x="1155" y="132" width="5" height="6"/><rect x="1176" y="196" width="24" height="56"/><rect x="1176" y="190" width="5" height="6"/><rect x="1185" y="190" width="5" height="6"/><rect x="1194" y="190" width="5" height="6"/><polygon points="1094,190 1105,160 1116,190"/><rect x="990" y="236" width="225" height="20"/><rect x="990" y="230" width="5" height="6"/><rect x="999" y="230" width="5" height="6"/><rect x="1008" y="230" width="5" height="6"/><rect x="1017" y="230" width="5" height="6"/><rect x="1026" y="230" width="5" height="6"/><rect x="1035" y="230" width="5" height="6"/><rect x="1044" y="230" width="5" height="6"/><rect x="1053" y="230" width="5" height="6"/><rect x="1062" y="230" width="5" height="6"/><rect x="1071" y="230" width="5" height="6"/><rect x="1080" y="230" width="5" height="6"/><rect x="1089" y="230" width="5" height="6"/><rect x="1098" y="230" width="5" height="6"/><rect x="1107" y="230" width="5" height="6"/><rect x="1116" y="230" width="5" height="6"/><rect x="1125" y="230" width="5" height="6"/><rect x="1134" y="230" width="5" height="6"/><rect x="1143" y="230" width="5" height="6"/><rect x="1152" y="230" width="5" height="6"/><rect x="1161" y="230" width="5" height="6"/><rect x="1170" y="230" width="5" height="6"/><rect x="1179" y="230" width="5" height="6"/><rect x="1188" y="230" width="5" height="6"/><rect x="1197" y="230" width="5" height="6"/><rect x="1206" y="230" width="5" height="6"/>
+  </g>
+  <path fill="#7a1022" d="M0 322C300 300 500 336 800 318C1100 300 1300 332 1600 312V360H0Z"/>
+  <path fill="#5c0d1c" d="M420 300H710V334H690A40 40 0 0 0 610 334H600A45 45 0 0 0 510 334H500A35 35 0 0 0 430 334H420Z"/>
+  <path fill="var(--bg)" d="M0 346C400 334 1200 354 1600 338V360H0Z"/>
+</svg>
+  </section>
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+      <pattern id="cadenas" width="44" height="44" patternUnits="userSpaceOnUse">
+        <path d="M0 0L44 44M44 0L0 44M22 0V44M0 22H44" stroke="#fff" stroke-width="2.5" fill="none"/>
+      </pattern>
+    </defs>
+  </svg>
+
+  <main>
+    <section class="section" id="retos" aria-labelledby="retos-title">
+      <div class="wrap wide">
+        <div class="section-head">
+          <h2 id="retos-title">Retos del día</h2>
+          <p>Nuevos cada medianoche. El mismo reto para todo el mundo.</p>
+        </div>
+        <div class="home-grid">
+          <div class="modes" id="modes"></div>
+          <aside class="panel" id="rank-panel" aria-labelledby="rank-title">
+            <h3 id="rank-title">Clasificación de la semana</h3>
+            <div id="rank-body"><p class="empty">Cargando…</p></div>
+          </aside>
+        </div>
+      </div>
     </section>
 
-    <section class="modes" id="modes" aria-label="Modos de juego"></section>
+    <section class="section" style="padding-top:0" aria-labelledby="amigos-title">
+      <div class="wrap wide">
+        <div class="friends-band">
+          <div>
+            <span class="tag friends" style="background:rgba(255,255,255,.12);color:#bff0d4">En grupo</span>
+            <h2 id="amigos-title" style="margin-top:10px">Juega con tus amigos</h2>
+            <p>Crea una sala, comparte el código de 6 letras y jugad el mismo reto a la vez, con la tabla de puntos en directo. Sin registrarse.</p>
+          </div>
+          <div class="actions">
+            <a class="btn big" href="amigos.html">Crear sala</a>
+            <a class="btn big light" href="amigos.html#unirse">Unirme</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:0" aria-labelledby="como-title">
+      <div class="wrap wide">
+        <div class="section-head"><h2 id="como-title">¿Cómo funciona?</h2></div>
+        <ol class="steps">
+          <li><b>Mira</b><span>Una calle, una foto, un escudo o una palabra. Sin pistas a la vista.</span></li>
+          <li><b>Adivina</b><span>Marca el sitio en el mapa o elige la respuesta. Cuanto más cerca, más puntos.</span></li>
+          <li><b>Presume</b><span>Comparte tus cuadritos, mantén la racha y sube en la clasificación.</span></li>
+        </ol>
+      </div>
+    </section>
   </main>
 
   <footer class="foot" data-layout></footer>
 
   <script type="module" src="js/layout.js"></script>
-  <script type="module">
-    import { MODES, EXTRA_PAGES, getTodayResult, resultLabel, esc } from "./js/engine.js";
-    const friends = EXTRA_PAGES.find((p) => p.id === "amigos");
-    const cards = MODES.filter((m) => !m.sub).map((m) => {
-      if (m.ready === false) {
-        return `<div class="mode disabled" aria-disabled="true">
-          <span class="tag soon">Próximamente</span>
-          <h2>${esc(m.name)}</h2><p>${esc(m.desc)}</p></div>`;
-      }
-      const done = getTodayResult(m.id);
-      return `<a class="mode" href="${esc(m.href)}">
-        <span class="tag live">Diario</span>
-        <h2>${esc(m.name)}</h2><p>${esc(m.desc)}</p>
-        <span class="status">${done ? `Hoy: ${esc(resultLabel(done))} ✓` : ""}</span></a>`;
-    });
-    cards.push(friends.ready === false
-      ? `<div class="mode disabled" aria-disabled="true"><span class="tag soon">Próximamente</span>
-          <h2>Jugar con amigos</h2><p>Crea una sala, comparte el código y jugad el mismo reto a la vez.</p></div>`
-      : `<a class="mode" href="${esc(friends.href)}"><span class="tag friends">En grupo</span>
-          <h2>Jugar con amigos</h2><p>Crea una sala, comparte el código y jugad el mismo reto a la vez.</p></a>`);
-    document.getElementById("modes").innerHTML = cards.join("");
-  </script>
+  <script type="module" src="js/portada.js"></script>
 </body>
 </html>

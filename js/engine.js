@@ -82,7 +82,12 @@ function emptyStats() {
 // Estadísticas de un modo: partidas, racha actual, mejor racha e historial por día.
 export function getStats(mode) {
   const all = readStore(STATS_KEY, {});
-  return { ...emptyStats(), ...(all[mode] || {}) };
+  const stats = { ...emptyStats(), ...(all[mode] || {}) };
+  // Si no se jugó ni hoy ni ayer, la racha actual ya está rota.
+  const today = todayKey();
+  const yesterday = todayKey(new Date(Date.now() - 864e5));
+  if (stats.lastDay !== today && stats.lastDay !== yesterday) stats.streak = 0;
+  return stats;
 }
 
 // Resultado de hoy de un modo, si ya se ha jugado.
@@ -105,6 +110,12 @@ export function saveDailyResult(mode, result, key = todayKey()) {
 
   all[mode] = stats;
   writeStore(STATS_KEY, all);
+  // Aviso para la cuenta (si hay sesión iniciada, js/cuenta.js lo sube al ranking).
+  try {
+    window.dispatchEvent(new CustomEvent("georeyno:result", { detail: { mode, key, result } }));
+  } catch {
+    /* sin ventana (pruebas) */
+  }
   return stats;
 }
 
@@ -143,25 +154,27 @@ export function timeToNextDay(now = new Date()) {
 //     label?: texto corto ("3/6", "18 450 pts"), ...datos propios del modo }
 // Así la página de estadísticas y la portada pueden mostrar cualquier modo.
 export const MODES = [
-  { id: "quiz", ready: true, name: "Quiz del día", short: "Quiz", href: "quiz.html",
-    desc: "Cinco preguntas sobre historia, geografía y tradiciones de Navarra." },
-  { id: "pueblo", ready: true, name: "Pueblo misterioso", short: "Pueblo", href: "pueblo.html",
-    desc: "Adivina el municipio por su silueta, con pistas de distancia y dirección." },
-  { id: "aire", ready: true, name: "Desde el aire", short: "Aire", href: "aire.html",
-    desc: "Cinco ortofotos: marca en el mapa dónde se tomaron." },
-  { id: "aire-antigua", ready: true, sub: true, name: "Desde el aire · foto antigua", short: "Aire antiguo", href: "aire.html?antigua",
-    desc: "La misma idea con la ortofoto de 1956-1957." },
+  { id: "street", ready: true, featured: true, name: "Navarra Street", short: "Navarra Street", href: "street.html",
+    icon: "street", rounds: 5,
+    desc: "Aparece en un punto de Navarra, muévete por la calle y marca en el mapa dónde estás." },
+  { id: "municipio", ready: true, name: "Adivina el municipio", short: "Municipio", href: "municipio.html",
+    icon: "camera", rounds: 1,
+    desc: "Fotos de un municipio navarro. Cada fallo destapa otra foto." },
+  { id: "palabra", ready: true, name: "Palabra del día", short: "Palabra", href: "palabra.html",
+    icon: "letters", rounds: 1,
+    desc: "Tipo Wordle: adivina la palabra navarra de 5 letras en 6 intentos." },
   { id: "escudos", ready: true, name: "Escudos", short: "Escudos", href: "escudos.html",
+    icon: "shield", rounds: 5,
     desc: "¿De qué municipio es este escudo? Cinco escudos, cuatro opciones." },
-  { id: "mas", ready: true, name: "¿Cuál tiene más?", short: "¿Cuál tiene más?", href: "mas.html",
-    desc: "Dos municipios: ¿cuál es más grande?, ¿cuál está más al norte? Diez parejas al día." },
-  { id: "street", ready: true, name: "Navarra Street", short: "Street", href: "street.html",
-    desc: "Muévete por las calles con fotos de Mapillary y marca dónde estás." },
+  { id: "pregunta", ready: true, name: "Pregunta del día", short: "Pregunta", href: "pregunta.html",
+    icon: "question", rounds: 1,
+    desc: "Una pregunta al día sobre historia, tradiciones, euskera y rincones de Navarra." },
 ];
 
 export const EXTRA_PAGES = [
   { id: "amigos", ready: true, name: "Jugar con amigos", short: "Amigos", href: "amigos.html" },
-  { id: "estadisticas", name: "Estadísticas", short: "Estadísticas", href: "estadisticas.html" },
+  { id: "ranking", name: "Clasificación", short: "Clasificación", href: "ranking.html" },
+  { id: "perfil", name: "Mi perfil", short: "Perfil", href: "perfil.html" },
   { id: "ayuda", name: "Cómo se juega", short: "Cómo se juega", href: "como-se-juega.html" },
 ];
 
@@ -320,7 +333,7 @@ export function reportFinal(mode, result) {
 }
 
 // Elemento del día recorriendo una permutación fija: no se repite hasta agotar la lista.
-// Útil para modos con un único elemento diario (pueblo misterioso).
+// Útil para modos con un único elemento diario (pregunta del día, municipio).
 export function dailyFromCycle(items, mode, key = todayKey()) {
   const order = shuffle(items, seededRandom(`${mode}:ciclo`));
   const n = dayNumber(key) - 1;

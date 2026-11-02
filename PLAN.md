@@ -30,45 +30,47 @@ Documento de trabajo para retomar el proyecto en cualquier sesión. Las decision
 - **Salas**: el anfitrión es la fuente de verdad y reenvía el estado completo a todos en cada cambio (con 12 jugadores es poco). Si un jugador se desconecta sin acabar, no bloquea el final. Al reconectar, el juego del iframe empieza de nuevo y sus rondas se sobrescriben. En la sala se oculta la cabecera del juego (clase `in-room`). Para probar en local: `amigos.html?peerlocal` usa un PeerServer en `localhost:9000`.
 - **PWA**: el service worker es «red primero»: siempre se ve la versión nueva y la copia solo se usa sin conexión. Si cambias mucho los archivos, sube `CACHE` en `sw.js` (`georeyno-v2`…) para limpiar copias viejas. No se registra dentro de las salas.
 - **Legal**: sin cookies, solo `localStorage` técnico, así que no hace falta banner. Las páginas legales tienen huecos para los datos del titular.
+- **Rediseño v2**: estilo oscuro por defecto (como las maquetas), el tema claro queda como opción. No se usa el escudo oficial de Navarra (su uso está regulado): el logo es una chincheta propia con el motivo de las cadenas. No se usan nombres tipo «NavarraGuessr» (GeoGuessr es marca registrada); la marca sigue siendo GeoReyno. Las imágenes de la portada son ilustraciones y mapas propios (sin fotos de terceros).
+- **Tipografías** autoalojadas (Barlow, OFL) en lugar de Google Fonts, para no enviar la IP de los visitantes a Google.
+- **Cuentas con Supabase**: es gratuito, funciona desde una web estática y protege los datos con políticas RLS (`tools/supabase.sql`). La clave «anon» es pública por diseño, pero igualmente va en `config.js` para cumplir la norma de no subir claves. Sin configuración, todo funciona en modo invitado. Los puntos de «Todos los juegos» se normalizan a 1000 por partida perfecta para que cada juego valga lo mismo.
+- **Palabra del día**: los intentos deben ser palabras reales (diccionario libre MIT de ~10 900 palabras de 5 letras, más municipios y palabras en euskera de las soluciones). Se admite la ñ; las tildes no cuentan.
+- **Adivina el municipio**: si no hay fotos propias, usa fotos normales (no panorámicas) de Mapillary dentro del término municipal, de secuencias distintas y separadas. El municipio del día es el siguiente del ciclo que tenga al menos 2 fotos.
 - **Rama**: se trabaja en `claude/keen-turing-puhwzl` y se sube también a `main`, como se pidió.
 
 ## Estado
 
-Hecho (fases 1-10, todo probado con Playwright a 390×844 y 1280×900, en claro y oscuro, sin errores de consola salvo el 404 esperado de `config.js` cuando no existe):
+### Versión 2 (rediseño)
+- [x] Portada nueva con estilo oscuro (azul noche y rojo), Navarra Street en grande como juego principal, mapa de Navarra con chinchetas, ilustración propia del paisaje (Bardenas, puente, Olite, Pirineo), retos del día, panel de clasificación semanal, bloque de amigos y «¿Cómo funciona?».
+- [x] Retirados los modos Pueblo misterioso, Desde el aire, ¿Cuál tiene más? y Quiz de 5 preguntas (siguen en el historial de git).
+- [x] Pregunta del día: una pregunta diaria del banco de 183, sin repetir hasta agotarlo.
+- [x] Palabra del día (tipo Wordle): 42 palabras navarras con pista y diccionario de ~10 900 palabras para validar los intentos.
+- [x] Adivina el municipio: fotos que se van destapando, 4 intentos con km y dirección.
+- [x] Navarra Street busca fotos en vivo alrededor de municipios al azar mientras `data/street.json` sea de ejemplo.
+- [x] Cuentas (Supabase): registro, inicio de sesión, recuperar contraseña, borrar cuenta; los resultados se suben solos; perfil con estadísticas mejores (rachas calculadas, acierto medio, últimos 14 días, historial); clasificación por juego y periodo; modo invitado si no está configurado.
+- [x] Probado en móvil (390×844) y ordenador (1280×900), tema oscuro y claro, sin errores de consola: todos los juegos, perfil, clasificación (con Supabase simulado), salas con dos navegadores (palabra y municipio) y páginas legales. Mapillary y Supabase se probaron simulados porque desde aquí no hay acceso a esas webs.
 
-- [x] Motor común (`js/engine.js`): reto diario por semilla, rachas, compartir, registro de modos y esquema de resultado común.
-- [x] Fase 1 · Base común: menú con todos los modos (plegable en el móvil), botón de tema, estadísticas por modo con historial, «Cómo se juega», pie con enlaces legales.
-- [x] Fase 2 · Pueblo misterioso: `data/municipios.json` (272 municipios, 80 KB) con `tools/build_municipios.mjs` desde es-atlas 0.6.0; silueta, autocompletado sin tildes, 6 intentos con km, flecha y %, mapa final y compartir.
-- [x] Fase 3 · Quiz ampliado de 34 a 183 preguntas, sin cambiar los ids existentes.
-- [x] Fase 4 · Desde el aire: ortofoto por WMS, mapa MapLibre/OSM, 5000 · e^(−d/30 km), 5 rondas, variante 1956-1957.
-- [x] Fase 5 · Escudos: 4 opciones, crédito por imagen; 5 ejemplos + script para Commons.
-- [x] Fase 6 · ¿Cuál tiene más?: superficie y latitud del IGN; población y altitud listas para cargar.
-- [x] Fase 7 · Navarra Street: MapillaryJS + mapa, autor de cada foto, explicación si no hay token; script de cobertura.
-- [x] Fase 8 · Jugar con amigos: salas PeerJS con código de 6 letras, tabla por rondas, podio, reconexión básica (probado con un PeerServer local y dos navegadores, en quiz, pueblo y desde el aire).
-- [x] Fase 9 · Legal y publicación: privacidad, cookies, aviso legal, créditos, aviso de independencia, manifest + iconos + service worker, metadatos para redes.
-- [x] Fase 10 · Repaso final: todos los modos jugados de nuevo en móvil y ordenador; corregidos la tabla de la sala (total cortado) y la descripción de «¿Cuál tiene más?». README actualizado.
+### Versión 1
+- [x] Motor común, menú, estadísticas, páginas legales, PWA, salas con amigos, escudos y Navarra Street (ver historial de git).
 
 ## Pendientes para ti (por orden de prioridad)
 
-1. [ ] ⚠️ **Revisar preguntas antes de publicar.** Las 183 están escritas de memoria, solo con datos que se consideraron seguros y descartando los dudosos, pero hay que contrastarlas con una fuente fiable (sobre todo cifras y fechas). Se editan en `data/preguntas.json`; no cambies los `id`.
-2. [ ] **Rellenar tus datos** en `aviso-legal.html`, `privacidad.html`, `cookies.html` y `creditos.html`: huecos en amarillo entre corchetes (`[NOMBRE Y APELLIDOS…]`, `[NIF]`, `[DOMICILIO]`, `[CORREO DE CONTACTO]`, `[DOMINIO]`, `[CIUDAD]`, `[FECHA]`, licencia del código).
-3. [ ] **Verificar las capas WMS** de «Desde el aire» (desde aquí no había acceso a IDENA):
-   - Abre <https://idena.navarra.es/ogc/wms?SERVICE=WMS&REQUEST=GetCapabilities> y busca el `<Name>` de la ortofoto más reciente y de la de 1956-1957 (y, si quieres, la de 1929-1931 para otra variante).
-   - Ponlos en `data/ortofotos.json` (campo `capa`). Ahora hay `ortofoto_maxima_actualidad` y `ortofoto_1956_1957`, que son una suposición.
-   - Si IDENA falla, el juego usa solo el PNOA del IGN (`OI.OrthoimageCoverage` en `https://www.ign.es/wms-inspire/pnoa-ma`) y, para la antigua, `AMS_1956-1957` en `https://www.ign.es/wms/pnoa-historico` (este nombre también hay que comprobarlo). Si no existe ninguna ortofoto antigua, quita el enlace «Foto de 1956» de `aire.html`.
-4. [ ] **Completar los escudos** (desde aquí no había acceso a Wikimedia Commons). `data/escudos.json` tiene **5 ejemplos** marcados con `"ejemplo": true` y la autoría sin verificar. En tu ordenador, desde la carpeta del proyecto: `python3 tools/escudos_commons.py`. Reescribe `data/escudos.json` con archivo, autor y licencia reales y deja en `tools/escudos_faltan.txt` los municipios sin escudo.
-5. [ ] **Población y altitud** para «¿Cuál tiene más?» (INE, datos.gob.es y Wikidata no eran accesibles desde aquí):
-   - Población: <https://www.ine.es> → «Cifras oficiales de población de los municipios españoles: Revisión del Padrón Municipal» → Navarra → «Población por municipios y sexo». Solo «Total», último año, **CSV separado por «;»**.
-   - Altitud: <https://centrodedescargas.cnig.es> → «Nomenclátor Geográfico de Municipios y Entidades de Población» → CSV de municipios (columnas `COD_INE` y `ALTITUD`).
-   - `python3 tools/datos_municipios.py --poblacion RUTA_INE.csv --anio 2025 --altitud RUTA_MUNICIPIOS.csv` → rellena `data/municipios_datos.json`; el juego empieza a usar esas categorías solo.
-6. [ ] **Mapillary**: copia `config.example.js` como `config.js` con tu Client Token y ejecuta `python3 tools/cobertura_mapillary.py` para generar `data/street.json` (ahora hay 5 plazas de ejemplo sin id de foto) y el informe `tools/cobertura_mapillary.txt`. Prueba el visor real (aquí solo se pudo probar con el visor y la API simulados).
-7. [ ] **Token en la web publicada**: como `config.js` no se sube, en GitHub Pages el modo pedirá el token. Para que funcione para todos sin subirlo, usa `tools/pages-con-token.yml` (crea `config.js` desde un secreto al publicar). Un token de cliente siempre es visible en el navegador: usa uno solo de lectura.
-8. [ ] **Siluetas más finas**: es-atlas es de baja resolución (algunos municipios tienen 10-15 vértices). Para mejorarlas, descarga los límites municipales de IDENA o las «Líneas límite municipales» del CNIG y adapta `tools/build_municipios.mjs`.
-9. [ ] **Teselas de OpenStreetMap**: la política de tile.openstreetmap.org no permite tráfico alto. Si crece, pasar a MapTiler/Stadia (plan gratuito) o a teselas propias (Protomaps/PMTiles).
-10. [ ] **Salas**: usan el servidor público gratuito de PeerJS. Si falla o se satura, montar un PeerServer propio o pasar a Cloudflare Workers + Durable Objects. Redes muy cerradas pueden necesitar un servidor TURN.
-11. [ ] Si cambias de dominio, sustituye `https://javierlarrea99.github.io/GeoReyno/` en `og:url` y `og:image` de los HTML.
-12. [ ] Dominio propio (cuando haya juego que enseñar).
-13. [ ] Anuncios: solo con contenido y visitas, y con CMP certificada.
+1. [ ] **Activar las cuentas y la clasificación** (gratis):
+   1. Crea un proyecto en <https://supabase.com> (elige la región de la UE, p. ej. Fráncfort).
+   2. SQL Editor → New query → pega `tools/supabase.sql` → Run.
+   3. Authentication → URL Configuration: en «Site URL» pon la dirección de tu web (y añade `http://localhost:8000` en «Redirect URLs» para probar en local).
+   4. Project Settings → API: copia «Project URL» y la clave «anon public» en `config.js` (`SUPABASE_URL`, `SUPABASE_ANON_KEY`).
+   5. Para la web publicada, añade los mismos valores como secretos y usa `tools/pages-con-token.yml`.
+   6. Rellena en `privacidad.html` la región del proyecto.
+2. [ ] **Mapillary en la web publicada**: el token está en tu `config.js` local. Para que funcione en GitHub Pages sin subirlo, añade el secreto `MAPILLARY_TOKEN` y usa `tools/pages-con-token.yml`. Opcional: `python3 tools/cobertura_mapillary.py` para generar `data/street.json` con ubicaciones elegidas (más rápido y mejor que la búsqueda en vivo).
+3. [ ] ⚠️ **Revisar preguntas antes de publicar.** Las 183 están escritas de memoria, solo con datos que se consideraron seguros, pero hay que contrastarlas (sobre todo cifras y fechas). Revisa también las 42 pistas de la Palabra del día (`tools/build_palabras.py`).
+4. [ ] **Escudos**: los 5 de ejemplo tienen nombres de archivo puestos a mano y algunos no corresponden. Ejecuta `python3 tools/escudos_commons.py`: genera la lista real con autor y licencia y la página `tools/revisar_escudos.html` para revisarlos a ojo; borra de `data/escudos.json` los que no cuadren.
+5. [ ] **Rellenar tus datos** en `aviso-legal.html`, `privacidad.html`, `cookies.html` y `creditos.html`: huecos en amarillo entre corchetes.
+6. [ ] **Fotos propias** para Adivina el municipio (opcional): añádelas a `data/fotos_municipios.json` (mínimo 2 por municipio, con autor y licencia). Con fotos propias o de Commons el juego no depende de Mapillary.
+7. [ ] Teselas de OpenStreetMap: con mucho tráfico, pasar a MapTiler/Stadia (plan gratuito) o teselas propias (PMTiles).
+8. [ ] Salas: usan el servidor público gratuito de PeerJS. Si falla o se satura, montar un PeerServer propio.
+9. [ ] La clasificación confía en lo que envía el navegador (con límites: un resultado por día y juego, fechas cercanas y puntos dentro del máximo). Si hay trampas, mover la puntuación a una función del servidor (Supabase Edge Functions).
+10. [ ] Versión en euskera (botón ES / EU como en las maquetas).
+11. [ ] Dominio propio y, si cambia, actualizar `og:url` y `og:image` de los HTML.
 
 ## Ideas guardadas
 

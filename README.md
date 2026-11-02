@@ -1,106 +1,103 @@
 # GeoReyno
 
-Juegos diarios de geografía e historia de Navarra. Un reto nuevo cada día, el mismo para todo el mundo.
+¿Sabrías decir dónde estás? Juegos diarios de Navarra: un reto nuevo cada día, el mismo para todo el mundo, solo o con amigos.
 
 GeoReyno es un proyecto independiente, sin relación con el Gobierno de Navarra.
 
-## Modos
+## Juegos
 
-| Modo | Página | Qué es |
+| Juego | Página | Qué es |
 | --- | --- | --- |
-| Quiz del día | `quiz.html` | 5 preguntas tipo test de un banco de 183 (historia, geografía, tradiciones, gastronomía, naturaleza, personajes, euskera, topónimos). |
-| Pueblo misterioso | `pueblo.html` | Silueta de un municipio; 6 intentos con distancia, flecha y % de cercanía. Mapa final y cuadritos para compartir. |
-| Desde el aire | `aire.html` | 5 recortes de ortofoto (WMS de IDENA, con el PNOA del IGN de respaldo); marca el sitio en un mapa. 5000 · e^(−d/30 km) por ronda. `aire.html?antigua` usa la foto de 1956-1957. |
-| Escudos | `escudos.html` | 5 escudos municipales de Wikimedia Commons, 4 opciones; autor y licencia de cada imagen. |
-| ¿Cuál tiene más? | `mas.html` | 10 parejas de municipios: más superficie, más al norte y, con datos oficiales, más habitantes o más altitud. |
-| Navarra Street | `street.html` | Fotos de Mapillary con movimiento (MapillaryJS); marca dónde estás. Necesita un token de Mapillary. |
+| **Navarra Street** (principal) | `street.html` | Apareces en una calle de Navarra (fotos de Mapillary, con movimiento). Marca en el mapa dónde estás. 5 rondas, 5000 · e^(−d/30 km) puntos por ronda. |
+| Adivina el municipio | `municipio.html` | Fotos de un municipio; 4 intentos, cada fallo destapa otra foto y da distancia y dirección. |
+| Palabra del día | `palabra.html` | Tipo Wordle: palabra navarra de 5 letras en 6 intentos, con pista tras el tercero. |
+| Escudos | `escudos.html` | 5 escudos municipales de Wikimedia Commons, 4 opciones, con autor y licencia. |
+| Pregunta del día | `pregunta.html` | Una pregunta al día de un banco de 183 (historia, tradiciones, euskera, topónimos…). |
 | Jugar con amigos | `amigos.html` | Salas con PeerJS y código de 6 letras: todos juegan el mismo reto y ven la tabla por rondas. |
 
-Además: `estadisticas.html` (partidas, rachas e historial por modo), `como-se-juega.html`, y las páginas legales (`privacidad.html`, `cookies.html`, `aviso-legal.html`, `creditos.html`).
+Además: `perfil.html` (registro, inicio de sesión y estadísticas por juego), `ranking.html` (clasificación por juego y periodo), `como-se-juega.html` y las páginas legales.
 
 ## Cómo funciona
 
-- Web estática: HTML, CSS y JavaScript con módulos ES, sin paso de compilación. Las librerías (MapLibre GL 4.7.1, MapillaryJS 4.1.2, PeerJS 1.5.4) se cargan desde unpkg con versión fija y solo en las páginas que las usan.
-- El reto diario se elige con una semilla basada en la fecha, así todos los jugadores ven lo mismo sin servidor.
-- Estadísticas, rachas y partidas a medias se guardan en el navegador (`localStorage`, siempre con `try/catch`). No hay cookies.
-- `?practica` en cualquier juego permite partidas libres que no cuentan para la racha.
-- En una sala, cada juego se abre en un iframe con `?sala=CÓDIGO&semilla=…` y avisa de cada ronda a la sala con `postMessage`.
-- PWA básica: `manifest.json`, iconos y un service worker que deja abrir la web sin conexión.
-- Modo claro y oscuro: automático según el sistema, o fijo con el botón del menú.
+- Web estática: HTML, CSS y JavaScript con módulos ES, sin paso de compilación. Librerías desde unpkg con versión fija y solo donde hacen falta: MapLibre GL 4.7.1, MapillaryJS 4.1.2, PeerJS 1.5.4, supabase-js 2.45.4.
+- El reto diario se elige con una semilla basada en la fecha: todos ven lo mismo sin servidor.
+- **Sin cuenta**, estadísticas y rachas se guardan en el navegador (`localStorage`, siempre con `try/catch`).
+- **Con cuenta** (Supabase, gratuito), los resultados se suben también al servidor: estadísticas en cualquier dispositivo y clasificación. Si no está configurado, la web funciona igual en modo invitado.
+- `?practica` en cualquier juego da partidas libres que no cuentan para la racha.
+- Diseño oscuro por defecto con tema claro opcional; tipografías Barlow autoalojadas (`fonts/`, licencia OFL).
+- PWA básica: `manifest.json`, iconos y service worker para abrir sin conexión.
 
 ## Probar en local
+
+Hace falta Python 3. En la carpeta del proyecto:
 
 ```bash
 python3 -m http.server 8000
 ```
 
-Y abre <http://localhost:8000>. Hace falta un servidor: abriendo `index.html` directamente, el navegador bloquea la carga de los JSON y de los módulos.
+En Windows:
 
-Para Navarra Street, copia `config.example.js` como `config.js` y pon tu token de cliente de Mapillary. `config.js` está en `.gitignore`.
+```bash
+py -m http.server 8000
+```
+
+Abre <http://localhost:8000>. No vale con abrir `index.html` con doble clic: el navegador bloquea los módulos y los JSON.
+
+## Configuración (`config.js`)
+
+Copia `config.example.js` como `config.js` (está en `.gitignore`, nunca se sube) y rellena:
+
+- `MAPILLARY_TOKEN`: token de cliente de Mapillary, para Navarra Street y Adivina el municipio. Se saca en mapillary.com/dashboard/developers → tu aplicación → columna «Access Token» → «View».
+- `SUPABASE_URL` y `SUPABASE_ANON_KEY`: para cuentas y clasificación (ver PLAN.md, «Activar las cuentas»).
+
+Para publicarlo en GitHub Pages con esos valores sin subirlos, usa la plantilla `tools/pages-con-token.yml`.
 
 ## Publicar con GitHub Pages
 
 1. En GitHub: Settings → Pages.
-2. En «Source» elige «Deploy from a branch», rama `main`, carpeta `/ (root)`.
-3. En unos minutos estará en `https://javierlarrea99.github.io/GeoReyno/`.
-
-Con la cuenta gratuita de GitHub, Pages normalmente solo funciona con repositorios públicos. Como `config.js` no se sube, en la web publicada Navarra Street pedirá el token; para darlo sin subirlo, usa la plantilla `tools/pages-con-token.yml` (instrucciones dentro).
+2. «Deploy from a branch», rama `main`, carpeta `/ (root)`. O bien «GitHub Actions» con la plantilla anterior.
+3. Estará en `https://javierlarrea99.github.io/GeoReyno/`.
 
 ## Estructura
 
 ```
-index.html, quiz.html, pueblo.html, aire.html, escudos.html, mas.html,
-street.html, amigos.html, estadisticas.html, como-se-juega.html,
-privacidad.html, cookies.html, aviso-legal.html, creditos.html
+index.html                 portada (Navarra Street en grande, retos del día, amigos, clasificación)
+street.html, municipio.html, palabra.html, escudos.html, pregunta.html, amigos.html
+perfil.html, ranking.html, como-se-juega.html, privacidad.html, cookies.html, aviso-legal.html, creditos.html
+estadisticas.html          redirige a perfil.html (enlaces antiguos)
 
-css/style.css            estilos comunes (claro y oscuro)
-js/engine.js             motor: fecha, semilla, estadísticas, compartir, registro de modos
-js/layout.js             cabecera con menú, pie y registro del service worker
-js/theme.js              aplica el tema guardado antes de pintar
-js/geo.js                municipios, proyección a SVG, punto en polígono, búsqueda
-js/map.js                mapa de respuesta con MapLibre y puntuación por distancia
-js/quiz.js, pueblo.js, aire.js, escudos.js, mas.js, street.js, amigos.js   cada juego
+css/style.css              estilos (tema oscuro y claro)
+fonts/                     Barlow y Barlow Condensed (OFL)
+js/engine.js               motor: fecha, semilla, estadísticas, compartir, registro de modos
+js/layout.js               cabecera, menú, pie, sesión y service worker
+js/cuenta.js               cuentas, envío de resultados y clasificación (Supabase)
+js/mapillary.js            token, búsqueda de fotos, visor y atribución de Mapillary
+js/geo.js, js/map.js       municipios, búsqueda sin tildes, mapa de respuesta con MapLibre
+js/portada.js, perfil.js, ranking.js, street.js, municipio.js, palabra.js, escudos.js, pregunta.js, amigos.js
 
-data/preguntas.json        banco de preguntas del quiz
-data/municipios.json       272 municipios (IGN vía es-atlas): nombre, INE, centro, superficie, geometría
-data/ortofotos.json        fuentes WMS para Desde el aire
+data/preguntas.json        banco de preguntas
+data/palabras.json         soluciones con pista y palabras válidas
+data/municipios.json       272 municipios (IGN vía es-atlas)
 data/escudos.json          escudos (archivo, autor, licencia)
-data/municipios_datos.json población y altitud (vacío hasta ejecutar el script)
-data/street.json           ubicaciones de Navarra Street
+data/fotos_municipios.json fotos propias para Adivina el municipio (opcional)
+data/street.json           ubicaciones de Navarra Street (opcional)
 
+tools/supabase.sql           base de datos de cuentas y clasificación
+tools/pages-con-token.yml    publicar con secretos en GitHub Actions
+tools/escudos_commons.py     genera escudos.json desde Commons
+tools/cobertura_mapillary.py mide cobertura de Mapillary y genera street.json
+tools/build_palabras.py      genera palabras.json
 tools/build_municipios.mjs   genera municipios.json desde es-atlas
-tools/escudos_commons.py     genera escudos.json desde Wikimedia Commons
-tools/datos_municipios.py    añade población (INE) y altitud (IGN)
-tools/cobertura_mapillary.py mide la cobertura de Mapillary y genera street.json
-tools/pages-con-token.yml    plantilla de GitHub Actions para publicar con el token
-
-manifest.json, sw.js, img/   PWA e iconos
-config.example.js            plantilla para el token de Mapillary
+tools/build_mapa_svg.mjs     genera img/navarra.svg
 ```
 
-## Añadir preguntas
+## Añadir contenido
 
-Cada pregunta en `data/preguntas.json`:
-
-```json
-{
-  "id": "identificador-unico",
-  "tema": "Historia",
-  "pregunta": "Texto de la pregunta",
-  "opciones": ["Correcta", "Incorrecta 1", "Incorrecta 2", "Incorrecta 3"],
-  "correcta": 0,
-  "explicacion": "Se muestra después de responder."
-}
-```
-
-El orden de las opciones se baraja al jugar, así que puedes poner siempre la correcta primero. No cambies el `id` de una pregunta ya publicada: se usa para recordar el resultado de cada día.
-
-## Añadir un modo nuevo
-
-1. Regístralo en `MODES` de `js/engine.js` (id, nombre, página, descripción). Aparece solo en el menú, la portada, las estadísticas y las salas.
-2. Guarda el resultado con `saveDailyResult(id, { score, total, grid, label? })`.
-3. Para que funcione en salas, usa `gameParams()` (semilla) y llama a `reportRound` / `reportFinal`.
+- **Preguntas**: en `data/preguntas.json`, con `id`, `tema`, `pregunta`, `opciones` (la correcta primero), `correcta: 0` y `explicacion`. No cambies el `id` de una pregunta publicada.
+- **Palabras**: edita la lista `SOLUCIONES` de `tools/build_palabras.py` y vuelve a generarlo.
+- **Fotos de municipios**: en `data/fotos_municipios.json`, al menos 2 por municipio, con `ine`, `url`, `autor`, `licencia`, `licencia_url` y `pagina`.
+- **Juego nuevo**: regístralo en `MODES` de `js/engine.js`, guarda con `saveDailyResult(id, { score, total, grid, label? })` y, para salas, usa `gameParams()` y `reportRound` / `reportFinal`. Añade el id a la lista de `mode` de `tools/supabase.sql`.
 
 ## Datos y licencias
 
-Ver `creditos.html`. Resumen: IGN y Gobierno de Navarra (CC BY 4.0), © OpenStreetMap contributors (ODbL), Mapillary (CC BY-SA 4.0, con el autor de cada foto) y Wikimedia Commons (licencia de cada archivo).
+Ver `creditos.html`: IGN (CC BY 4.0), © OpenStreetMap contributors (ODbL), Mapillary (CC BY-SA 4.0, con el autor de cada foto), Wikimedia Commons (licencia de cada archivo), diccionario an-array-of-spanish-words (MIT).

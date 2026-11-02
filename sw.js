@@ -1,12 +1,15 @@
 // Service worker básico de GeoReyno: guarda una copia de los archivos propios para que la
 // web abra sin conexión. Primero intenta la red (así siempre se ve la versión nueva) y,
 // si no hay conexión, usa la copia. No toca peticiones a otros dominios (mapas, fotos…).
-const CACHE = "georeyno-v1";
+const CACHE = "georeyno-v2";
 const CORE = [
-  "./", "index.html", "quiz.html", "pueblo.html", "aire.html", "escudos.html", "mas.html",
-  "street.html", "amigos.html", "estadisticas.html", "como-se-juega.html",
-  "css/style.css", "js/theme.js", "js/engine.js", "js/layout.js", "js/geo.js",
-  "data/preguntas.json", "data/municipios.json", "img/icon.svg", "manifest.json",
+  "./", "index.html", "street.html", "municipio.html", "palabra.html", "escudos.html", "pregunta.html",
+  "amigos.html", "perfil.html", "ranking.html", "como-se-juega.html",
+  "css/style.css", "js/theme.js", "js/engine.js", "js/layout.js", "js/portada.js", "js/cuenta.js", "js/geo.js",
+  "data/preguntas.json", "data/municipios.json", "data/palabras.json",
+  "img/logo.svg", "img/navarra.svg", "manifest.json",
+  "fonts/barlow-latin-400-normal.woff2", "fonts/barlow-latin-600-normal.woff2",
+  "fonts/barlow-condensed-latin-700-normal.woff2", "fonts/barlow-condensed-latin-800-normal.woff2",
 ];
 
 self.addEventListener("install", (e) => {

@@ -1,8 +1,12 @@
-// Copia este archivo como config.js y pon tu token de cliente de Mapillary.
+// Copia este archivo como config.js y rellena lo que uses.
 // config.js está en .gitignore: nunca se sube al repositorio.
-//
-// Cómo conseguir el token:
-//   1. Entra en https://www.mapillary.com/dashboard/developers (con tu cuenta).
-//   2. «Register application»: nombre GeoReyno, permiso de lectura («READ»).
-//   3. Copia el «Client Token» (empieza por MLY|).
+
+// Navarra Street y Adivina el municipio: token de cliente de Mapillary.
+//   1. https://www.mapillary.com/dashboard/developers → «Register application» (permiso de lectura).
+//   2. En la tabla, columna «Access Token» → «View». Empieza por MLY|.
 export const MAPILLARY_TOKEN = "";
+
+// Cuentas, perfil y clasificaciones: proyecto gratuito de Supabase (ver PLAN.md).
+//   Supabase → Project Settings → API: «Project URL» y la clave «anon public».
+export const SUPABASE_URL = "";
+export const SUPABASE_ANON_KEY = "";

@@ -1,17 +1,17 @@
 {
   "name": "GeoReyno · Juegos de Navarra",
   "short_name": "GeoReyno",
-  "description": "Juegos diarios de geografía e historia de Navarra.",
+  "description": "¿Sabrías decir dónde estás? Juegos diarios de Navarra: Navarra Street, municipio, palabra, escudos y pregunta del día.",
   "lang": "es",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#f7f3ec",
-  "theme_color": "#b3122e",
+  "background_color": "#0e131d",
+  "theme_color": "#0a0e16",
   "icons": [
     { "src": "img/icon-192.png", "sizes": "192x192", "type": "image/png" },
     { "src": "img/icon-512.png", "sizes": "512x512", "type": "image/png" },
     { "src": "img/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
-    { "src": "img/icon.svg", "sizes": "any", "type": "image/svg+xml" }
+    { "src": "img/logo.svg", "sizes": "any", "type": "image/svg+xml" }
   ]
 }

@@ -9,7 +9,6 @@ const PEERJS = "https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js";
 const PREFIX = "georeyno-sala-";
 const LETTERS = "ABCDEFGHJKLMNPQRSTUVWXYZ"; // sin I ni O para no confundirlas con 1 y 0
 const MAX_PLAYERS = 12;
-const ROUNDS = { quiz: 5, pueblo: 1, aire: 5, "aire-antigua": 5, escudos: 5, mas: 10, street: 5 };
 const HOST_KEY = "sala-anfitrion";
 const GUEST_KEY = "sala-invitado";
 
@@ -31,7 +30,7 @@ const me = {
     savePref("pid", id);
     return id;
   })(),
-  name: loadPref("nombre", ""),
+  name: loadPref("nombre", "") || loadPref("cuenta", null)?.username || "",
 };
 
 // --- Utilidades ---
@@ -155,6 +154,7 @@ function renderStart(message = "") {
   $("forget-host")?.addEventListener("click", () => { savePref(HOST_KEY, null); renderStart(); });
   $("resume-guest")?.addEventListener("click", () => { if (nameOk()) joinRoom(guest.code); });
   if (joinCode) $("name").focus();
+  else if (location.hash === "#unirse") $("code").focus();
 }
 
 // --- Anfitrión ---
@@ -374,7 +374,7 @@ window.addEventListener("message", (e) => {
 // --- Pintado ---
 
 function scoreboard() {
-  const n = ROUNDS[room.mode] || Math.max(1, ...room.players.map((p) => p.rounds.length));
+  const n = modeById(room.mode).rounds || Math.max(1, ...room.players.map((p) => p.rounds.length));
   const total = (p) => (p.final ? p.final.score : p.rounds.reduce((a, b) => a + (b || 0), 0));
   const rows = [...room.players].sort((a, b) => total(b) - total(a));
   return `

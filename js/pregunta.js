@@ -1,14 +1,14 @@
-// Quiz del día: 5 preguntas iguales para todos cada día.
+// Pregunta del día: una pregunta igual para todos cada día (no se repite hasta agotar el banco).
 // Con ?practica en la URL se juega con preguntas al azar y no se guarda el resultado.
 
 import {
-  dayNumber, pickDaily, shuffle, seededRandom, esc, toast, gameParams,
+  dayNumber, pickDaily, dailyFromCycle, shuffle, seededRandom, esc, toast, gameParams,
   getTodayResult, saveDailyResult, shareText, timeToNextDay, statsBlock, startCountdown,
   reportRound, reportFinal,
 } from "./engine.js";
 
-const MODE = "quiz";
-const ROUNDS = 5;
+const MODE = "pregunta";
+const ROUNDS = 1;
 const params = gameParams();
 // En una sala el reto lo fija la semilla de la sala y no cuenta para la racha.
 const room = Boolean(params.seed);
@@ -35,16 +35,12 @@ function drawProgress(answers, current) {
 }
 
 function verdict(score) {
-  if (score === 5) return "¡Perfecto! Conoces Navarra como la palma de tu mano.";
-  if (score === 4) return "Muy bien, casi perfecto.";
-  if (score === 3) return "Nada mal. Mañana, a por el pleno.";
-  if (score >= 1) return "Hay margen de mejora. Mira las respuestas abajo.";
-  return "Día difícil. Mañana hay otra oportunidad.";
+  return score ? "¡Correcto! Mañana, otra." : "Esta vez no. Mañana hay otra pregunta.";
 }
 
 function shareMessage(result, key) {
   const grid = result.answers.map((ok) => (ok ? "🟩" : "🟥")).join("");
-  return `GeoReyno · Quiz #${dayNumber(key)}\n${grid} ${result.score}/${result.total}\n${location.origin}${location.pathname}`;
+  return `GeoReyno · Pregunta del día #${dayNumber(key)}\n${grid} ${result.score}/${result.total}\n${location.origin}${location.pathname}`;
 }
 
 function playRound(rounds, index, answers, key) {
@@ -53,7 +49,7 @@ function playRound(rounds, index, answers, key) {
 
   stage.innerHTML = `
     <div class="card">
-      <div class="topic">${esc(q.tema)} · ${index + 1} de ${ROUNDS}</div>
+      <div class="topic">${esc(q.tema)}${ROUNDS > 1 ? ` · ${index + 1} de ${ROUNDS}` : ""}</div>
       <h2 class="question">${esc(q.pregunta)}</h2>
       <div class="options">
         ${q.order.map((o, i) => `<button class="option" data-i="${i}">${esc(o.text)}</button>`).join("")}
@@ -114,15 +110,15 @@ function showResult(result, rounds, key) {
       <div class="grid" aria-label="${result.score} aciertos de ${result.total}">${grid}</div>
       <div class="actions">
         ${practice ? "" : `<button class="btn" id="share">Compartir resultado</button>`}
-        ${room ? "" : `<a class="btn ghost" href="quiz.html?practica">${practice ? "Otra partida" : "Practicar más"}</a>`}
+        ${room ? "" : `<a class="btn ghost" href="pregunta.html?practica">${practice ? "Otra pregunta" : "Más preguntas"}</a>`}
       </div>
       ${practice ? "" : `
       ${statsBlock(MODE)}
       <p class="next">Próximo reto en <b id="countdown">${timeToNextDay()}</b></p>`}
       <div class="review">
-        <h3>Respuestas</h3>
+        <h3>La respuesta</h3>
         ${rounds.map((q, i) => `
-          <details>
+          <details${ROUNDS === 1 ? " open" : ""}>
             <summary>${result.answers[i] ? "🟩" : "🟥"} ${esc(q.pregunta)}</summary>
             <p><b>${esc(q.opciones[q.correcta])}.</b> ${esc(q.explicacion)}</p>
           </details>`).join("")}
@@ -143,7 +139,7 @@ function showResult(result, rounds, key) {
 
 async function start() {
   const key = room ? params.seed : params.key;
-  $("title").textContent = room ? "Quiz" : practice ? "Práctica" : "Quiz del día";
+  $("title").textContent = practice && !room ? "Práctica" : "Pregunta del día";
   $("meta").textContent = room ? "Sala con amigos" : practice ? "Preguntas al azar" : `Reto #${dayNumber(key)}`;
 
   let bank;
@@ -165,7 +161,7 @@ async function start() {
     return showResult(done, rounds, key);
   }
 
-  const chosen = practice && !room ? shuffle(bank).slice(0, ROUNDS) : pickDaily(bank, ROUNDS, MODE, key);
+  const chosen = practice && !room ? shuffle(bank).slice(0, ROUNDS) : (room ? pickDaily(bank, ROUNDS, MODE, key) : [dailyFromCycle(bank, MODE, key)]);
   playRound(prepare(chosen, key), 0, [], key);
 }
 

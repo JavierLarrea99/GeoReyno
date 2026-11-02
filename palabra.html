@@ -3,22 +3,23 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Pueblo misterioso · GeoReyno</title>
-  <meta name="description" content="Adivina el municipio navarro del día por su silueta. Seis intentos, con pistas de distancia y dirección.">
-  <link rel="icon" href="img/icon.svg" type="image/svg+xml">
-  <meta name="theme-color" content="#b3122e">
+  <title>Palabra del día · GeoReyno</title>
+  <meta name="description" content="Tipo Wordle: adivina la palabra navarra de 5 letras en 6 intentos. Una nueva cada día.">
+  <link rel="icon" href="img/logo.svg" type="image/svg+xml">
+  <meta name="theme-color" content="#0a0e16">
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="GeoReyno">
   <meta property="og:locale" content="es_ES">
-  <meta property="og:title" content="Pueblo misterioso · GeoReyno">
-  <meta property="og:description" content="Adivina el municipio navarro del día por su silueta. Seis intentos, con pistas de distancia y dirección.">
-  <meta property="og:url" content="https://javierlarrea99.github.io/GeoReyno/pueblo.html">
+  <meta property="og:title" content="Palabra del día · GeoReyno">
+  <meta property="og:description" content="Tipo Wordle: adivina la palabra navarra de 5 letras en 6 intentos. Una nueva cada día.">
+  <meta property="og:url" content="https://javierlarrea99.github.io/GeoReyno/palabra.html">
   <meta property="og:image" content="https://javierlarrea99.github.io/GeoReyno/img/og.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
+  <link rel="preload" href="fonts/barlow-condensed-latin-800-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="css/style.css">
   <script src="js/theme.js"></script>
 </head>
@@ -27,20 +28,19 @@
 
   <main class="wrap game">
     <div class="game-head">
-      <h1 id="title">Pueblo misterioso</h1>
+      <h1 id="title">Palabra del día</h1>
       <span class="meta" id="meta"></span>
     </div>
+    <div class="progress" id="progress" aria-hidden="true"></div>
     <div id="stage" aria-live="polite">
       <div class="card"><p>Cargando…</p></div>
     </div>
   </main>
 
   <footer class="foot" data-layout></footer>
-
   <div class="toast" id="toast" role="status"></div>
 
   <script type="module" src="js/layout.js"></script>
-
-  <script type="module" src="js/pueblo.js"></script>
+  <script type="module" src="js/palabra.js"></script>
 </body>
 </html>

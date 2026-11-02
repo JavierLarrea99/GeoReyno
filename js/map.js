@@ -1,5 +1,5 @@
 // Mapa para responder (MapLibre + teselas de OpenStreetMap).
-// Lo usan «Desde el aire» y «Navarra Street». MapLibre se carga desde el CDN con versión fija.
+// Lo usa «Navarra Street». MapLibre se carga desde el CDN con versión fija.
 
 const MAPLIBRE = "https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl";
 
