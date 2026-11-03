@@ -85,6 +85,7 @@ function friendlyError(error) {
   if (/already registered|already exists/i.test(msg)) return "Ya hay una cuenta con ese correo. Inicia sesión.";
   if (/password/i.test(msg) && /6|short|least/i.test(msg)) return "La contraseña debe tener al menos 6 caracteres.";
   if (/rate limit|too many/i.test(msg)) return "Demasiados intentos. Espera un poco y vuelve a probar.";
+  if (/signups? (are|is) disabled|signup.*disabled/i.test(msg)) return "El registro de cuentas está desactivado ahora mismo. Inténtalo más tarde.";
   if (/fetch|network/i.test(msg)) return "No hay conexión con el servidor de cuentas.";
   return "No se ha podido completar. " + msg;
 }
