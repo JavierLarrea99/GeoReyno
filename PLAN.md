@@ -51,6 +51,10 @@ Documento de trabajo para retomar el proyecto en cualquier sesión. Las decision
 - [x] Cuentas (Supabase): registro, inicio de sesión, recuperar contraseña, borrar cuenta; los resultados se suben solos; perfil con estadísticas mejores (rachas calculadas, acierto medio, últimos 14 días, historial); clasificación por juego y periodo; modo invitado si no está configurado.
 - [x] Probado en móvil (390×844) y ordenador (1280×900), tema oscuro y claro, sin errores de consola: todos los juegos, perfil, clasificación (con Supabase simulado), salas con dos navegadores (palabra y municipio) y páginas legales. Mapillary y Supabase se probaron simulados porque desde aquí no hay acceso a esas webs.
 
+### Versión 2.3
+- [x] Navarra Street: pantalla de resultado de cada ronda (mapa grande con tu marca y el sitio, puntos con animación y barra, distancia, pueblo, autor de la foto y botón «Siguiente ronda»).
+- [x] En salas: 2 minutos por ronda con reloj; tras responder se espera a los demás («1/2 han respondido») y el resultado sale cuando han respondido todos o se acaba el tiempo, con la tabla de puntos de esa ronda. Si se acaba el tiempo sin marcar, 0 puntos.
+
 ### Versión 2.2
 - [x] Contorno de Navarra preciso en el mapa de Navarra Street: límite provincial del INE (vía geoBoundaries), simplificado a ~10 m con `tools/build_contorno.py`. El anterior (es-atlas) tenía errores grandes.
 - [x] Corregida la pantalla negra del visor de Navarra Street (la hoja de estilos de MapillaryJS pisaba la posición del contenedor).

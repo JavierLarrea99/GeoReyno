@@ -507,6 +507,24 @@ function scoreboard() {
     </div>`;
 }
 
+// El juego (iframe) necesita saber quién ha respondido cada ronda para enseñar el resultado
+// cuando hayan terminado todos (Navarra Street).
+function sendStateToGame() {
+  const frame = $("game-frame");
+  if (!frame || !room) return;
+  const msg = {
+    georeyno: "sala-estado",
+    jugadores: room.players.map((p) => ({ name: p.name, rounds: p.rounds, connected: p.connected, yo: p.pid === me.pid })),
+  };
+  try {
+    frame.contentWindow?.postMessage(msg, location.origin);
+  } catch { /* el juego aún no ha cargado */ }
+  if (!frame.dataset.bound) {
+    frame.dataset.bound = "1";
+    frame.addEventListener("load", () => setTimeout(sendStateToGame, 300));
+  }
+}
+
 function roomHeader() {
   const link = `${location.origin}${location.pathname}?unirse=${room.code}`;
   return `
@@ -546,6 +564,7 @@ function render() {
     } else {
       $("board").innerHTML = scoreboard();
     }
+    sendStateToGame();
     setStatus(statusText, statusKind);
     return;
   }

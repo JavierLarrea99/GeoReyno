@@ -14,6 +14,8 @@ import { getToken, forgetToken, TokenError, nearestImage, loadViewerLib, photoCr
 const MODE = "street";
 const ROUNDS = 5;
 const MAX = 5000 * ROUNDS;
+// Tiempo por ronda en las salas con amigos (?segundos=N lo acorta, útil para pruebas; nunca lo alarga).
+const ROOM_SECONDS = Math.min(120, Number(new URLSearchParams(location.search).get("segundos")) || 120);
 const params = gameParams();
 const room = Boolean(params.seed);
 const practice = params.practice || room;
@@ -57,7 +59,9 @@ async function play(finder, key, saved = []) {
       <div class="sv-hud">
         <div class="hud-box"><span>Ronda</span><b id="round-label">1/${ROUNDS}</b></div>
         <div class="hud-box"><span>Puntos</span><b id="hud-score">0</b></div>
+        <div class="hud-box" id="hud-time" hidden><span>Tiempo</span><b id="hud-clock">${Math.floor(ROOM_SECONDS / 60)}:${String(ROOM_SECONDS % 60).padStart(2, "0")}</b></div>
       </div>
+      <div class="sv-wait" id="sv-wait" hidden>${loadingHTML("Esperando a los demás…")}</div>
       <button class="sv-btn sv-fs" id="fs" aria-label="Pantalla completa" title="Pantalla completa">
         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>
       </button>
@@ -67,6 +71,17 @@ async function play(finder, key, saved = []) {
         <div class="answer-map" id="map">${loadingHTML("Cargando mapa…")}</div>
         <div class="round-info" id="info">Toca el mapa para poner tu marca.</div>
         <button class="btn" id="confirm" disabled>Adivinar</button>
+        <section class="sv-res" id="res" aria-live="polite">
+          <div class="res-kicker" id="res-kicker"></div>
+          <div class="res-pts"><b id="res-points">0</b><span>puntos</span></div>
+          <div class="res-bar" aria-hidden="true"><i id="res-bar"></i></div>
+          <p class="res-dist" id="res-dist"></p>
+          <p class="res-place" id="res-place"></p>
+          <p class="res-legend"><span class="lg lg-guess"></span>Tu marca <span class="lg lg-answer"></span>El sitio</p>
+          <ol class="res-players" id="res-players" hidden></ol>
+          <p class="res-credit" id="res-credit"></p>
+          <button class="btn big" id="next">Siguiente ronda</button>
+        </section>
       </div>
     </div>`;
 
@@ -116,7 +131,7 @@ async function play(finder, key, saved = []) {
     $("sv-loading")?.setAttribute("hidden", "");
     currentAuthor = e.image?.creatorUsername || currentAuthor;
     currentImage = e.image?.id || currentImage;
-    $("credit").innerHTML = photoCredit(currentAuthor, currentImage, phase === "answer");
+    $("credit").innerHTML = photoCredit(currentAuthor, currentImage, phase === "result");
   });
 
   const startRound = async () => {
@@ -128,8 +143,7 @@ async function play(finder, key, saved = []) {
     $("round-label").textContent = `${round + 1}/${ROUNDS}`;
     $("hud-score").textContent = formatNumber(results.reduce((n, r) => n + r.points, 0));
     $("info").textContent = "Toca el mapa para poner tu marca.";
-    $("confirm").textContent = "Adivinar";
-    mapbox.classList.remove("big");
+    $("sv-wait").hidden = true;
     setOpen(false);
     $("confirm").disabled = true;
     currentAuthor = locations[round].autor || "";
@@ -142,39 +156,139 @@ async function play(finder, key, saved = []) {
 
   answerMap.onPick(() => { if (phase === "guess") $("confirm").disabled = false; });
 
-  $("confirm").addEventListener("click", () => {
-    if (phase === "guess") {
-      const guess = answerMap.getGuess();
-      if (!guess) return toast("Pon antes tu marca en el mapa");
-      const loc = locations[round];
-      const answer = [loc.lon, loc.lat];
-      const km = distanceKm(guess, answer);
-      const pts = roundPoints(km);
-      results.push({ km: Math.round(km * 10) / 10, points: pts, imagen: loc.imagen, autor: currentAuthor });
-      if (!practice) savePref(`${MODE}:partida:${key}`, results);
-      mapbox.classList.add("big");
-      setOpen(true);
-      answerMap.showAnswer(answer);
-      $("hud-score").textContent = formatNumber(results.reduce((n, r) => n + r.points, 0));
-      reportRound(MODE, round, pts, 5000);
-      drawProgress(results);
-      phase = "answer";
-      $("credit").innerHTML = photoCredit(currentAuthor, currentImage, true);
-      const m = loc.municipio || municipioAt(answer, data)?.nombre || "";
-      $("info").innerHTML = `<b>${formatNumber(pts)} puntos</b> · a ${km < 1 ? `${Math.round(km * 1000)} m` : `${km.toLocaleString("es-ES", { maximumFractionDigits: 1 })} km`}.
-        ${m ? `Era en <b>${esc(m)}</b>${loc.lugar ? ` (${esc(loc.lugar)})` : ""}.` : ""}`;
-      $("confirm").textContent = round === ROUNDS - 1 ? "Ver resultado" : "Siguiente ronda";
-      return;
+  // --- Fin de ronda ---
+  let timer = null;
+  let deadline = 0;
+  const clearTimer = () => { clearInterval(timer); timer = null; };
+
+  // Anima un número de 0 al valor final.
+  const countUp = (el, to, ms = 900) => {
+    const t0 = performance.now();
+    const step = (t) => {
+      const k = Math.min(1, (t - t0) / ms);
+      el.textContent = formatNumber(Math.round(to * (1 - (1 - k) ** 3)));
+      if (k < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  };
+
+  const showRoundResult = async () => {
+    if (phase === "result") return;
+    phase = "result";
+    clearTimer();
+    $("sv-wait").hidden = true;
+    const r = results[round];
+    const loc = locations[round];
+    const answer = [loc.lon, loc.lat];
+    const m = loc.municipio || municipioAt(answer, data)?.nombre || "";
+    const last = round === ROUNDS - 1;
+    $("res-kicker").textContent = `Ronda ${round + 1} de ${ROUNDS}`;
+    $("res-dist").innerHTML = r.km == null
+      ? "No pusiste ninguna marca a tiempo."
+      : `Tu marca estaba a <b>${r.km < 1 ? `${Math.round(r.km * 1000)} m` : `${r.km.toLocaleString("es-ES", { maximumFractionDigits: 1 })} km`}</b> del sitio.`;
+    $("res-place").innerHTML = m ? `Era en <b>${esc(m)}</b>${loc.lugar ? ` · ${esc(loc.lugar)}` : ""}` : "";
+    $("res-credit").innerHTML = photoCredit(currentAuthor, currentImage, true);
+    $("next").textContent = last ? "Ver resultado final" : "Siguiente ronda";
+    $("res-bar").style.width = "0";
+    renderPlayers();
+    sv.classList.add("result");
+    setOpen(true);
+    // Esperar a que el mapa tenga su nuevo tamaño antes de encuadrar la respuesta.
+    await new Promise((ok) => requestAnimationFrame(() => requestAnimationFrame(ok)));
+    answerMap.resize();
+    answerMap.showAnswer(answer);
+    countUp($("res-points"), r.points);
+    requestAnimationFrame(() => { $("res-bar").style.width = `${(100 * r.points) / 5000}%`; });
+    $("credit").innerHTML = photoCredit(currentAuthor, currentImage, true);
+    $("next").focus({ preventScroll: true });
+  };
+
+  // En una sala: puntos de cada jugador en esta ronda.
+  let roomState = null;
+  const renderPlayers = () => {
+    const list = $("res-players");
+    if (!room || !roomState) return (list.hidden = true);
+    const rows = roomState.jugadores
+      .map((j) => ({ ...j, pts: j.rounds?.[round] }))
+      .sort((a, b) => (b.pts ?? -1) - (a.pts ?? -1));
+    list.hidden = false;
+    list.innerHTML = rows.map((j, i) => `<li class="${j.yo ? "me" : ""}"><span>${i + 1}. ${esc(j.name)}</span><b>${j.pts == null ? "—" : formatNumber(j.pts)}</b></li>`).join("");
+  };
+  const everyoneDone = () => {
+    if (!roomState) return false;
+    const active = roomState.jugadores.filter((j) => j.connected || j.rounds?.[round] != null);
+    return active.length > 0 && active.every((j) => j.rounds?.[round] != null);
+  };
+  const updateWaiting = () => {
+    if (phase !== "waiting") return;
+    if (everyoneDone()) return showRoundResult();
+    const active = roomState ? roomState.jugadores.filter((j) => j.connected) : [];
+    const done = active.filter((j) => j.rounds?.[round] != null).length;
+    $("sv-wait").querySelector("span").textContent = `Esperando a los demás… (${done}/${active.length || "?"} han respondido)`;
+  };
+  window.addEventListener("message", (e) => {
+    if (e.origin !== location.origin || e.data?.georeyno !== "sala-estado") return;
+    roomState = e.data;
+    if (phase === "waiting") updateWaiting();
+    if (phase === "result") renderPlayers();
+  });
+
+  const submit = (auto = false) => {
+    if (phase !== "guess") return;
+    const guess = answerMap.getGuess();
+    if (!guess && !auto) return toast("Pon antes tu marca en el mapa");
+    const loc = locations[round];
+    const km = guess ? distanceKm(guess, [loc.lon, loc.lat]) : null;
+    const pts = km == null ? 0 : roundPoints(km);
+    results.push({ km: km == null ? null : Math.round(km * 10) / 10, points: pts, imagen: loc.imagen, autor: currentAuthor });
+    if (!practice) savePref(`${MODE}:partida:${key}`, results);
+    $("hud-score").textContent = formatNumber(results.reduce((n, x) => n + x.points, 0));
+    reportRound(MODE, round, pts, 5000);
+    drawProgress(results);
+    if (room && Date.now() < deadline) {
+      phase = "waiting";
+      setOpen(false);
+      $("sv-wait").hidden = false;
+      return updateWaiting();
     }
+    showRoundResult();
+  };
+
+  $("confirm").addEventListener("click", () => submit(false));
+  $("next").addEventListener("click", async () => {
+    sv.classList.remove("result");
     round++;
-    if (round < ROUNDS) return startRound();
+    if (round < ROUNDS) {
+      await startRound();
+      return startClock();
+    }
+    clearTimer();
     viewer.remove();
     if (document.fullscreenElement) document.exitFullscreen();
     document.body.classList.remove("playing");
     finish(results, key);
   });
 
-  startRound();
+  // Tiempo por ronda en las salas.
+  const startClock = () => {
+    if (!room) return;
+    clearTimer();
+    deadline = Date.now() + ROOM_SECONDS * 1000;
+    $("hud-time").hidden = false;
+    const tick = () => {
+      const left = Math.max(0, Math.ceil((deadline - Date.now()) / 1000));
+      $("hud-clock").textContent = `${Math.floor(left / 60)}:${String(left % 60).padStart(2, "0")}`;
+      $("hud-time").classList.toggle("urgent", left <= 15);
+      if (left > 0) return;
+      if (phase === "guess") submit(true);
+      else if (phase === "waiting") showRoundResult();
+    };
+    tick();
+    timer = setInterval(tick, 500);
+  };
+  // Primera ronda (o la siguiente si se recarga a mitad).
+  await startRound();
+  startClock();
 }
 
 function finish(results, key) {

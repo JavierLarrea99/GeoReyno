@@ -751,6 +751,7 @@ body.playing main.game { max-width: none; padding: 0; }
   min-height: 420px;
   background: #05070b;
   overflow: hidden;
+  overflow: clip; /* ni siquiera se puede desplazar por código */
   color: #fff;
 }
 .sv:fullscreen, .sv.fake-fs { height: 100dvh; }
@@ -833,3 +834,44 @@ body.playing main.game { max-width: none; padding: 0; }
 .sv .loading { position: absolute; inset: 0; color: #cfd6e2; z-index: 3; pointer-events: none; }
 .sv .loading .spinner g:last-child { fill: #05070b; }
 @media (prefers-reduced-motion: reduce) { .spinner { animation: girar 4s linear infinite !important; } }
+
+/* ===== Navarra Street: pantalla de resultado de la ronda ===== */
+.sv-res { display: none; }
+.sv.result .sv-map {
+  inset: 0; width: auto; border-radius: 0; border: 0; padding: 0; transform: none;
+  display: grid; grid-template-rows: minmax(0, 1fr) auto; background: var(--bg); box-shadow: none;
+}
+.sv.result .sv-map .answer-map { height: auto !important; border-radius: 0; min-height: 0; }
+.sv.result .sv-map-toggle, .sv.result .round-info, .sv.result #confirm, .sv.result .sv-credit { display: none; }
+.sv.result .sv-res {
+  display: flex; flex-direction: column; gap: 6px; padding: 18px 18px 20px; text-align: center;
+  background: linear-gradient(180deg, var(--surface), var(--bg)); border-top: 3px solid var(--red);
+  max-height: 52dvh; overflow-y: auto;
+}
+.res-kicker { font-size: 0.78rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--red-ink); }
+.res-pts b { display: block; font-family: var(--display); font-weight: 800; font-size: clamp(3rem, 12vw, 4.4rem); line-height: 0.95; font-variant-numeric: tabular-nums; }
+.res-pts span { color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.8rem; }
+.res-bar { height: 10px; border-radius: 5px; background: var(--surface-2); overflow: hidden; margin: 8px auto 4px; width: min(100%, 420px); }
+.res-bar i { display: block; height: 100%; width: 0; border-radius: 5px; background: linear-gradient(90deg, #e5203d, #f3b53f 60%, #2fc175); transition: width 0.9s cubic-bezier(.2, .8, .2, 1); }
+.res-dist, .res-place { margin: 2px 0; font-size: 1.02rem; }
+.res-place b { color: var(--red-ink); }
+.res-credit { font-size: 0.75rem; color: var(--muted); margin: 4px 0 6px; }
+.res-credit a { color: inherit; }
+.res-players { list-style: none; padding: 0; margin: 6px auto; width: min(100%, 420px); display: grid; gap: 4px; text-align: left; }
+.res-players li { display: flex; justify-content: space-between; padding: 6px 12px; background: var(--surface-2); border-radius: 8px; font-size: 0.93rem; }
+.res-players li.me { outline: 2px solid var(--red); }
+.sv-res .btn { align-self: center; min-width: min(100%, 320px); margin-top: 6px; }
+@media (min-width: 900px) {
+  .sv.result .sv-map { grid-template-rows: none; grid-template-columns: minmax(0, 1fr) 400px; }
+  .sv.result .sv-res { max-height: none; border-top: 0; border-left: 3px solid var(--red); justify-content: center; padding: 28px; }
+}
+/* Espera en las salas y reloj */
+.sv-wait { position: absolute; inset: 0; z-index: 7; background: rgba(5, 7, 11, 0.72); backdrop-filter: blur(3px); }
+.sv-wait .loading { position: absolute; inset: 0; pointer-events: none; color: #fff; }
+.hud-box.urgent b { color: #ff4d66; animation: latido 1s ease-in-out infinite; }
+@keyframes latido { 50% { opacity: 0.45; } }
+.res-legend { font-size: 0.8rem; color: var(--muted); margin: 0; display: flex; gap: 6px; align-items: center; justify-content: center; }
+.res-legend .lg { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-left: 8px; }
+.lg-guess { background: #e5203d; }
+.lg-answer { background: #2fc175; }
+.in-room .sv { height: 100dvh; min-height: 0; }

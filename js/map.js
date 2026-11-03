@@ -117,7 +117,7 @@ export async function createAnswerMap(container, data) {
       });
       const xs = coords.map((c) => c[0]);
       const ys = coords.map((c) => c[1]);
-      map.fitBounds([[Math.min(...xs), Math.min(...ys)], [Math.max(...xs), Math.max(...ys)]], { padding: 50, maxZoom: 13, duration: 600 });
+      map.fitBounds([[Math.min(...xs), Math.min(...ys)], [Math.max(...xs), Math.max(...ys)]], { padding: 70, maxZoom: 13, duration: 600 });
     },
     // Deja el mapa listo para la ronda siguiente.
     reset() {
