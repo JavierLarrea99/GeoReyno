@@ -1,16 +1,14 @@
-# Plantilla OPCIONAL de GitHub Actions para publicar GeoReyno en GitHub Pages
-# con el token de Mapillary sin subirlo al repositorio.
+# Publica GeoReyno en GitHub Pages creando config.js a partir de los secretos del repositorio,
+# para que el token de Mapillary (y Supabase) funcione para todos sin subirlo al código.
 #
-# Cómo usarla:
-#   1. En GitHub: Settings → Secrets and variables → Actions → New repository secret
-#      MAPILLARY_TOKEN     tu token de Mapillary (MLY|...)
-#      SUPABASE_URL        la «Project URL» de Supabase (si usas cuentas)
-#      SUPABASE_ANON_KEY   la clave «anon public» de Supabase (si usas cuentas)
-#   2. Settings → Pages → Source: «GitHub Actions».
-#   3. Copia este archivo a .github/workflows/pages.yml y súbelo.
-# Cada push a main publicará la web y creará config.js en el servidor a partir del secreto.
-# Ojo: un token de cliente siempre acaba siendo visible en el navegador del jugador;
-# Mapillary los da precisamente para eso (solo lectura). No uses un token con permisos de escritura.
+# Para que funcione (una sola vez):
+#   1. Settings → Secrets and variables → Actions → New repository secret:
+#        MAPILLARY_TOKEN     tu token de Mapillary (MLY|...)
+#        SUPABASE_URL        la «Project URL» de Supabase (cuando actives las cuentas)
+#        SUPABASE_ANON_KEY   la clave «anon public» de Supabase (cuando actives las cuentas)
+#   2. Settings → Pages → Build and deployment → Source: «GitHub Actions».
+# Después, cada push a main publica la web sola (pestaña Actions para ver el progreso).
+# Un token de cliente siempre es visible en el navegador del jugador: Mapillary los da para eso (solo lectura).
 
 name: Publicar en GitHub Pages
 on:
@@ -47,6 +45,8 @@ jobs:
             printf 'export const SUPABASE_ANON_KEY = "%s";\n' "$SUPABASE_ANON_KEY"
           } > config.js
       - uses: actions/configure-pages@v5
+      - name: Quitar lo que no hace falta publicar
+        run: rm -rf .git .github tools/*.txt
       - uses: actions/upload-pages-artifact@v3
         with:
           path: .

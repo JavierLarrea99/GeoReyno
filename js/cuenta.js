@@ -204,3 +204,86 @@ window.addEventListener("georeyno:result", (e) => {
   const { mode, key, result } = e.detail || {};
   if (mode && key && result) submitResult(mode, key, result).catch(() => {});
 });
+
+// --- Amigos e invitaciones a salas ---
+
+async function sbUser() {
+  const user = await currentUser();
+  if (!user) throw new Error("Inicia sesión primero.");
+  return { sb: await getClient(), user };
+}
+
+// Lista de amistades: [{ id, otro: {id, username}, estado, mia (la pedí yo) }].
+export async function friends() {
+  const { sb, user } = await sbUser();
+  const { data, error } = await sb.from("amistades").select("id,de,para,estado");
+  if (error) throw new Error(friendlyError(error));
+  const ids = [...new Set((data || []).map((a) => (a.de === user.id ? a.para : a.de)))];
+  let names = new Map();
+  if (ids.length) {
+    const { data: profs } = await sb.from("profiles").select("id,username").in("id", ids);
+    names = new Map((profs || []).map((p) => [p.id, p.username]));
+  }
+  return (data || []).map((a) => {
+    const other = a.de === user.id ? a.para : a.de;
+    return { id: a.id, otro: { id: other, username: names.get(other) || "jugador" }, estado: a.estado, mia: a.de === user.id };
+  });
+}
+
+export async function addFriend(username) {
+  const { sb, user } = await sbUser();
+  const { data, error } = await sb.rpc("buscar_jugador", { nombre: username });
+  if (error) throw new Error(friendlyError(error));
+  const found = Array.isArray(data) ? data[0] : data;
+  if (!found) throw new Error("No hay ningún jugador con ese nombre.");
+  if (found.id === user.id) throw new Error("Ese eres tú 🙂");
+  const list = await friends();
+  const existing = list.find((f) => f.otro.id === found.id);
+  if (existing) {
+    // Si él ya me lo había pedido, aceptarlo directamente.
+    if (existing.estado === "pendiente" && !existing.mia) return acceptFriend(existing.id);
+    throw new Error(existing.estado === "aceptada" ? "Ya sois amigos." : "Ya le has enviado la solicitud.");
+  }
+  const { error: e2 } = await sb.from("amistades").insert({ de: user.id, para: found.id });
+  if (e2) throw new Error(friendlyError(e2));
+  return found.username;
+}
+
+export async function acceptFriend(id) {
+  const { sb } = await sbUser();
+  const { error } = await sb.from("amistades").update({ estado: "aceptada" }).eq("id", id);
+  if (error) throw new Error(friendlyError(error));
+}
+
+export async function removeFriend(id) {
+  const { sb } = await sbUser();
+  const { error } = await sb.from("amistades").delete().eq("id", id);
+  if (error) throw new Error(friendlyError(error));
+}
+
+export async function inviteFriend(friendId, sala, modo) {
+  const { sb, user } = await sbUser();
+  const { error } = await sb.from("invitaciones").insert({ de: user.id, para: friendId, sala, modo });
+  if (error) throw new Error(friendlyError(error));
+}
+
+// Invitaciones recibidas en las últimas 2 horas: [{ id, sala, modo, de: username }].
+export async function myInvites() {
+  const { sb, user } = await sbUser();
+  const since = new Date(Date.now() - 2 * 3600e3).toISOString();
+  const { data, error } = await sb.from("invitaciones").select("id,de,sala,modo,created_at").eq("para", user.id).gte("created_at", since);
+  if (error) return [];
+  const ids = [...new Set((data || []).map((i) => i.de))];
+  let names = new Map();
+  if (ids.length) {
+    const { data: profs } = await sb.from("profiles").select("id,username").in("id", ids);
+    names = new Map((profs || []).map((p) => [p.id, p.username]));
+  }
+  return (data || []).sort((a, b) => (a.created_at < b.created_at ? 1 : -1))
+    .map((i) => ({ id: i.id, sala: i.sala, modo: i.modo, de: names.get(i.de) || "Un amigo" }));
+}
+
+export async function dismissInvite(id) {
+  const { sb } = await sbUser();
+  await sb.from("invitaciones").delete().eq("id", id);
+}

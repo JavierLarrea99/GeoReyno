@@ -92,6 +92,108 @@ function gameUrl() {
   return url.pathname.split("/").pop() + url.search;
 }
 
+// --- Cuenta, amigos e invitaciones ---
+
+let cuenta = null; // módulo js/cuenta.js
+let pollTimer = null;
+
+function gate(kind, joinCode = "") {
+  const back = encodeURIComponent(`amigos.html${joinCode ? `?unirse=${joinCode}` : ""}`);
+  stage.innerHTML = `
+    <section class="card gate">
+      <div class="gate-icon" aria-hidden="true">👥</div>
+      <h2 class="question">${kind === "off" ? "Jugar con amigos llegará muy pronto" : joinCode ? `Te han invitado a la sala ${esc(joinCode)}` : "Inicia sesión para jugar con amigos"}</h2>
+      ${kind === "off"
+        ? `<p>Las salas con amigos son para jugadores registrados, y las cuentas todavía no están activadas en esta web.</p>`
+        : `<p>Las salas son para jugadores registrados: así tus amigos te ven con tu nombre, puedes invitarles directamente y entrar con un código.</p>
+           <div class="actions" style="justify-content:center">
+             <a class="btn" href="perfil.html?volver=${back}">Iniciar sesión</a>
+             <a class="btn ghost" href="perfil.html?registro&volver=${back}">Crear mi perfil</a>
+           </div>`}
+    </section>`;
+}
+
+async function loadInvites() {
+  const box = $("invites");
+  if (!box || !cuenta) return;
+  const list = await cuenta.myInvites().catch(() => []);
+  box.hidden = !list.length;
+  box.innerHTML = `<h2 class="question">Invitaciones</h2>
+    <ul class="invite-list">${list.map((i) => `
+      <li><span><b>${esc(i.de)}</b> te invita a <b>${esc(modeById(i.modo).name)}</b> · sala ${esc(i.sala)}</span>
+        <span class="actions"><button class="btn small" data-join="${esc(i.sala)}" data-id="${i.id}">Unirme</button>
+        <button class="btn ghost small" data-dismiss="${i.id}" aria-label="Descartar">✕</button></span></li>`).join("")}</ul>`;
+  box.querySelectorAll("[data-join]").forEach((b) => b.addEventListener("click", () => {
+    cuenta.dismissInvite(Number(b.dataset.id)).catch(() => {});
+    joinRoom(b.dataset.join);
+  }));
+  box.querySelectorAll("[data-dismiss]").forEach((b) => b.addEventListener("click", async () => {
+    await cuenta.dismissInvite(Number(b.dataset.dismiss)).catch(() => {});
+    loadInvites();
+  }));
+}
+
+async function loadFriends() {
+  const box = $("friends");
+  if (!box || !cuenta) return;
+  let list = [];
+  try {
+    list = await cuenta.friends();
+  } catch (e) {
+    box.querySelector(".friend-list").innerHTML = `<li class="empty">${esc(e.message)}</li>`;
+    return;
+  }
+  const accepted = list.filter((f) => f.estado === "aceptada");
+  const incoming = list.filter((f) => f.estado === "pendiente" && !f.mia);
+  const outgoing = list.filter((f) => f.estado === "pendiente" && f.mia);
+  box.querySelector(".friend-list").innerHTML = [
+    ...incoming.map((f) => `<li><span><b>${esc(f.otro.username)}</b> quiere ser tu amigo</span>
+      <span class="actions"><button class="btn small" data-accept="${f.id}">Aceptar</button><button class="btn ghost small" data-remove="${f.id}">Rechazar</button></span></li>`),
+    ...accepted.map((f) => `<li><span><span class="dot on"></span>${esc(f.otro.username)}</span>
+      <span class="actions"><button class="btn ghost small" data-remove="${f.id}" aria-label="Quitar a ${esc(f.otro.username)}">Quitar</button></span></li>`),
+    ...outgoing.map((f) => `<li><span><span class="dot off"></span>${esc(f.otro.username)} <small>(pendiente)</small></span>
+      <span class="actions"><button class="btn ghost small" data-remove="${f.id}">Cancelar</button></span></li>`),
+  ].join("") || `<li class="empty">Aún no tienes amigos en GeoReyno. Añádelos por su nombre de jugador.</li>`;
+  box.querySelectorAll("[data-accept]").forEach((b) => b.addEventListener("click", async () => {
+    await cuenta.acceptFriend(Number(b.dataset.accept)).catch((e) => toast(e.message));
+    loadFriends();
+  }));
+  box.querySelectorAll("[data-remove]").forEach((b) => b.addEventListener("click", async () => {
+    await cuenta.removeFriend(Number(b.dataset.remove)).catch((e) => toast(e.message));
+    loadFriends();
+  }));
+}
+
+function startPolling() {
+  clearInterval(pollTimer);
+  loadInvites();
+  pollTimer = setInterval(() => { if (!document.hidden) loadInvites(); }, 8000);
+}
+
+// Panel para invitar amigos a la sala actual.
+async function renderInvitePanel() {
+  const box = $("invite-panel");
+  if (!box) return;
+  box.hidden = !box.hidden;
+  if (box.hidden) return;
+  box.innerHTML = `<p class="empty">Cargando amigos…</p>`;
+  const list = (await cuenta.friends().catch(() => [])).filter((f) => f.estado === "aceptada");
+  const inRoom = new Set(room.players.map((p) => p.name));
+  box.innerHTML = list.length
+    ? `<ul class="friend-list">${list.map((f) => `<li><span>${esc(f.otro.username)}</span>
+        ${inRoom.has(f.otro.username) ? `<small>En la sala</small>` : `<button class="btn small" data-invite="${esc(f.otro.id)}">Invitar</button>`}</li>`).join("")}</ul>`
+    : `<p class="empty">Aún no tienes amigos añadidos. Añádelos desde la pantalla de salas, o comparte el código.</p>`;
+  box.querySelectorAll("[data-invite]").forEach((b) => b.addEventListener("click", async () => {
+    try {
+      await cuenta.inviteFriend(b.dataset.invite, room.code, room.mode);
+      b.textContent = "Invitado ✓";
+      b.disabled = true;
+    } catch (e) {
+      toast(e.message);
+    }
+  }));
+}
+
 // --- Pantalla inicial ---
 
 function renderStart(message = "") {
@@ -107,59 +209,71 @@ function renderStart(message = "") {
       <button class="btn ghost" id="forget-host">Olvidarla</button></div></div>` : ""}
     ${!recent(host) && recent(guest) && (!joinCode || joinCode === guest.code) ? `<div class="card resume"><p>Estabas en la sala <b>${esc(guest.code)}</b>.</p>
       <div class="actions"><button class="btn" id="resume-guest">Volver a entrar</button></div></div>` : ""}
-    <div class="card">
-      <label class="field-label" for="name">Tu nombre</label>
-      <input class="field" id="name" maxlength="20" placeholder="Cómo te verán los demás" value="${esc(me.name)}" autocomplete="nickname">
-    </div>
+    <section class="card" id="invites" hidden></section>
     <div class="room-choices">
-      <section class="card">
-        <h2 class="question">Unirse a una sala</h2>
-        <form class="guess-form" id="join-form" autocomplete="off">
-          <label class="sr" for="code">Código de la sala</label>
-          <input class="field code-input" id="code" maxlength="6" placeholder="ABCDEF" value="${esc(joinCode)}" autocapitalize="characters" spellcheck="false">
-          <button class="btn" type="submit">Entrar</button>
-        </form>
-      </section>
       <section class="card">
         <h2 class="question">Crear una sala</h2>
         <label class="field-label" for="mode">Juego</label>
         <select class="field" id="mode">
           ${playableModes().map((m) => `<option value="${esc(m.id)}">${esc(m.name)}</option>`).join("")}
         </select>
-        <div class="actions"><button class="btn" id="create">Crear sala</button></div>
+        <div class="actions"><button class="btn" id="create" style="width:100%">Crear sala</button></div>
+        <p class="hint" style="margin-bottom:0">Después podrás invitar a tus amigos o compartir el código.</p>
+      </section>
+      <section class="card">
+        <h2 class="question">Entrar con código</h2>
+        <form class="guess-form" id="join-form" autocomplete="off">
+          <label class="sr" for="code">Código de la sala</label>
+          <input class="field code-input" id="code" maxlength="6" placeholder="ABCDEF" value="${esc(joinCode)}" autocapitalize="characters" spellcheck="false">
+          <button class="btn" type="submit">Entrar</button>
+        </form>
+        <p class="hint" style="margin-bottom:0">Juegas como <b>${esc(me.name)}</b>.</p>
       </section>
     </div>
-    <p class="hint">La conexión es directa entre navegadores (PeerJS). Las partidas en sala no cuentan para tu racha diaria.</p>`;
-
-  const nameOk = () => {
-    me.name = cleanName($("name").value);
-    if (!me.name) {
-      toast("Escribe tu nombre");
-      $("name").focus();
-      return false;
-    }
-    savePref("nombre", me.name);
-    return true;
-  };
+    <section class="card" id="friends">
+      <h2 class="question">Mis amigos</h2>
+      <form class="guess-form" id="add-friend" autocomplete="off">
+        <label class="sr" for="friend-name">Nombre de jugador</label>
+        <input class="field" id="friend-name" maxlength="20" placeholder="Nombre de jugador de tu amigo">
+        <button class="btn" type="submit">Añadir</button>
+      </form>
+      <ul class="friend-list"><li class="empty">Cargando…</li></ul>
+    </section>
+    <p class="hint">La conexión de la partida es directa entre navegadores (PeerJS). Las partidas en sala no cuentan para tu racha diaria.</p>`;
 
   $("join-form").addEventListener("submit", (e) => {
     e.preventDefault();
     const code = cleanCode($("code").value);
     if (code.length !== 6) return toast("El código tiene 6 letras");
-    if (nameOk()) joinRoom(code);
+    joinRoom(code);
   });
   $("code").addEventListener("input", () => { $("code").value = cleanCode($("code").value); });
-  $("create").addEventListener("click", () => { if (nameOk()) createRoom($("mode").value); });
-  $("resume-host")?.addEventListener("click", () => { if (nameOk()) createRoom(host.room.mode, host.room); });
+  $("create").addEventListener("click", () => createRoom($("mode").value));
+  $("resume-host")?.addEventListener("click", () => createRoom(host.room.mode, host.room));
   $("forget-host")?.addEventListener("click", () => { savePref(HOST_KEY, null); renderStart(); });
-  $("resume-guest")?.addEventListener("click", () => { if (nameOk()) joinRoom(guest.code); });
-  if (joinCode) $("name").focus();
-  else if (location.hash === "#unirse") $("code").focus();
+  $("resume-guest")?.addEventListener("click", () => joinRoom(guest.code));
+  $("add-friend").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const name = cleanName($("friend-name").value);
+    if (!name) return toast("Escribe el nombre de jugador");
+    try {
+      const added = await cuenta.addFriend(name);
+      toast(added ? `Solicitud enviada a ${added}` : "¡Ahora sois amigos!");
+      $("friend-name").value = "";
+    } catch (err) {
+      toast(err.message);
+    }
+    loadFriends();
+  });
+  if (location.hash === "#unirse" || joinCode) $("code").focus();
+  loadFriends();
+  startPolling();
 }
 
 // --- Anfitrión ---
 
 async function createRoom(modeId, restored = null, attempt = 0) {
+  clearInterval(pollTimer);
   let Peer;
   try {
     Peer = await loadPeerJS();
@@ -298,6 +412,7 @@ function startGame(modeId) {
 // --- Invitado ---
 
 async function joinRoom(code, attempt = 0) {
+  clearInterval(pollTimer);
   let Peer;
   try {
     Peer = await loadPeerJS();
@@ -402,9 +517,11 @@ function roomHeader() {
         <span class="conn-status" id="conn-status"></span>
       </div>
       <div class="actions">
-        <button class="btn ghost small" id="copy-link" data-link="${esc(link)}">Invitar</button>
+        <button class="btn small" id="invite-friends">Invitar amigos</button>
+        <button class="btn ghost small" id="copy-link" data-link="${esc(link)}">Compartir código</button>
         <button class="btn ghost small" id="leave">Salir</button>
       </div>
+      <div class="invite-panel" id="invite-panel" hidden></div>
     </div>`;
 }
 
@@ -457,7 +574,7 @@ function render() {
           ${room.players.map((p) => `<li><span class="dot ${p.connected ? "on" : "off"}"></span>${esc(p.name)}${p.host ? " <small>(anfitrión)</small>" : ""}${p.pid === me.pid ? " <small>(tú)</small>" : ""}</li>`).join("")}
         </ul>
         ${isHost ? lobbyControls("Empezar") : `<p class="hint">Juego: <b>${esc(mode.name)}</b>. Esperando a que el anfitrión empiece…</p>`}
-        <p class="hint">Comparte el código o el enlace de «Invitar». Todos jugaréis el mismo reto a la vez.</p>
+        <p class="hint">Invita a tus amigos o comparte el código. Todos jugaréis el mismo reto a la vez.</p>
       </div>`;
   }
   bindHeader();
@@ -477,6 +594,7 @@ function lobbyControls(label) {
 }
 
 function bindHeader() {
+  $("invite-friends")?.addEventListener("click", renderInvitePanel);
   $("copy-link")?.addEventListener("click", async (e) => {
     const link = e.currentTarget.dataset.link;
     const how = await shareText(`¡Juega conmigo a GeoReyno! Sala ${room.code}: ${link}`);
@@ -499,4 +617,19 @@ function bindHeader() {
 
 window.addEventListener("beforeunload", () => peer?.destroy());
 
-renderStart();
+// Arranque: las salas son solo para jugadores con sesión iniciada.
+(async () => {
+  const joinCode = cleanCode(query.get("unirse"));
+  try {
+    cuenta = await import("./cuenta.js");
+  } catch {
+    return gate("off");
+  }
+  if (!(await cuenta.accountsEnabled())) return gate("off");
+  const user = await cuenta.currentUser();
+  if (!user) return gate("login", joinCode);
+  me.name = user.username;
+  // El identificador de jugador en la sala es el de la cuenta: así se reconoce al reconectar.
+  me.pid = user.id.replace(/-/g, "").slice(0, 20);
+  renderStart();
+})();

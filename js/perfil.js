@@ -117,6 +117,16 @@ function renderStats(history, title) {
 
 // --- Cuenta ---
 
+// Tras iniciar sesión, volver a la página de la que venías (p. ej. una sala con amigos).
+function goBack() {
+  const back = new URLSearchParams(location.search).get("volver");
+  if (back && /^[a-z-]+\.html(\?[A-Za-z0-9=&_-]*)?$/.test(back)) {
+    location.href = back;
+    return true;
+  }
+  return false;
+}
+
 function authForm(mode = "login", message = "") {
   const reg = mode === "registro";
   const reset = mode === "reset";
@@ -157,6 +167,7 @@ function authForm(mode = "login", message = "") {
         const { needsConfirm } = await cuenta.signUp({ email, password, username });
         if (needsConfirm) return authForm("login", "¡Cuenta creada! Te hemos enviado un correo para confirmarla. Después, inicia sesión.");
         await cuenta.uploadLocalHistory();
+        if (goBack()) return;
         toast("¡Bienvenido a GeoReyno!");
         return init();
       }
@@ -165,6 +176,7 @@ function authForm(mode = "login", message = "") {
         return authForm("login", "Si el correo está registrado, te llegará un enlace para cambiar la contraseña.");
       }
       await cuenta.signIn({ email, password });
+      if (goBack()) return;
       toast("Sesión iniciada");
       init();
     } catch (err) {

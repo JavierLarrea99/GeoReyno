@@ -8,12 +8,12 @@ GeoReyno es un proyecto independiente, sin relación con el Gobierno de Navarra.
 
 | Juego | Página | Qué es |
 | --- | --- | --- |
-| **Navarra Street** (principal) | `street.html` | Apareces en una calle de Navarra (fotos de Mapillary, con movimiento). Marca en el mapa dónde estás. 5 rondas, 5000 · e^(−d/30 km) puntos por ronda. |
+| **Navarra Street** (principal) | `street.html` | Apareces en una calle de Navarra (fotos de Mapillary, con movimiento), a pantalla completa, con el mapa abajo para marcar dónde estás. 5 rondas, 5000 · e^(−d/30 km) puntos por ronda. |
 | Adivina el municipio | `municipio.html` | Fotos de un municipio; 4 intentos, cada fallo destapa otra foto y da distancia y dirección. |
 | Palabra del día | `palabra.html` | Tipo Wordle: palabra navarra de 5 letras en 6 intentos, con pista tras el tercero. |
 | Escudos | `escudos.html` | 5 escudos municipales de Wikimedia Commons, 4 opciones, con autor y licencia. |
 | Pregunta del día | `pregunta.html` | Una pregunta al día de un banco de 183 (historia, tradiciones, euskera, topónimos…). |
-| Jugar con amigos | `amigos.html` | Salas con PeerJS y código de 6 letras: todos juegan el mismo reto y ven la tabla por rondas. |
+| Jugar con amigos | `amigos.html` | Solo con sesión iniciada: añade amigos por su nombre de jugador, invítales a una sala o entra con un código de 6 letras. Todos juegan el mismo reto y ven la tabla por rondas. |
 
 Además: `perfil.html` (registro, inicio de sesión y estadísticas por juego), `ranking.html` (clasificación por juego y periodo), `como-se-juega.html` y las páginas legales.
 
@@ -50,13 +50,13 @@ Copia `config.example.js` como `config.js` (está en `.gitignore`, nunca se sube
 - `MAPILLARY_TOKEN`: token de cliente de Mapillary, para Navarra Street y Adivina el municipio. Se saca en mapillary.com/dashboard/developers → tu aplicación → columna «Access Token» → «View».
 - `SUPABASE_URL` y `SUPABASE_ANON_KEY`: para cuentas y clasificación (ver PLAN.md, «Activar las cuentas»).
 
-Para publicarlo en GitHub Pages con esos valores sin subirlos, usa la plantilla `tools/pages-con-token.yml`.
+En la web publicada, esos valores salen de los secretos del repositorio (ver «Publicar con GitHub Pages»).
 
 ## Publicar con GitHub Pages
 
-1. En GitHub: Settings → Pages.
-2. «Deploy from a branch», rama `main`, carpeta `/ (root)`. O bien «GitHub Actions» con la plantilla anterior.
-3. Estará en `https://javierlarrea99.github.io/GeoReyno/`.
+1. En GitHub: Settings → Secrets and variables → Actions → añade el secreto `MAPILLARY_TOKEN` (y, cuando actives las cuentas, `SUPABASE_URL` y `SUPABASE_ANON_KEY`).
+2. Settings → Pages → Source: **GitHub Actions**.
+3. Cada push a `main` lo publica `.github/workflows/pages.yml`, que crea `config.js` con los secretos. Estará en `https://javierlarrea99.github.io/GeoReyno/`.
 
 ## Estructura
 
@@ -83,7 +83,7 @@ data/fotos_municipios.json fotos propias para Adivina el municipio (opcional)
 data/street.json           ubicaciones de Navarra Street (opcional)
 
 tools/supabase.sql           base de datos de cuentas y clasificación
-tools/pages-con-token.yml    publicar con secretos en GitHub Actions
+.github/workflows/pages.yml    publicar con secretos en GitHub Actions
 tools/escudos_commons.py     genera escudos.json desde Commons
 tools/cobertura_mapillary.py mide cobertura de Mapillary y genera street.json
 tools/build_palabras.py      genera palabras.json

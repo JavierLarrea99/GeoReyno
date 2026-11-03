@@ -46,22 +46,48 @@ function drawProgress(results) {
   }).join("");
 }
 
-async function play(locations, key, saved = []) {
+async function play(finder, key, saved = []) {
+  const locations = finder.list;
   const results = saved.slice(0, ROUNDS - 1);
+  document.body.classList.add("playing");
   stage.innerHTML = `
-    <div class="geo-layout">
-      <div class="card photo-card">
-        <div class="topic" id="round-label"></div>
-        <div class="street-view" id="viewer"></div>
-        <p class="credit" id="credit"></p>
-        <p class="hint">Arrastra para mirar alrededor y usa las flechas para avanzar por la calle.</p>
+    <div class="sv" id="sv">
+      <div class="sv-view" id="viewer"></div>
+      <div class="sv-hud">
+        <div class="hud-box"><span>Ronda</span><b id="round-label">1/${ROUNDS}</b></div>
+        <div class="hud-box"><span>Puntos</span><b id="hud-score">0</b></div>
       </div>
-      <div class="card map-card">
+      <button class="sv-btn sv-fs" id="fs" aria-label="Pantalla completa" title="Pantalla completa">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>
+      </button>
+      <p class="sv-credit" id="credit"></p>
+      <div class="sv-map" id="mapbox">
+        <button class="sv-map-toggle" id="map-toggle" aria-expanded="false"><span class="grip" aria-hidden="true"></span><span id="map-toggle-text">Abrir el mapa para adivinar</span></button>
         <div class="answer-map" id="map"><p class="map-loading">Cargando mapa…</p></div>
         <div class="round-info" id="info">Toca el mapa para poner tu marca.</div>
-        <div class="actions"><button class="btn" id="confirm" disabled>Confirmar</button></div>
+        <button class="btn" id="confirm" disabled>Adivinar</button>
       </div>
     </div>`;
+
+  const sv = $("sv");
+  const mapbox = $("mapbox");
+  const setOpen = (open) => {
+    mapbox.classList.toggle("open", open);
+    $("map-toggle").setAttribute("aria-expanded", String(open));
+    $("map-toggle-text").textContent = open ? "Cerrar el mapa" : "Abrir el mapa para adivinar";
+  };
+  $("map-toggle").addEventListener("click", () => setOpen(!mapbox.classList.contains("open")));
+  // Pantalla completa: API del navegador o, si no existe (iPhone), ocupar toda la ventana.
+  $("fs").addEventListener("click", async () => {
+    if (document.fullscreenElement) return document.exitFullscreen();
+    if (sv.classList.contains("fake-fs")) return sv.classList.remove("fake-fs");
+    try {
+      if (sv.requestFullscreen) await sv.requestFullscreen();
+      else throw new Error("sin API");
+    } catch {
+      sv.classList.add("fake-fs");
+    }
+  });
 
   let mly;
   let answerMap;
@@ -75,7 +101,7 @@ async function play(locations, key, saved = []) {
   const viewer = new mly.Viewer({
     accessToken: token,
     container: $("viewer"),
-    imageId: locations[results.length].imagen,
+    imageId: (await finder.get(results.length)).imagen,
     component: { cover: false, attribution: false, bearing: false },
   });
   new ResizeObserver(() => viewer.resize()).observe($("viewer"));
@@ -91,11 +117,18 @@ async function play(locations, key, saved = []) {
     $("credit").innerHTML = photoCredit(currentAuthor, currentImage, phase === "answer");
   });
 
-  const startRound = () => {
+  const startRound = async () => {
     phase = "guess";
-    $("round-label").textContent = `${label(key)} · Ronda ${round + 1} de ${ROUNDS}`;
+    const loc = await finder.get(round).catch(() => null);
+    if (!loc) return toast("No se ha podido cargar la siguiente foto");
+    locations[round] ||= loc;
+    finder.get(round + 1).catch(() => {}); // ir buscando la siguiente
+    $("round-label").textContent = `${round + 1}/${ROUNDS}`;
+    $("hud-score").textContent = formatNumber(results.reduce((n, r) => n + r.points, 0));
     $("info").textContent = "Toca el mapa para poner tu marca.";
-    $("confirm").textContent = "Confirmar";
+    $("confirm").textContent = "Adivinar";
+    mapbox.classList.remove("big");
+    setOpen(false);
     $("confirm").disabled = true;
     currentAuthor = locations[round].autor || "";
     currentImage = locations[round].imagen;
@@ -117,7 +150,10 @@ async function play(locations, key, saved = []) {
       const pts = roundPoints(km);
       results.push({ km: Math.round(km * 10) / 10, points: pts, imagen: loc.imagen, autor: currentAuthor });
       if (!practice) savePref(`${MODE}:partida:${key}`, results);
+      mapbox.classList.add("big");
+      setOpen(true);
       answerMap.showAnswer(answer);
+      $("hud-score").textContent = formatNumber(results.reduce((n, r) => n + r.points, 0));
       reportRound(MODE, round, pts, 5000);
       drawProgress(results);
       phase = "answer";
@@ -131,6 +167,8 @@ async function play(locations, key, saved = []) {
     round++;
     if (round < ROUNDS) return startRound();
     viewer.remove();
+    if (document.fullscreenElement) document.exitFullscreen();
+    document.body.classList.remove("playing");
     finish(results, key);
   });
 
@@ -217,13 +255,34 @@ async function start() {
   const order = sample
     ? shuffle(data.municipios, rand).slice(0, 30).map((m) => ({ lon: m.centro[0], lat: m.centro[1], ine: m.ine, municipio: m.nombre }))
     : shuffle(list, rand);
-  const locations = [];
+  // Buscador progresivo: encuentra las fotos en orden (igual para todos) y en segundo plano,
+  // así la partida empieza en cuanto aparece la primera.
+  const finder = {
+    list: [],
+    next: 0,
+    busy: null,
+    async upTo(n) {
+      while (this.list.length < n && this.next < order.length) {
+        if (!this.busy) {
+          const batch = order.slice(this.next, this.next + 5);
+          this.next += 5;
+          this.busy = Promise.all(batch.map(resolveLocation)).then((found) => {
+            for (const loc of found) if (loc && this.list.length < ROUNDS) this.list.push(loc);
+          }).finally(() => { this.busy = null; });
+        }
+        await this.busy;
+      }
+    },
+    async get(i) {
+      await this.upTo(i + 1);
+      return this.list[i] || this.list[i % Math.max(1, this.list.length)];
+    },
+  };
+
+  const saved = practice ? [] : loadPref(`${MODE}:partida:${key}`, []);
+  const savedRounds = Array.isArray(saved) ? saved : [];
   try {
-    // En tandas de 5 peticiones a la vez; se respeta el orden para que el reto sea igual para todos.
-    for (let i = 0; i < order.length && locations.length < ROUNDS; i += 5) {
-      const found = await Promise.all(order.slice(i, i + 5).map(resolveLocation));
-      for (const loc of found) if (loc && locations.length < ROUNDS) locations.push(loc);
-    }
+    await finder.get(Math.min(savedRounds.length, ROUNDS - 1));
   } catch (e) {
     if (e instanceof TokenError) {
       forgetToken();
@@ -232,15 +291,11 @@ async function start() {
     stage.innerHTML = `<div class="card"><p>No se ha podido conectar con Mapillary. Comprueba la conexión y recarga la página.</p></div>`;
     return;
   }
-  if (!locations.length) {
+  if (!finder.list.length) {
     stage.innerHTML = `<div class="card"><p>No se han encontrado fotos de Mapillary cerca de las ubicaciones de la lista.</p></div>`;
     return;
   }
-  // Si hay pocas fotos, se repiten para completar las 5 rondas.
-  while (locations.length < ROUNDS) locations.push(locations[locations.length % Math.max(1, locations.length)]);
-
-  const saved = practice ? [] : loadPref(`${MODE}:partida:${key}`, []);
-  play(locations, key, Array.isArray(saved) ? saved : []);
+  play(finder, key, savedRounds);
 }
 
 start();

@@ -39,7 +39,7 @@ function renderHeader(el) {
   el.innerHTML = `
     <div class="wrap wide">
       <a class="brand" href="./" aria-label="GeoReyno, inicio">
-        <img class="logo" src="img/logo.svg" alt="" width="30" height="36">
+        <img class="logo" src="img/logo.svg" alt="" width="28" height="37">
         <b>Geo<span>Reyno</span></b>
       </a>
       <button class="menu-btn" id="menu-btn" aria-expanded="false" aria-controls="site-nav">

@@ -83,3 +83,51 @@ language sql security definer set search_path = public as $$
 $$;
 revoke execute on function public.borrar_mi_cuenta() from anon;
 grant execute on function public.borrar_mi_cuenta() to authenticated;
+
+-- ===== Amigos e invitaciones a salas =====
+-- Si ya ejecutaste la primera parte de este archivo, ejecuta solo desde aquí.
+
+-- Buscar un jugador por su nombre exacto (sin distinguir mayúsculas).
+create function public.buscar_jugador(nombre text)
+returns table (id uuid, username text)
+language sql stable security definer set search_path = public as $$
+  select id, username from profiles where lower(username) = lower(trim(nombre)) limit 1
+$$;
+grant execute on function public.buscar_jugador(text) to authenticated;
+
+-- Solicitudes de amistad: «de» la envía, «para» la acepta.
+create table public.amistades (
+  id bigint generated always as identity primary key,
+  de uuid not null references public.profiles (id) on delete cascade,
+  para uuid not null references public.profiles (id) on delete cascade,
+  estado text not null default 'pendiente' check (estado in ('pendiente', 'aceptada')),
+  created_at timestamptz not null default now(),
+  unique (de, para),
+  check (de <> para)
+);
+alter table public.amistades enable row level security;
+create policy "ver mis amistades" on public.amistades for select using (auth.uid() in (de, para));
+create policy "pedir amistad" on public.amistades for insert with check (auth.uid() = de and estado = 'pendiente');
+create policy "aceptar amistad" on public.amistades for update using (auth.uid() = para) with check (auth.uid() = para and estado = 'aceptada');
+create policy "borrar amistad" on public.amistades for delete using (auth.uid() in (de, para));
+
+-- Invitaciones a una sala: solo entre amigos, y caducan solas a las 2 horas (el juego no muestra las antiguas).
+create table public.invitaciones (
+  id bigint generated always as identity primary key,
+  de uuid not null references public.profiles (id) on delete cascade,
+  para uuid not null references public.profiles (id) on delete cascade,
+  sala text not null check (sala ~ '^[A-Z]{6}$'),
+  modo text not null check (char_length(modo) <= 20),
+  created_at timestamptz not null default now()
+);
+create index invitaciones_para on public.invitaciones (para, created_at);
+alter table public.invitaciones enable row level security;
+create policy "ver mis invitaciones" on public.invitaciones for select using (auth.uid() in (de, para));
+create policy "invitar a un amigo" on public.invitaciones for insert with check (
+  auth.uid() = de and exists (
+    select 1 from public.amistades a
+    where a.estado = 'aceptada'
+      and ((a.de = invitaciones.de and a.para = invitaciones.para) or (a.de = invitaciones.para and a.para = invitaciones.de))
+  )
+);
+create policy "borrar invitacion" on public.invitaciones for delete using (auth.uid() in (de, para));
