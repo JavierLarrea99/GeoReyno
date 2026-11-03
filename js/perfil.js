@@ -1,7 +1,7 @@
 // Mi perfil: inicio de sesión / registro y estadísticas completas por modo.
 // Sin sesión, las estadísticas salen de este navegador; con sesión, de tu cuenta (todos tus dispositivos).
 
-import { MODES, getStats, resultLabel, resultGrid, esc, toast, todayKey, formatNumber, clearAllStats } from "./engine.js";
+import { MODES, getStats, resultLabel, resultGrid, esc, toast, todayKey, formatNumber, clearAllStats, loadingHTML } from "./engine.js";
 import * as cuenta from "./cuenta.js";
 
 const $ = (id) => document.getElementById(id);
@@ -237,12 +237,13 @@ async function init() {
   const user = await cuenta.currentUser(true);
   if (!user) {
     authForm(new URLSearchParams(location.search).has("registro") ? "registro" : "login");
-    return renderStats(localHistory(), "Tus estadísticas en este dispositivo");
+    statsEl.innerHTML = "";
+    return;
   }
   profileHeader(user);
   const nav = document.getElementById("nav-user");
   if (nav) nav.textContent = user.username;
-  statsEl.innerHTML = `<div class="card"><p>Cargando tus estadísticas…</p></div>`;
+  statsEl.innerHTML = `<div class="card">${loadingHTML("Cargando tus estadísticas…")}</div>`;
   const remote = await cuenta.myResults();
   renderStats(merge(localHistory(), remote), "Tus estadísticas");
 }

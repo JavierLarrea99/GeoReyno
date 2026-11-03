@@ -5,7 +5,7 @@
 import {
   dayNumber, seededRandom, shuffle, esc, toast, gameParams, formatNumber, distanceKm,
   getTodayResult, saveDailyResult, shareText, timeToNextDay, statsBlock, startCountdown,
-  reportRound, reportFinal, loadPref, savePref,
+  reportRound, reportFinal, loadPref, savePref, loadingHTML,
 } from "./engine.js";
 import { loadMunicipios, municipioAt } from "./geo.js";
 import { createAnswerMap, roundPoints, pointsSquare } from "./map.js";
@@ -53,6 +53,7 @@ async function play(finder, key, saved = []) {
   stage.innerHTML = `
     <div class="sv" id="sv">
       <div class="sv-view" id="viewer"></div>
+      <div id="sv-loading">${loadingHTML("Cargando la foto…")}</div>
       <div class="sv-hud">
         <div class="hud-box"><span>Ronda</span><b id="round-label">1/${ROUNDS}</b></div>
         <div class="hud-box"><span>Puntos</span><b id="hud-score">0</b></div>
@@ -63,7 +64,7 @@ async function play(finder, key, saved = []) {
       <p class="sv-credit" id="credit"></p>
       <div class="sv-map" id="mapbox">
         <button class="sv-map-toggle" id="map-toggle" aria-expanded="false"><span class="grip" aria-hidden="true"></span><span id="map-toggle-text">Abrir el mapa para adivinar</span></button>
-        <div class="answer-map" id="map"><p class="map-loading">Cargando mapa…</p></div>
+        <div class="answer-map" id="map">${loadingHTML("Cargando mapa…")}</div>
         <div class="round-info" id="info">Toca el mapa para poner tu marca.</div>
         <button class="btn" id="confirm" disabled>Adivinar</button>
       </div>
@@ -112,6 +113,7 @@ async function play(finder, key, saved = []) {
   let currentImage = locations[round].imagen;
 
   viewer.on("image", (e) => {
+    $("sv-loading")?.setAttribute("hidden", "");
     currentAuthor = e.image?.creatorUsername || currentAuthor;
     currentImage = e.image?.id || currentImage;
     $("credit").innerHTML = photoCredit(currentAuthor, currentImage, phase === "answer");
@@ -248,7 +250,7 @@ async function start() {
     return;
   }
 
-  stage.innerHTML = `<div class="card"><p>Buscando las fotos de hoy…</p></div>`;
+  stage.innerHTML = `<div class="card">${loadingHTML("Buscando las fotos de hoy…")}</div>`;
   const rand = practice && !room ? Math.random : seededRandom(`${MODE}:${key}`);
   // Con la lista real se usan sus ubicaciones. Con la de ejemplo, se buscan fotos en vivo
   // alrededor del centro de municipios elegidos al azar (con la semilla del día).

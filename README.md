@@ -9,7 +9,7 @@ GeoReyno es un proyecto independiente, sin relación con el Gobierno de Navarra.
 | Juego | Página | Qué es |
 | --- | --- | --- |
 | **Navarra Street** (principal) | `street.html` | Apareces en una calle de Navarra (fotos de Mapillary, con movimiento), a pantalla completa, con el mapa abajo para marcar dónde estás. 5 rondas, 5000 · e^(−d/30 km) puntos por ronda. |
-| Adivina el municipio | `municipio.html` | Fotos de un municipio; 4 intentos, cada fallo destapa otra foto y da distancia y dirección. |
+| Adivina el municipio | `municipio.html` | Fotos libres (Wikimedia Commons) de un municipio; 4 intentos, cada fallo destapa otra foto y da distancia y dirección. |
 | Palabra del día | `palabra.html` | Tipo Wordle: palabra navarra de 5 letras en 6 intentos, con pista tras el tercero. |
 | Escudos | `escudos.html` | 5 escudos municipales de Wikimedia Commons, 4 opciones, con autor y licencia. |
 | Pregunta del día | `pregunta.html` | Una pregunta al día de un banco de 183 (historia, tradiciones, euskera, topónimos…). |
@@ -47,7 +47,7 @@ Abre <http://localhost:8000>. No vale con abrir `index.html` con doble clic: el 
 
 Copia `config.example.js` como `config.js` (está en `.gitignore`, nunca se sube) y rellena:
 
-- `MAPILLARY_TOKEN`: token de cliente de Mapillary, para Navarra Street y Adivina el municipio. Se saca en mapillary.com/dashboard/developers → tu aplicación → columna «Access Token» → «View».
+- `MAPILLARY_TOKEN`: token de cliente de Mapillary, para Navarra Street. Se saca en mapillary.com/dashboard/developers → tu aplicación → columna «Access Token» → «View».
 - `SUPABASE_URL` y `SUPABASE_ANON_KEY`: para cuentas y clasificación (ver PLAN.md, «Activar las cuentas»).
 
 En la web publicada, esos valores salen de los secretos del repositorio (ver «Publicar con GitHub Pages»).
@@ -85,6 +85,8 @@ data/street.json           ubicaciones de Navarra Street (opcional)
 tools/supabase.sql           base de datos de cuentas y clasificación
 .github/workflows/pages.yml    publicar con secretos en GitHub Actions
 tools/escudos_commons.py     genera escudos.json desde Commons
+tools/fotos_commons.py       genera fotos_municipios.json (fotos libres de cada municipio)
+tools/build_contorno.py      contorno preciso de Navarra (INE vía geoBoundaries)
 tools/cobertura_mapillary.py mide cobertura de Mapillary y genera street.json
 tools/build_palabras.py      genera palabras.json
 tools/build_municipios.mjs   genera municipios.json desde es-atlas

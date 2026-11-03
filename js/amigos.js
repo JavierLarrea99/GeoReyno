@@ -3,7 +3,7 @@
 // Cada jugador juega el modo elegido en un iframe con la misma semilla; el juego avisa
 // de cada ronda con postMessage y la sala reenvía los puntos al anfitrión.
 
-import { MODES, esc, toast, shareText, loadPref, savePref, formatNumber } from "./engine.js";
+import { MODES, esc, toast, shareText, loadPref, savePref, formatNumber, loadingHTML } from "./engine.js";
 
 const PEERJS = "https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js";
 const PREFIX = "georeyno-sala-";
@@ -288,7 +288,7 @@ async function createRoom(modeId, restored = null, attempt = 0) {
       : { code, mode: modeId, seed: "", status: "lobby", players: [] };
   }
   upsertPlayer(me.pid, me.name, true);
-  stage.innerHTML = `<div class="card"><p>Creando la sala…</p></div>`;
+  stage.innerHTML = `<div class="card">${loadingHTML("Creando la sala…")}</div>`;
 
   peer = new Peer(PREFIX + code, peerOptions());
   peer.on("open", () => {
@@ -307,7 +307,7 @@ async function createRoom(modeId, restored = null, attempt = 0) {
       // El código ya está en uso: si es una sala nueva, otro código; si se está recuperando, se reintenta.
       peer.destroy();
       if (restored && attempt < 10) {
-        stage.innerHTML = `<div class="card"><p>Recuperando la sala ${esc(code)}… (intento ${attempt + 1})</p></div>`;
+        stage.innerHTML = `<div class="card">${loadingHTML(`Recuperando la sala ${code}… (intento ${attempt + 1})`)}</div>`;
         return setTimeout(() => createRoom(modeId, restored, attempt + 1), 3000);
       }
       if (!restored) {
@@ -421,7 +421,7 @@ async function joinRoom(code, attempt = 0) {
   }
   role = "guest";
   savePref(GUEST_KEY, { at: Date.now(), code });
-  if (!room) stage.innerHTML = `<div class="card"><p>Entrando en la sala ${esc(code)}…</p></div>`;
+  if (!room) stage.innerHTML = `<div class="card">${loadingHTML(`Entrando en la sala ${code}…`)}</div>`;
 
   const connect = () => {
     hostConn = peer.connect(PREFIX + code, { reliable: true });

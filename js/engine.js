@@ -339,3 +339,20 @@ export function dailyFromCycle(items, mode, key = todayKey()) {
   const n = dayNumber(key) - 1;
   return order[((n % order.length) + order.length) % order.length];
 }
+
+// Rueda de carga con el motivo del logo (la rueda de cadenas) girando.
+export const SPINNER = `<svg class="spinner" viewBox="-60 -60 120 120" aria-hidden="true">
+  <g fill="none" stroke="currentColor" stroke-width="5">
+    <path d="M0-44L31-31L44 0L31 31L0 44L-31 31L-44 0L-31-31Z"/>
+    <path d="M0-44V44M-44 0H44M-31-31L31 31M31-31L-31 31"/>
+  </g>
+  <g fill="var(--surface, #fff)" stroke="currentColor" stroke-width="5">
+    <circle cx="0" cy="-44" r="8"/><circle cx="31" cy="-31" r="8"/><circle cx="44" cy="0" r="8"/><circle cx="31" cy="31" r="8"/>
+    <circle cx="0" cy="44" r="8"/><circle cx="-31" cy="31" r="8"/><circle cx="-44" cy="0" r="8"/><circle cx="-31" cy="-31" r="8"/>
+    <circle cx="0" cy="0" r="9"/>
+  </g>
+</svg>`;
+
+export function loadingHTML(text = "Cargando…") {
+  return `<div class="loading" role="status">${SPINNER}<span>${esc(text)}</span></div>`;
+}

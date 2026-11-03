@@ -3,3 +3,4 @@ node_modules/
 __pycache__/
 .DS_Store
 tools/revisar_escudos.html
+tools/revisar_fotos.html

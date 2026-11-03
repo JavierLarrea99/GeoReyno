@@ -755,7 +755,8 @@ body.playing main.game { max-width: none; padding: 0; }
 }
 .sv:fullscreen, .sv.fake-fs { height: 100dvh; }
 .sv.fake-fs { position: fixed; inset: 0; z-index: 200; }
-.sv-view { position: absolute; inset: 0; }
+/* MapillaryJS pone position: relative a su contenedor: hay que ganarle en especificidad. */
+.sv .sv-view { position: absolute; inset: 0; width: auto; height: auto; }
 .sv-hud { position: absolute; top: 12px; left: 12px; z-index: 5; display: flex; gap: 8px; }
 .hud-box {
   background: rgba(10, 14, 22, 0.82);
@@ -821,3 +822,14 @@ body.playing main.game { max-width: none; padding: 0; }
 .invite-panel { flex-basis: 100%; }
 .invite-panel .friend-list { margin-top: 4px; }
 .room #stage:has(.room-play) > .room-head { max-width: none; }
+
+/* ===== Rueda de carga ===== */
+.loading {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px;
+  min-height: 260px; padding: 30px 16px; color: var(--muted); font-weight: 600; text-align: center;
+}
+.spinner { width: 64px; height: 64px; color: var(--red); animation: girar 1.6s linear infinite; filter: drop-shadow(0 0 10px rgba(229, 32, 61, 0.35)); }
+@keyframes girar { to { transform: rotate(360deg); } }
+.sv .loading { position: absolute; inset: 0; color: #cfd6e2; z-index: 3; pointer-events: none; }
+.sv .loading .spinner g:last-child { fill: #05070b; }
+@media (prefers-reduced-motion: reduce) { .spinner { animation: girar 4s linear infinite !important; } }

@@ -51,6 +51,13 @@ Documento de trabajo para retomar el proyecto en cualquier sesión. Las decision
 - [x] Cuentas (Supabase): registro, inicio de sesión, recuperar contraseña, borrar cuenta; los resultados se suben solos; perfil con estadísticas mejores (rachas calculadas, acierto medio, últimos 14 días, historial); clasificación por juego y periodo; modo invitado si no está configurado.
 - [x] Probado en móvil (390×844) y ordenador (1280×900), tema oscuro y claro, sin errores de consola: todos los juegos, perfil, clasificación (con Supabase simulado), salas con dos navegadores (palabra y municipio) y páginas legales. Mapillary y Supabase se probaron simulados porque desde aquí no hay acceso a esas webs.
 
+### Versión 2.2
+- [x] Contorno de Navarra preciso en el mapa de Navarra Street: límite provincial del INE (vía geoBoundaries), simplificado a ~10 m con `tools/build_contorno.py`. El anterior (es-atlas) tenía errores grandes.
+- [x] Corregida la pantalla negra del visor de Navarra Street (la hoja de estilos de MapillaryJS pisaba la posición del contenedor).
+- [x] Adivina el municipio ya no usa Mapillary: solo fotos libres de Wikimedia Commons de `data/fotos_municipios.json`, generadas con `tools/fotos_commons.py`. Mientras no haya fotos, el modo dice «muy pronto».
+- [x] Rueda de carga propia (la rueda del logo girando) en todas las esperas.
+- [x] Mi perfil sin sesión muestra solo el formulario, sin estadísticas a cero.
+
 ### Versión 2.1
 - [x] Logo nuevo (chincheta con la rueda de cadenas) y silueta de Navarra nueva, vectorizados a partir de las imágenes del dueño (`img/logo.svg`, `img/navarra.svg`), usados en la portada, la cabecera, los iconos de la app y la imagen para redes.
 - [x] Navarra Street a pantalla completa: visor ocupando la pantalla, marcador de ronda y puntos, botón de pantalla completa y mapa abajo (panel desplegable en el móvil; recuadro que se agranda al pasar el ratón en el ordenador). Empieza en cuanto encuentra la primera foto y busca las siguientes mientras juegas.
@@ -73,7 +80,7 @@ Documento de trabajo para retomar el proyecto en cualquier sesión. Las decision
 3. [ ] ⚠️ **Revisar preguntas antes de publicar.** Las 183 están escritas de memoria, solo con datos que se consideraron seguros, pero hay que contrastarlas (sobre todo cifras y fechas). Revisa también las 42 pistas de la Palabra del día (`tools/build_palabras.py`).
 4. [ ] **Escudos**: los 5 de ejemplo tienen nombres de archivo puestos a mano y algunos no corresponden. Ejecuta `python3 tools/escudos_commons.py`: genera la lista real con autor y licencia y la página `tools/revisar_escudos.html` para revisarlos a ojo; borra de `data/escudos.json` los que no cuadren.
 5. [ ] **Rellenar tus datos** en `aviso-legal.html`, `privacidad.html`, `cookies.html` y `creditos.html`: huecos en amarillo entre corchetes.
-6. [ ] **Fotos propias** para Adivina el municipio (opcional): añádelas a `data/fotos_municipios.json` (mínimo 2 por municipio, con autor y licencia). Con fotos propias o de Commons el juego no depende de Mapillary.
+6. [ ] **Fotos para Adivina el municipio** (necesario para activar el modo): en tu ordenador, `python3 tools/fotos_commons.py` (o `--sin-atribucion` para solo dominio público y CC0). Revisa `tools/revisar_fotos.html` y borra de `data/fotos_municipios.json` las fotos en las que se lea el nombre del pueblo. Después súbelo a GitHub. También puedes añadir fotos tuyas con el mismo formato.
 7. [ ] Teselas de OpenStreetMap: con mucho tráfico, pasar a MapTiler/Stadia (plan gratuito) o teselas propias (PMTiles).
 8. [ ] Salas: usan el servidor público gratuito de PeerJS. Si falla o se satura, montar un PeerServer propio.
 9. [ ] La clasificación confía en lo que envía el navegador (con límites: un resultado por día y juego, fechas cercanas y puntos dentro del máximo). Si hay trampas, mover la puntuación a una función del servidor (Supabase Edge Functions).

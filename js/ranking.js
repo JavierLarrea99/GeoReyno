@@ -1,6 +1,6 @@
 // Clasificación: por modo y periodo. Necesita las cuentas (Supabase) activadas.
 
-import { MODES, esc, formatNumber } from "./engine.js";
+import { MODES, esc, formatNumber, loadingHTML } from "./engine.js";
 import * as cuenta from "./cuenta.js";
 
 const $ = (id) => document.getElementById(id);
@@ -24,7 +24,7 @@ function tabs() {
 async function load() {
   tabs();
   const body = $("board");
-  body.innerHTML = `<p class="empty">Cargando…</p>`;
+  body.innerHTML = loadingHTML("Cargando la clasificación…");
   const rows = await cuenta.ranking(state.mode, state.period);
   if (!rows) {
     body.innerHTML = `<p class="empty">No se ha podido cargar la clasificación. Inténtalo de nuevo.</p>`;

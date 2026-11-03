@@ -66,7 +66,7 @@ export async function createAnswerMap(container, data) {
   map.touchZoomRotate.disableRotation();
   map.addControl(new maplibregl.AttributionControl({
     compact: true,
-    customAttribution: "Límites: © IGN (CC BY 4.0)",
+    customAttribution: "Límite de Navarra: INE",
   }));
   map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-right");
 

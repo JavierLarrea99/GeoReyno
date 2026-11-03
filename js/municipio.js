@@ -1,15 +1,14 @@
 // Adivina el municipio: fotos de un municipio navarro. Tienes 4 intentos; cada fallo destapa
 // otra foto y te dice a qué distancia y en qué dirección está.
-// Fotos: data/fotos_municipios.json (fotos propias o de Commons, con autor y licencia) y,
-// si no hay suficientes, fotos de Mapillary buscadas en vivo dentro del municipio.
+// Fotos: solo data/fotos_municipios.json, con fotos de licencia libre (Wikimedia Commons o propias)
+// y su autor y licencia. Se genera con tools/fotos_commons.py.
 
 import {
   dayNumber, dailyFromCycle, shuffle, seededRandom, esc, toast, gameParams, normalize,
   getTodayResult, saveDailyResult, shareText, timeToNextDay, statsBlock, startCountdown,
   distanceKm, bearing, loadPref, savePref, reportRound, reportFinal,
 } from "./engine.js";
-import { loadMunicipios, searchMunicipios, findMunicipio, pointInGeom } from "./geo.js";
-import { getToken, forgetToken, TokenError, imagesAround, photoCredit, renderNoToken } from "./mapillary.js";
+import { loadMunicipios, searchMunicipios, findMunicipio } from "./geo.js";
 
 const MODE = "municipio";
 const TRIES = 4;
@@ -34,35 +33,15 @@ function label() {
 }
 
 function credit(p, reveal) {
-  if (p.fuente === "mapillary") return photoCredit(p.autor, p.id, reveal);
-  const lic = p.licencia_url ? `<a href="${esc(p.licencia_url)}" target="_blank" rel="noopener">${esc(p.licencia)}</a>` : esc(p.licencia || "");
-  const src = reveal && p.pagina ? ` · <a href="${esc(p.pagina)}" target="_blank" rel="noopener">fuente</a>` : "";
-  return `Foto: ${esc(p.autor || "autor desconocido")}${lic ? ` · ${lic}` : ""}${src}`;
-}
-
-// Elige hasta 4 fotos de Mapillary dentro del municipio, de secuencias distintas y separadas.
-async function mapillaryPhotos(token, m) {
-  const all = [];
-  for (const d of [0.006, 0.014]) {
-    const list = await imagesAround(token, m.centro, d, 100);
-    all.push(...list.filter((i) => i.thumb && !i.pano && pointInGeom([i.lon, i.lat], m.geom)));
-    if (all.length >= 8) break;
-  }
-  const chosen = [];
-  const seqs = new Set();
-  const sorted = all.sort((a, b) => b.fecha - a.fecha);
-  for (const minKm of [0.25, 0.08, 0]) {
-    for (const p of sorted) {
-      if (chosen.length >= TRIES) break;
-      if (chosen.includes(p)) continue;
-      if (minKm && seqs.has(p.sequence)) continue;
-      if (chosen.every((c) => distanceKm([c.lon, c.lat], [p.lon, p.lat]) >= minKm)) {
-        chosen.push(p);
-        seqs.add(p.sequence);
-      }
-    }
-  }
-  return chosen.map((p) => ({ ...p, url: p.thumb, fuente: "mapillary" }));
+  const pd = /dominio público|public domain|^pd|cc0/i.test(p.licencia || "");
+  const lic = p.licencia_url
+    ? `<a href="${esc(p.licencia_url)}" target="_blank" rel="noopener">${esc(p.licencia)}</a>`
+    : esc(p.licencia || "");
+  // La página del archivo suele decir el pueblo: solo se enlaza al final.
+  const src = reveal && p.pagina ? ` · <a href="${esc(p.pagina)}" target="_blank" rel="noopener">Wikimedia Commons</a>` : "";
+  return pd
+    ? `Foto: ${esc(p.autor || "autor desconocido")} · Dominio público${src}`
+    : `Foto: ${esc(p.autor || "autor desconocido")} · ${lic}${src}`;
 }
 
 function evaluate(m) {
@@ -254,36 +233,25 @@ async function start() {
   const done = practice ? null : getTodayResult(MODE, key);
   if (done) order = [data.byIne.get(done.target), ...order.filter((m) => m.ine !== done.target)];
 
-  const token = await getToken();
-  if (!byIne.size && !token) return renderNoToken(stage, "Adivina el municipio");
-
-  stage.innerHTML = `<div class="card"><p>Buscando las fotos del municipio de hoy…</p></div>`;
-  try {
-    for (const m of order.slice(0, 25)) {
-      if (byIne.has(m.ine)) {
-        photos = shuffle(byIne.get(m.ine), seededRandom(`${MODE}:${key}:fotos`)).slice(0, TRIES);
-      } else if (token) {
-        photos = await mapillaryPhotos(token, m);
-      } else {
-        photos = [];
-      }
-      if (photos.length >= 2) {
-        target = m;
-        break;
-      }
-    }
-  } catch (e) {
-    if (e instanceof TokenError) {
-      forgetToken();
-      return renderNoToken(stage, "Adivina el municipio", "Mapillary no ha aceptado el token. Revisa que sea el «Access Token» de tu aplicación.");
-    }
-    stage.innerHTML = `<div class="card"><p>No se ha podido conectar con Mapillary. Comprueba la conexión y recarga la página.</p></div>`;
+  if (!byIne.size) {
+    stage.innerHTML = `
+      <section class="card gate">
+        <div class="gate-icon" aria-hidden="true">📷</div>
+        <h2 class="question">Muy pronto: las fotos de los pueblos</h2>
+        <p>Estamos preparando la colección de fotos libres de los municipios navarros. ¡Vuelve en unos días!</p>
+      </section>`;
     return;
   }
-  if (!target) {
-    stage.innerHTML = `<div class="card"><p>No se han encontrado fotos para el reto de hoy. Inténtalo más tarde.</p></div>`;
-    return;
-  }
+  // Solo entran los municipios con fotos; el del día es el siguiente del ciclo.
+  const conFotos = order.filter((m) => byIne.has(m.ine));
+  const toFront = (m) => {
+    conFotos.splice(conFotos.indexOf(m), 1);
+    conFotos.unshift(m);
+  };
+  if (!practice && !room) toFront(dailyFromCycle(data.municipios.filter((m) => byIne.has(m.ine)), MODE, key));
+  if (done && byIne.has(done.target)) toFront(data.byIne.get(done.target));
+  target = conFotos[0];
+  photos = shuffle(byIne.get(target.ine), seededRandom(`${MODE}:${key}:fotos`)).slice(0, TRIES);
 
   if (done && done.target === target.ine) {
     guesses = (done.guesses || []).map((ine) => data.byIne.get(ine)).filter(Boolean).map(evaluate);
