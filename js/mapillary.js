@@ -108,3 +108,37 @@ export function renderNoToken(stage, modeName, reason = "") {
     location.reload();
   });
 }
+
+// Motor de fotos para Navarra Street con Mapillary (misma interfaz que googleEngine).
+export async function mapillaryEngine(token) {
+  const mly = await loadViewerLib();
+  let viewer = null;
+  return {
+    name: "mapillary",
+    async find(u) {
+      if (u.imagen) return { ...u };
+      const f = await nearestImage(token, [u.lon, u.lat]);
+      return f ? { ...u, imagen: f.id, lon: f.lon, lat: f.lat, autor: f.autor } : null;
+    },
+    mount(container, loc, onImage) {
+      viewer = new mly.Viewer({
+        accessToken: token,
+        container,
+        imageId: loc.imagen,
+        component: { cover: false, attribution: false, bearing: false },
+      });
+      new ResizeObserver(() => viewer?.resize()).observe(container);
+      viewer.on("image", (e) => onImage({ id: e.image?.id, autor: e.image?.creatorUsername || "" }));
+    },
+    show(loc) {
+      return viewer.moveTo(loc.imagen);
+    },
+    credit(author, id, reveal) {
+      return photoCredit(author, id, reveal);
+    },
+    remove() {
+      viewer?.remove();
+      viewer = null;
+    },
+  };
+}

@@ -9,7 +9,9 @@ import {
 } from "./engine.js";
 import { loadMunicipios, municipioAt } from "./geo.js";
 import { createAnswerMap, roundPoints, pointsSquare } from "./map.js";
-import { getToken, forgetToken, TokenError, nearestImage, loadViewerLib, photoCredit, renderNoToken } from "./mapillary.js";
+import { getToken, forgetToken, TokenError, renderNoToken, mapillaryEngine } from "./mapillary.js";
+import { googleEngine, createGoogleAnswerMap } from "./gmap.js";
+import { getConfig } from "./cuenta.js";
 
 const MODE = "street";
 const ROUNDS = 5;
@@ -26,15 +28,27 @@ const stage = $("stage");
 let data;
 let token = "";
 let sample = false;
+let engine = null; // motor de fotos: Google Street View o Mapillary
+let googleKey = "";
 
 // Ubicación lista para jugar: con id de foto y coordenadas reales de la foto.
 async function resolveLocation(u) {
-  if (u.imagen) return { ...u };
-  const found = await nearestImage(token, [u.lon, u.lat]);
-  return found ? { ...u, imagen: found.id, lon: found.lon, lat: found.lat, autor: found.autor } : null;
+  return engine.find(u);
 }
 
 const noToken = (reason = "") => renderNoToken(stage, "Navarra Street", reason);
+
+// Aviso sobre el motor de fotos (Google Street View o Mapillary).
+function avisoChip(aviso) {
+  if (!aviso) return "";
+  if (aviso.tipo === "google") {
+    return `<div class="sv-chip google fade">Juegas con Google Street View</div>`;
+  }
+  if (aviso.tipo === "agotado") {
+    return `<div class="sv-chip fade">Hoy se acabaron las partidas con Google Street View · juegas con Mapillary</div>`;
+  }
+  return `<a class="sv-chip cta" href="perfil.html?registro&amp;volver=street.html">Crea tu cuenta gratis y juega con Google Street View</a>`;
+}
 
 function label(key) {
   return room ? "Partida en sala" : practice ? "Práctica" : `Reto #${dayNumber(key)}`;
@@ -48,7 +62,7 @@ function drawProgress(results) {
   }).join("");
 }
 
-async function play(finder, key, saved = []) {
+async function play(finder, key, saved = [], aviso = null) {
   const locations = finder.list;
   const results = saved.slice(0, ROUNDS - 1);
   document.body.classList.add("playing");
@@ -61,6 +75,7 @@ async function play(finder, key, saved = []) {
         <div class="hud-box"><span>Puntos</span><b id="hud-score">0</b></div>
         <div class="hud-box" id="hud-time" hidden><span>Tiempo</span><b id="hud-clock">${Math.floor(ROOM_SECONDS / 60)}:${String(ROOM_SECONDS % 60).padStart(2, "0")}</b></div>
       </div>
+      ${avisoChip(aviso)}
       <div class="sv-wait" id="sv-wait" hidden>${loadingHTML("Esperando a los demás…")}</div>
       <button class="sv-btn sv-fs" id="fs" aria-label="Pantalla completa" title="Pantalla completa">
         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>
@@ -105,32 +120,28 @@ async function play(finder, key, saved = []) {
     }
   });
 
-  let mly;
   let answerMap;
   try {
-    [mly, answerMap] = await Promise.all([loadViewerLib(), createAnswerMap(($("map").innerHTML = "", $("map")), data)]);
+    $("map").innerHTML = "";
+    // Con Google Street View hay que responder en un mapa de Google (condiciones de Google).
+    answerMap = engine.name === "google"
+      ? await createGoogleAnswerMap($("map"), data, googleKey)
+      : await createAnswerMap($("map"), data);
   } catch {
     stage.innerHTML = `<div class="card"><p>No se ha podido cargar el visor o el mapa. Comprueba la conexión y recarga la página.</p></div>`;
     return;
   }
 
-  const viewer = new mly.Viewer({
-    accessToken: token,
-    container: $("viewer"),
-    imageId: (await finder.get(results.length)).imagen,
-    component: { cover: false, attribution: false, bearing: false },
-  });
-  new ResizeObserver(() => viewer.resize()).observe($("viewer"));
-
   let round = results.length;
   let phase = "guess";
   let currentAuthor = locations[round].autor || "";
   let currentImage = locations[round].imagen;
+  const photoCredit = (author, id, reveal) => engine.credit(author, id, reveal);
 
-  viewer.on("image", (e) => {
+  engine.mount($("viewer"), await finder.get(results.length), (img) => {
     $("sv-loading")?.setAttribute("hidden", "");
-    currentAuthor = e.image?.creatorUsername || currentAuthor;
-    currentImage = e.image?.id || currentImage;
+    currentAuthor = img.autor || currentAuthor;
+    currentImage = img.id || currentImage;
     $("credit").innerHTML = photoCredit(currentAuthor, currentImage, phase === "result");
   });
 
@@ -151,7 +162,7 @@ async function play(finder, key, saved = []) {
     $("credit").innerHTML = photoCredit(currentAuthor, currentImage, false);
     answerMap.reset();
     drawProgress(results);
-    if (round > 0 || saved.length) viewer.moveTo(locations[round].imagen).catch(() => toast("No se ha podido cargar esta foto"));
+    if (round > 0 || saved.length) Promise.resolve(engine.show(locations[round])).catch(() => toast("No se ha podido cargar esta foto"));
   };
 
   answerMap.onPick(() => { if (phase === "guess") $("confirm").disabled = false; });
@@ -263,7 +274,7 @@ async function play(finder, key, saved = []) {
       return startClock();
     }
     clearTimer();
-    viewer.remove();
+    engine.remove();
     if (document.fullscreenElement) document.exitFullscreen();
     document.body.classList.remove("playing");
     finish(results, key);
@@ -344,8 +355,38 @@ async function start() {
     if (done) return showResult(done, key);
   }
 
-  token = await getToken();
-  if (!token) return noToken();
+  // Motor de fotos: Google Street View solo en el reto diario, para jugadores con cuenta y
+  // mientras quede cupo hoy (lo cuenta el servidor). Si no, Mapillary, que es gratis.
+  const cfg = await getConfig();
+  googleKey = String(cfg.GOOGLE_MAPS_KEY || "").trim();
+  let aviso = null;
+  if (googleKey && !practice) {
+    stage.innerHTML = `<div class="card">${loadingHTML("Preparando el reto…")}</div>`;
+    try {
+      const cuenta = await import("./cuenta.js");
+      const user = await cuenta.currentUser();
+      if (!user) aviso = { tipo: "login" };
+      else {
+        const r = await cuenta.reserveGoogle();
+        if (r?.ok) {
+          engine = await googleEngine(googleKey);
+          aviso = { tipo: "google", quedan: r.quedan };
+        } else aviso = { tipo: "agotado" };
+      }
+    } catch {
+      engine = null;
+    }
+  }
+  if (!engine) {
+    token = await getToken();
+    if (!token) return noToken();
+    try {
+      engine = await mapillaryEngine(token);
+    } catch {
+      stage.innerHTML = `<div class="card"><p>No se ha podido cargar el visor. Comprueba la conexión y recarga la página.</p></div>`;
+      return;
+    }
+  }
 
   let list;
   try {
@@ -411,7 +452,7 @@ async function start() {
     stage.innerHTML = `<div class="card"><p>No se han encontrado fotos de Mapillary cerca de las ubicaciones de la lista.</p></div>`;
     return;
   }
-  play(finder, key, savedRounds);
+  play(finder, key, savedRounds, aviso);
 }
 
 start();

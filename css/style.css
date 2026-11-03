@@ -875,3 +875,17 @@ body.playing main.game { max-width: none; padding: 0; }
 .lg-guess { background: #e5203d; }
 .lg-answer { background: #2fc175; }
 .in-room .sv { height: 100dvh; min-height: 0; }
+
+/* Aviso del motor de fotos en Navarra Street */
+.sv-chip {
+  position: absolute; z-index: 5; top: 12px; left: 50%; transform: translateX(-50%);
+  max-width: calc(100% - 140px); padding: 7px 14px; border-radius: 999px; font-size: 0.85rem; font-weight: 600;
+  background: rgba(10, 14, 22, 0.85); color: #e3e8f0; border: 1px solid rgba(255, 255, 255, 0.16);
+  text-decoration: none; text-align: center; backdrop-filter: blur(6px);
+}
+.sv-chip.google { border-color: rgba(66, 133, 244, 0.6); }
+.sv-chip.cta { background: var(--red); color: #fff; border-color: transparent; }
+@media (max-width: 899px) { .sv-chip { top: 70px; max-width: calc(100% - 24px); font-size: 0.8rem; } }
+.hero-google b { color: #8ab4ff; }
+.sv-chip.fade { animation: desvanecer 0.6s ease 7s forwards; }
+@keyframes desvanecer { to { opacity: 0; visibility: hidden; } }

@@ -6,6 +6,7 @@
 #        MAPILLARY_TOKEN     tu token de Mapillary (MLY|...)
 #        SUPABASE_URL        la «Project URL» de Supabase (cuando actives las cuentas)
 #        SUPABASE_ANON_KEY   la clave «anon public» de Supabase (cuando actives las cuentas)
+#        GOOGLE_MAPS_KEY     clave de Google Maps (opcional: Street View en el reto diario)
 #   2. Settings → Pages → Build and deployment → Source: «GitHub Actions».
 # Después, cada push a main publica la web sola (pestaña Actions para ver el progreso).
 # Un token de cliente siempre es visible en el navegador del jugador: Mapillary los da para eso (solo lectura).
@@ -38,6 +39,7 @@ jobs:
           MAPILLARY_TOKEN: ${{ secrets.MAPILLARY_TOKEN }}
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+          GOOGLE_MAPS_KEY: ${{ secrets.GOOGLE_MAPS_KEY }}
         run: |
           # Quita espacios y saltos de línea que se cuelan al pegar los secretos, y las comillas.
           limpio() { printf '%s' "$1" | tr -d '\r\n"' | sed 's/^[[:space:]]*//; s/[[:space:]]*$//'; }
@@ -45,9 +47,10 @@ jobs:
             printf 'export const MAPILLARY_TOKEN = "%s";\n' "$(limpio "$MAPILLARY_TOKEN")"
             printf 'export const SUPABASE_URL = "%s";\n' "$(limpio "$SUPABASE_URL" | sed 's#/rest/v1/*$##; s#/*$##')"
             printf 'export const SUPABASE_ANON_KEY = "%s";\n' "$(limpio "$SUPABASE_ANON_KEY")"
+            printf 'export const GOOGLE_MAPS_KEY = "%s";\n' "$(limpio "$GOOGLE_MAPS_KEY")"
           } > config.js
-          # Comprobación: config.js debe tener exactamente 3 líneas válidas.
-          test "$(wc -l < config.js)" -eq 3 && node --check --input-type=module < config.js
+          # Comprobación: config.js debe tener exactamente 4 líneas válidas.
+          test "$(wc -l < config.js)" -eq 4 && node --check --input-type=module < config.js
       - uses: actions/configure-pages@v5
       - name: Quitar lo que no hace falta publicar
         run: rm -rf .git .github tools/*.txt

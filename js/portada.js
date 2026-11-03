@@ -78,3 +78,16 @@ async function rankPanel() {
 }
 
 rankPanel();
+
+// Partidas con Google Street View que quedan hoy (si está activado).
+(async () => {
+  try {
+    const cuenta = await import("./cuenta.js");
+    const cfg = await cuenta.getConfig();
+    if (!cfg.GOOGLE_MAPS_KEY) return;
+    const left = await cuenta.googleLeft();
+    if (left == null) return;
+    const facts = document.querySelector(".hero-facts");
+    facts?.insertAdjacentHTML("beforeend", `<span class="hero-google"><b>${left}</b>${left === 1 ? "partida" : "partidas"} con Google Street View hoy</span>`);
+  } catch { /* sin cuentas */ }
+})();

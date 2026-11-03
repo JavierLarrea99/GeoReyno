@@ -283,3 +283,22 @@ export async function dismissInvite(id) {
   const { sb } = await sbUser();
   await sb.from("invitaciones").delete().eq("id", id);
 }
+
+// --- Cupo diario de Google Street View ---
+
+// Reserva una partida con Google Street View para hoy (una por jugador y día; el servidor
+// cuenta el total y corta al llegar al tope). Devuelve { ok, quedan, motivo }.
+export async function reserveGoogle() {
+  const { sb } = await sbUser();
+  const { data, error } = await sb.rpc("reservar_google");
+  if (error) throw new Error(friendlyError(error));
+  return data;
+}
+
+// Partidas con Google Street View que quedan hoy (para enseñarlo en la portada).
+export async function googleLeft() {
+  const sb = await getClient();
+  if (!sb) return null;
+  const { data, error } = await sb.rpc("google_quedan");
+  return error ? null : data;
+}

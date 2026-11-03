@@ -131,3 +131,59 @@ create policy "invitar a un amigo" on public.invitaciones for insert with check 
   )
 );
 create policy "borrar invitacion" on public.invitaciones for delete using (auth.uid() in (de, para));
+
+-- ===== Cupo diario de Google Street View =====
+-- Si ya ejecutaste lo anterior, ejecuta solo desde aquí.
+-- El tope se cambia en la tabla «ajustes» (Table Editor) sin tocar código:
+--   google_limite_diario = partidas con Google Street View al día (por defecto 30,
+--   que son unas 150 cargas de Street View: dentro del cupo gratis de 5.000 al mes).
+
+create table public.ajustes (clave text primary key, valor integer not null);
+insert into public.ajustes values ('google_limite_diario', 30);
+alter table public.ajustes enable row level security; -- nadie lo lee ni cambia desde la web
+
+create table public.uso_google (dia date primary key, partidas integer not null default 0);
+create table public.partidas_google (
+  user_id uuid not null references public.profiles (id) on delete cascade,
+  dia date not null,
+  primary key (user_id, dia)
+);
+alter table public.uso_google enable row level security;
+alter table public.partidas_google enable row level security;
+
+-- Reserva la partida de hoy con Google Street View para el jugador con sesión.
+-- Una por jugador y día (si recarga, no gasta otra). Devuelve {ok, quedan, motivo}.
+create function public.reservar_google() returns json
+language plpgsql security definer set search_path = public as $$
+declare
+  hoy date := (now() at time zone 'Europe/Madrid')::date;
+  lim integer := coalesce((select valor from ajustes where clave = 'google_limite_diario'), 30);
+  usadas integer;
+begin
+  if auth.uid() is null then
+    return json_build_object('ok', false, 'motivo', 'sesion');
+  end if;
+  if exists (select 1 from partidas_google where user_id = auth.uid() and dia = hoy) then
+    select partidas into usadas from uso_google where dia = hoy;
+    return json_build_object('ok', true, 'quedan', greatest(lim - coalesce(usadas, 0), 0));
+  end if;
+  insert into uso_google (dia) values (hoy) on conflict (dia) do nothing;
+  update uso_google set partidas = partidas + 1 where dia = hoy and partidas < lim returning partidas into usadas;
+  if usadas is null then
+    return json_build_object('ok', false, 'motivo', 'agotado', 'quedan', 0);
+  end if;
+  insert into partidas_google (user_id, dia) values (auth.uid(), hoy);
+  return json_build_object('ok', true, 'quedan', lim - usadas);
+end $$;
+revoke execute on function public.reservar_google() from anon;
+grant execute on function public.reservar_google() to authenticated;
+
+-- Cuántas partidas con Google Street View quedan hoy (visible para todos).
+create function public.google_quedan() returns integer
+language sql stable security definer set search_path = public as $$
+  select greatest(
+    coalesce((select valor from ajustes where clave = 'google_limite_diario'), 30)
+    - coalesce((select partidas from uso_google where dia = (now() at time zone 'Europe/Madrid')::date), 0),
+    0)
+$$;
+grant execute on function public.google_quedan() to anon, authenticated;

@@ -51,6 +51,9 @@ Documento de trabajo para retomar el proyecto en cualquier sesión. Las decision
 - [x] Cuentas (Supabase): registro, inicio de sesión, recuperar contraseña, borrar cuenta; los resultados se suben solos; perfil con estadísticas mejores (rachas calculadas, acierto medio, últimos 14 días, historial); clasificación por juego y periodo; modo invitado si no está configurado.
 - [x] Probado en móvil (390×844) y ordenador (1280×900), tema oscuro y claro, sin errores de consola: todos los juegos, perfil, clasificación (con Supabase simulado), salas con dos navegadores (palabra y municipio) y páginas legales. Mapillary y Supabase se probaron simulados porque desde aquí no hay acceso a esas webs.
 
+### Versión 2.4
+- [x] Google Street View en el reto diario de Navarra Street, solo para jugadores con cuenta y con un cupo diario contado en el servidor (`reservar_google` en `tools/supabase.sql`, tope en la tabla `ajustes`, 30 partidas/día por defecto). Mapa de respuesta de Google cuando se juega con Street View (lo exigen sus condiciones). Sin cuenta, al agotarse el cupo, en práctica y en salas: Mapillary con aviso. La portada enseña cuántas partidas con Google quedan hoy.
+
 ### Versión 2.3
 - [x] Navarra Street: pantalla de resultado de cada ronda (mapa grande con tu marca y el sitio, puntos con animación y barra, distancia, pueblo, autor de la foto y botón «Siguiente ronda»).
 - [x] En salas: 2 minutos por ronda con reloj; tras responder se espera a los demás («1/2 han respondido») y el resultado sale cuando han respondido todos o se acaba el tiempo, con la tabla de puntos de esa ronda. Si se acaba el tiempo sin marcar, 0 puntos.
@@ -90,6 +93,23 @@ Documento de trabajo para retomar el proyecto en cualquier sesión. Las decision
 9. [ ] La clasificación confía en lo que envía el navegador (con límites: un resultado por día y juego, fechas cercanas y puntos dentro del máximo). Si hay trampas, mover la puntuación a una función del servidor (Supabase Edge Functions).
 10. [ ] Versión en euskera (botón ES / EU como en las maquetas).
 11. [ ] Dominio propio y, si cambia, actualizar `og:url` y `og:image` de los HTML.
+
+## Google Street View (pasos para activarlo)
+
+1. Google Cloud (console.cloud.google.com): crea un proyecto «GeoReyno», activa la **facturación** y la API **Maps JavaScript API**.
+2. **APIs y servicios → Credenciales → Crear credenciales → Clave de API**. Restricciones: aplicación «Sitios web» con `https://javierlarrea99.github.io/*` y `http://localhost:8000/*`; API: solo «Maps JavaScript API».
+3. **Topes de seguridad** (por si alguien usa la clave fuera del juego): APIs y servicios → Maps JavaScript API → Cuotas: limita las cargas de Street View dinámico a ~170 al día y las de mapas a ~330 al día. Y en Facturación → Presupuestos y alertas: presupuesto de 1 € con avisos.
+4. Supabase → SQL Editor: ejecuta el bloque «Cupo diario de Google Street View» del final de `tools/supabase.sql`.
+5. GitHub → secreto `GOOGLE_MAPS_KEY` con la clave y vuelve a publicar.
+6. Para cambiar el número de partidas al día: Supabase → Table Editor → `ajustes` → `google_limite_diario`.
+
+## Anuncios (cuando haya visitas)
+
+- **Cuándo**: con dominio propio, páginas legales completas y tráfico estable (AdSense pide contenido y no aprueba bien subdominios como github.io).
+- **Consentimiento**: en España/UE hace falta un banner de consentimiento certificado por Google (CMP). El de Google («Privacidad y mensajes» de AdSense) es gratuito. Habrá que actualizar `cookies.html` y `privacidad.html`.
+- **Dónde poner anuncios** sin estropear el juego: en la pantalla de resultado final (debajo de la puntuación), entre secciones de la portada y en las páginas de ayuda. Nunca encima del visor, del mapa ni junto a los botones de jugar (las políticas de Google castigan los clics accidentales).
+- **Anuncios con recompensa**: «Mira un anuncio y juega una partida extra con Google Street View». Google lo ofrece para juegos web (AdSense para juegos / Ad Placement API, requiere solicitud). Encaja muy bien con el cupo diario.
+- **Otras vías**: donaciones (Ko-fi, «invita a un café = +100 partidas con Street View para todos»), patrocinio de comercios o ayuntamientos navarros por reto, o una suscripción sin anuncios y con más partidas con Google.
 
 ## Ideas guardadas
 
