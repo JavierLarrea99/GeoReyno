@@ -9,20 +9,16 @@
 import { MODES, getStats, loadPref, savePref } from "./engine.js";
 
 const SUPABASE_JS = "https://unpkg.com/@supabase/supabase-js@2.45.4/dist/umd/supabase.js";
-const NO_CONFIG = "georeyno:sin-config";
 
 let clientPromise = null;
 let userCache = undefined;
 
 async function readConfig() {
-  // Si en esta sesión ya vimos que no hay config.js, no lo pedimos otra vez (evita 404 repetidos).
+  // Se pide siempre de nuevo (con un parámetro distinto) para que el navegador no use una copia
+  // vieja, por ejemplo un «no encontrado» de antes de configurar los secretos.
   try {
-    if (sessionStorage.getItem(NO_CONFIG)) return {};
-  } catch { /* sin sessionStorage */ }
-  try {
-    return await import("../config.js");
+    return await import(`../config.js?v=${Date.now()}`);
   } catch {
-    try { sessionStorage.setItem(NO_CONFIG, "1"); } catch { /* nada */ }
     return {};
   }
 }

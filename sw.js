@@ -1,7 +1,7 @@
 // Service worker básico de GeoReyno: guarda una copia de los archivos propios para que la
 // web abra sin conexión. Primero intenta la red (así siempre se ve la versión nueva) y,
 // si no hay conexión, usa la copia. No toca peticiones a otros dominios (mapas, fotos…).
-const CACHE = "georeyno-v2";
+const CACHE = "georeyno-v3";
 const CORE = [
   "./", "index.html", "street.html", "municipio.html", "palabra.html", "escudos.html", "pregunta.html",
   "amigos.html", "perfil.html", "ranking.html", "como-se-juega.html",
