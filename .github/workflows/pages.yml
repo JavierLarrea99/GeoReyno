@@ -39,11 +39,15 @@ jobs:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
         run: |
+          # Quita espacios y saltos de línea que se cuelan al pegar los secretos, y las comillas.
+          limpio() { printf '%s' "$1" | tr -d '\r\n"' | sed 's/^[[:space:]]*//; s/[[:space:]]*$//'; }
           {
-            printf 'export const MAPILLARY_TOKEN = "%s";\n' "$MAPILLARY_TOKEN"
-            printf 'export const SUPABASE_URL = "%s";\n' "$SUPABASE_URL"
-            printf 'export const SUPABASE_ANON_KEY = "%s";\n' "$SUPABASE_ANON_KEY"
+            printf 'export const MAPILLARY_TOKEN = "%s";\n' "$(limpio "$MAPILLARY_TOKEN")"
+            printf 'export const SUPABASE_URL = "%s";\n' "$(limpio "$SUPABASE_URL" | sed 's#/rest/v1/*$##; s#/*$##')"
+            printf 'export const SUPABASE_ANON_KEY = "%s";\n' "$(limpio "$SUPABASE_ANON_KEY")"
           } > config.js
+          # Comprobación: config.js debe tener exactamente 3 líneas válidas.
+          test "$(wc -l < config.js)" -eq 3 && node --check --input-type=module < config.js
       - uses: actions/configure-pages@v5
       - name: Quitar lo que no hace falta publicar
         run: rm -rf .git .github tools/*.txt
