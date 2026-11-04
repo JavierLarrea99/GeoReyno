@@ -1,4 +1,4 @@
-// Escudos: adivina el municipio por su escudo. 5 rondas, 4 opciones.
+// Escudos: adivina el municipio por su escudo. 5 rondas; escribes el nombre y eliges del buscador.
 // Las imágenes se cargan desde Wikimedia Commons con su autor y licencia.
 
 import {
@@ -7,6 +7,7 @@ import {
   reportRound, reportFinal,
 } from "./engine.js";
 import { loadMunicipios } from "./geo.js";
+import { municipioSearch } from "./buscador.js";
 
 const MODE = "escudos";
 const ROUNDS = 5;
@@ -29,16 +30,14 @@ function pageUrl(e) {
   return e.pagina || `https://commons.wikimedia.org/wiki/File:${encodeURIComponent(e.archivo.replace(/ /g, "_"))}`;
 }
 
-function credit(e) {
-  if (sample) {
-    return `Imagen: <a href="${esc(pageUrl(e))}" target="_blank" rel="noopener">${esc(e.archivo)}</a> ·
-      Wikimedia Commons (autor y licencia en la página del archivo; pendiente de verificar)`;
-  }
+// Crédito de la imagen. Durante la ronda no se enseña el nombre del archivo (dice el pueblo).
+function credit(e, reveal = false) {
+  const file = reveal ? `<a href="${esc(pageUrl(e))}" target="_blank" rel="noopener">${esc(e.archivo)}</a>` : "Imagen";
+  if (sample) return `${file} · Wikimedia Commons${reveal ? " (autoría pendiente de verificar)" : ""}`;
   const lic = e.licencia_url
     ? `<a href="${esc(e.licencia_url)}" target="_blank" rel="noopener">${esc(e.licencia)}</a>`
     : esc(e.licencia);
-  return `Imagen: <a href="${esc(pageUrl(e))}" target="_blank" rel="noopener">${esc(e.archivo)}</a>,
-    de ${esc(e.autor)} · ${lic} · Wikimedia Commons`;
+  return `${file}: ${esc(e.autor)} · ${lic} · Wikimedia Commons`;
 }
 
 // Comprueba que la imagen carga (con un tiempo máximo) para no enseñar rondas rotas.
@@ -49,15 +48,6 @@ function preload(e, ms = 8000) {
     img.onload = () => { clearTimeout(timer); resolve(true); };
     img.onerror = () => { clearTimeout(timer); resolve(false); };
     img.src = imageUrl(e);
-  });
-}
-
-function prepare(rounds, names, key) {
-  return rounds.map((e, i) => {
-    const rand = practice && !room ? Math.random : seededRandom(`${MODE}:${key}:${e.ine}:${i}`);
-    const others = shuffle(names.filter((n) => n !== e.municipio), rand).slice(0, 3);
-    const order = shuffle([e.municipio, ...others], rand).map((text) => ({ text, right: text === e.municipio }));
-    return { ...e, order };
   });
 }
 
@@ -72,7 +62,7 @@ function sampleNote() {
   return sample ? `<p class="note">Modo con <b>datos de ejemplo</b>: solo hay unos pocos escudos y su autoría está pendiente de verificar en Commons.</p>` : "";
 }
 
-function playRound(rounds, index, answers, key) {
+function playRound(rounds, index, answers, key, data) {
   const total = rounds.length;
   drawProgress(answers, index, total);
   const q = rounds[index];
@@ -82,48 +72,42 @@ function playRound(rounds, index, answers, key) {
       <h2 class="question">¿De qué municipio es este escudo?</h2>
       <figure class="shield">
         <img src="${esc(imageUrl(q))}" alt="Escudo de un municipio de Navarra">
-        <figcaption class="credit">${credit(q)}</figcaption>
+        <figcaption class="credit" id="shield-credit">${credit(q)}</figcaption>
       </figure>
-      <div class="options">
-        ${q.order.map((o, i) => `<button class="option" data-i="${i}">${esc(o.text)}</button>`).join("")}
-      </div>
+      <div id="search"></div>
       <div id="after"></div>
       ${index === 0 ? sampleNote() : ""}
     </div>`;
 
-  const buttons = [...stage.querySelectorAll(".option")];
-  buttons.forEach((btn) => btn.addEventListener("click", () => {
-    const picked = q.order[Number(btn.dataset.i)];
-    buttons.forEach((b, i) => {
-      b.disabled = true;
-      if (q.order[i].right) b.classList.add("right");
-    });
-    if (!picked.right) btn.classList.add("wrong");
-    answers.push(picked.right);
+  const search = municipioSearch($("search"), data, (m) => {
+    search.disable();
+    const ok = m.ine === q.ine;
+    answers.push(ok);
     drawProgress(answers, index + 1, total);
-    reportRound(MODE, index, picked.right ? 1 : 0, 1);
-
+    reportRound(MODE, index, ok ? 1 : 0, 1);
+    $("shield-credit").innerHTML = credit(q, true);
     const last = index === total - 1;
     $("after").innerHTML = `
-      <div class="explain"><strong>${picked.right ? "¡Correcto!" : "Casi…"}</strong>
-        Es el escudo de ${esc(q.municipio)}.</div>
+      <div class="explain ${ok ? "ok" : "ko"}"><strong>${ok ? "¡Correcto!" : `No es ${esc(m.nombre)}…`}</strong>
+        Es el escudo de <b>${esc(q.municipio)}</b>.</div>
       <div class="actions"><button class="btn" id="next">${last ? "Ver resultado" : "Siguiente"}</button></div>`;
     const next = $("next");
     next.focus({ preventScroll: true });
     next.addEventListener("click", () => {
-      if (!last) return playRound(rounds, index + 1, answers, key);
+      if (!last) return playRound(rounds, index + 1, answers, key, data);
       const result = {
         score: answers.filter(Boolean).length,
         total,
         answers,
-        grid: answers.map((ok) => (ok ? "🟩" : "🟥")).join(""),
+        grid: answers.map((x) => (x ? "🟩" : "🟥")).join(""),
         ids: rounds.map((r) => r.ine),
       };
       if (!practice) saveDailyResult(MODE, result, key);
       reportFinal(MODE, result);
       showResult(result, rounds, key);
     });
-  }));
+  }, { placeholder: "¿Qué municipio es?" });
+  search.focus();
 }
 
 function showResult(result, rounds, key) {
@@ -147,7 +131,7 @@ function showResult(result, rounds, key) {
             <figure>
               <img src="${esc(imageUrl(r))}" alt="Escudo de ${esc(r.municipio)}" loading="lazy">
               <figcaption><b>${result.answers[i] ? "🟩" : "🟥"} ${esc(r.municipio)}</b><br>
-                <span class="credit">${credit(r)}</span></figcaption>
+                <span class="credit">${credit(r, true)}</span></figcaption>
             </figure>`).join("")}
         </div>
       </div>
@@ -168,14 +152,14 @@ async function start() {
   $("meta").textContent = room ? "Sala con amigos" : practice ? "Escudos al azar" : `Reto #${dayNumber(key)}`;
 
   let list;
-  let names;
+  let muni;
   try {
-    const [res, muni] = await Promise.all([fetch("data/escudos.json"), loadMunicipios()]);
+    let res;
+    [res, muni] = await Promise.all([fetch("data/escudos.json"), loadMunicipios()]);
     if (!res.ok) throw new Error(res.status);
     const data = await res.json();
     sample = Boolean(data.ejemplo);
     list = data.escudos.filter((e) => e.archivo && e.municipio);
-    names = muni.municipios.map((m) => m.nombre);
   } catch {
     stage.innerHTML = `<div class="card"><p>No se han podido cargar los escudos. Recarga la página.</p></div>`;
     return;
@@ -202,7 +186,7 @@ async function start() {
     stage.innerHTML = `<div class="card"><p>No se han podido cargar las imágenes de Wikimedia Commons. Comprueba la conexión y recarga la página.</p>${sampleNote()}</div>`;
     return;
   }
-  playRound(prepare(chosen, names, key), 0, [], key);
+  playRound(chosen, 0, [], key, muni);
 }
 
 start();

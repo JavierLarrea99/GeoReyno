@@ -51,6 +51,11 @@ Documento de trabajo para retomar el proyecto en cualquier sesión. Las decision
 - [x] Cuentas (Supabase): registro, inicio de sesión, recuperar contraseña, borrar cuenta; los resultados se suben solos; perfil con estadísticas mejores (rachas calculadas, acierto medio, últimos 14 días, historial); clasificación por juego y periodo; modo invitado si no está configurado.
 - [x] Probado en móvil (390×844) y ordenador (1280×900), tema oscuro y claro, sin errores de consola: todos los juegos, perfil, clasificación (con Supabase simulado), salas con dos navegadores (palabra y municipio) y páginas legales. Mapillary y Supabase se probaron simulados porque desde aquí no hay acceso a esas webs.
 
+### Versión 2.5
+- [x] Escudos: se escribe el municipio con buscador (autocompletado) en vez de 4 opciones; el crédito no enseña el nombre del archivo hasta responder; quitado el ejemplo erróneo de Tafalla.
+- [x] `tools/escudos_commons.py` usa primero Wikidata (escudo oficial P94 por código INE) y solo después la categoría de Commons.
+- [x] `tools/fotos_commons.py`: por defecto solo la foto principal de Wikidata y vistas generales/panorámicas; descarta carteles, placas, monumentos, ayuntamientos, interiores (`--todas` para relajarlo).
+
 ### Versión 2.4
 - [x] Google Street View en el reto diario de Navarra Street, solo para jugadores con cuenta y con un cupo diario contado en el servidor (`reservar_google` en `tools/supabase.sql`, tope en la tabla `ajustes`, 30 partidas/día por defecto). Mapa de respuesta de Google cuando se juega con Street View (lo exigen sus condiciones). Sin cuenta, al agotarse el cupo, en práctica y en salas: Mapillary con aviso. La portada enseña cuántas partidas con Google quedan hoy.
 

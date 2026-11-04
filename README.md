@@ -11,7 +11,7 @@ GeoReyno es un proyecto independiente, sin relación con el Gobierno de Navarra.
 | **Navarra Street** (principal) | `street.html` | Apareces en una calle de Navarra (fotos de Mapillary, con movimiento), a pantalla completa, con el mapa abajo para marcar dónde estás. 5 rondas, 5000 · e^(−d/30 km) puntos por ronda. |
 | Adivina el municipio | `municipio.html` | Fotos libres (Wikimedia Commons) de un municipio; 4 intentos, cada fallo destapa otra foto y da distancia y dirección. |
 | Palabra del día | `palabra.html` | Tipo Wordle: palabra navarra de 5 letras en 6 intentos, con pista tras el tercero. |
-| Escudos | `escudos.html` | 5 escudos municipales de Wikimedia Commons, 4 opciones, con autor y licencia. |
+| Escudos | `escudos.html` | 5 escudos municipales (Wikidata/Commons); escribes el municipio con autocompletado. Autor y licencia al responder. |
 | Pregunta del día | `pregunta.html` | Una pregunta al día de un banco de 183 (historia, tradiciones, euskera, topónimos…). |
 | Jugar con amigos | `amigos.html` | Solo con sesión iniciada: añade amigos por su nombre de jugador, invítales a una sala o entra con un código de 6 letras. Todos juegan el mismo reto y ven la tabla por rondas. |
 

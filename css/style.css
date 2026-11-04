@@ -889,3 +889,4 @@ body.playing main.game { max-width: none; padding: 0; }
 .hero-google b { color: #8ab4ff; }
 .sv-chip.fade { animation: desvanecer 0.6s ease 7s forwards; }
 @keyframes desvanecer { to { opacity: 0; visibility: hidden; } }
+.explain.ok { background: var(--good-soft); } .explain.ko { background: var(--bad-soft); }

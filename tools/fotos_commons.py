@@ -14,7 +14,9 @@ Qué hace:
   1. Pregunta a Wikidata por los municipios con código INE 31xxx: imagen principal (P18)
      y categoría de Commons (P373).
   2. En cada categoría (y sus subcategorías directas) busca fotos JPG horizontales de al
-     menos 1200 px, descartando escudos, banderas, mapas, planos, logos y dibujos.
+     menos 1200 px. Se queda con la foto principal de Wikidata (suele ser una vista general)
+     y con las que por su nombre son vistas generales o panorámicas; descarta escudos,
+     banderas, mapas, carteles, placas, monumentos, interiores… (con --todas no exige vistas).
   3. Lee de Commons el autor y la licencia de cada foto y se queda solo con las libres.
   4. Escribe data/fotos_municipios.json y tools/revisar_fotos.html para revisarlas a ojo.
      Quita de data/fotos_municipios.json las fotos en las que se lea el nombre del pueblo
@@ -39,9 +41,13 @@ COMMONS = "https://commons.wikimedia.org/w/api.php"
 
 FREE = re.compile(r"^(public domain|pd\b|pd-|cc0|cc[- ]by(-sa)?[- ]?\d|cc by(-sa)? \d)", re.I)
 NO_ATTRIB = re.compile(r"^(public domain|pd\b|pd-|cc0)", re.I)
+# Fotos de vista general: son las que menos pistas dan (sin carteles ni nombres a la vista).
+VIEW = re.compile(r"vista|view|panor|general|paisaje|landscape|desde|from |skyline|a[ée]rea|aerial|horizonte|"
+                  r"pueblo|village|town|valle|valley|ikuspegi|bista", re.I)
 SKIP = re.compile(r"escudo|coat|arms|blas|bandera|flag|mapa|map\b|_map|plano|logo|locator|localiza|situaci|"
                   r"diagram|esquema|dibujo|drawing|svg$|\.png$|\.gif$|\.tif|interior|retablo|altar|"
-                  r"cartel|señal|sign|poster", re.I)
+                  r"cartel|señal|sign|poster|placa|plaque|letrero|rótulo|rotulo|indicador|entrada|welcome|"
+                  r"ayuntamiento|town hall|udaletxea|monumento|estatua|statue|lápida|inscrip", re.I)
 
 
 def get(url, params=None, accept="application/json"):
@@ -136,6 +142,7 @@ def main():
     ap.add_argument("--sin-atribucion", action="store_true", help="solo dominio público y CC0")
     ap.add_argument("--por-municipio", type=int, default=4)
     ap.add_argument("--minimo", type=int, default=2, help="fotos mínimas para que un municipio entre en el juego")
+    ap.add_argument("--todas", action="store_true", help="no exigir que sean vistas generales (más fotos, más riesgo de pistas)")
     args = ap.parse_args()
     lic_ok = NO_ATTRIB if args.sin_atribucion else FREE
 
@@ -157,6 +164,9 @@ def main():
         for t in candidates:
             i = info.get(t)
             if not i or i["w"] < 1200 or i["w"] < i["h"] * 1.15 or not i["licencia"] or not lic_ok.search(i["licencia"]):
+                continue
+            # Por defecto, solo la foto principal de Wikidata y vistas generales.
+            if not args.todas and t not in e["imgs"] and not VIEW.search(t):
                 continue
             good.append((t, i))
         # Primero la imagen principal de Wikidata, luego variedad (archivos con nombres distintos).

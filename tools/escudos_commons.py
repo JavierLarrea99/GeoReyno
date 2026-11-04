@@ -12,7 +12,8 @@ No necesita claves. Solo usa la biblioteca estándar.
 
 Cómo funciona:
   1. Lee data/municipios.json (nombres y códigos INE).
-  2. Recorre la categoría «Coats of arms of municipalities of Navarre» de Commons
+  2. Busca en Wikidata el escudo oficial de cada municipio (por su código INE). Para los
+     que no lo tengan, recorre la categoría «Coats of arms of municipalities of Navarre» de Commons
      (y sus subcategorías directas) y empareja cada archivo con un municipio
      comparando nombres sin tildes ni mayúsculas.
   3. Para los municipios sin imagen en la categoría prueba títulos habituales
@@ -82,6 +83,25 @@ def category_files(category, depth=1):
     return files
 
 
+def wikidata_escudos():
+    """Código INE -> «File:…» del escudo oficial según Wikidata."""
+    query = """
+    SELECT ?code ?escudo WHERE {
+      ?item wdt:P772 ?code ; wdt:P94 ?escudo .
+      FILTER(STRSTARTS(?code, "31"))
+    }"""
+    url = "https://query.wikidata.org/sparql?" + urllib.parse.urlencode({"query": query, "format": "json"})
+    req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": "application/sparql-results+json"})
+    with urllib.request.urlopen(req, timeout=60) as res:
+        data = json.load(res)
+    out = {}
+    for b in data["results"]["bindings"]:
+        ine = b["code"]["value"][:5]
+        name = urllib.parse.unquote(b["escudo"]["value"].rsplit("/", 1)[-1]).replace("_", " ")
+        out.setdefault(ine, "File:" + name)
+    return out
+
+
 def file_info(titles):
     out = {}
     for i in range(0, len(titles), 40):
@@ -125,8 +145,14 @@ def main():
         if k not in by_key or t.lower().endswith(".svg"):
             by_key[k] = t
 
-    chosen = {}
+    # 1) Lo más fiable: el escudo oficial que Wikidata asocia a cada municipio (P94),
+    #    buscando el municipio por su código INE (P772).
+    chosen = wikidata_escudos()
+    print(f"{len(chosen)} escudos encontrados en Wikidata.")
+    # 2) Para los que falten, se empareja por nombre con la categoría de Commons.
     for m in munis:
+        if m["ine"] in chosen:
+            continue
         for name in [m["nombre"], *m["nombres"]]:
             k = norm(name)
             if k in by_key:

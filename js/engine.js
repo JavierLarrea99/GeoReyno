@@ -165,7 +165,7 @@ export const MODES = [
     desc: "Tipo Wordle: adivina la palabra navarra de 5 letras en 6 intentos." },
   { id: "escudos", ready: true, name: "Escudos", short: "Escudos", href: "escudos.html",
     icon: "shield", rounds: 5,
-    desc: "¿De qué municipio es este escudo? Cinco escudos, cuatro opciones." },
+    desc: "¿De qué municipio es este escudo? Escríbelo y elígelo en el buscador." },
   { id: "pregunta", ready: true, name: "Pregunta del día", short: "Pregunta", href: "pregunta.html",
     icon: "question", rounds: 1,
     desc: "Una pregunta al día sobre historia, tradiciones, euskera y rincones de Navarra." },
